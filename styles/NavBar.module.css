@@ -11,6 +11,12 @@
   font-size: 13px;
   color: #ffffff;
   padding: 0 46px 0;
+  position: relative;
+}
+
+.nav img {
+  height: 16px;
+  width: 180px;
 }
 
 .menu {
