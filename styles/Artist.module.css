@@ -1,0 +1,109 @@
+.background {
+  height: 1080px;
+  background-color: #252429;
+}
+
+.container {
+  position: relative;
+  top: 70px;
+  margin-left: 500px;
+  margin-right: 450px;
+}
+
+.container p {
+  color: #fff;
+  font-size: 28px;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.56px;
+}
+
+.artist_container {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  top: 50px;
+}
+.artist {
+  margin-right: 20px;
+  margin-bottom: 24px;
+}
+
+.artist_image {
+  background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.4) 100%
+    ),
+    #7b7b7b;
+  width: 292px;
+  height: 292px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.artist_image:hover {
+  background: #7b7b7b;
+}
+.artist_image:hover .detail {
+  display: block;
+}
+
+.artist_image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 9px;
+  margin-top: 9px;
+  width: 29px;
+  height: 29px;
+}
+
+.detail {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: rgba(0, 0, 0, 0.3);
+  display: none;
+}
+.detail img {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  top: 22px;
+  width: 36px;
+  height: 36px;
+}
+
+.detail p {
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: 350;
+  line-height: normal;
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex-shrink: 0;
+  color: #fff;
+  font-size: 16.591px;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  position: relative;
+  top: 4px;
+}
