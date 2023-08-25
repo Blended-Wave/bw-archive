@@ -1,0 +1,103 @@
+.background {
+  height: 1920px;
+  background-color: #252429;
+}
+
+.main {
+  color: #fff;
+  font-family: Noto Sans KR;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.56px;
+  padding-top: 59px;
+  margin-left: 13%;
+}
+
+.sort {
+  display: flex;
+  margin-left: 13%;
+  margin-top: 50px;
+  margin-bottom: 32px;
+}
+.sort p,
+.sort a {
+  color: var(--unselecetd-text, #acacac);
+  font-family: Noto Sans KR;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.26px;
+  margin-right: 10px;
+}
+
+.artwork_container {
+  margin: 0 13% 0;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+}
+.artwork {
+  position: relative;
+  width: 331px;
+  height: 331px;
+  flex-shrink: 0;
+  margin-right: 18px;
+  margin-bottom: 16px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%),
+    #7b7b7b;
+}
+
+.artwork:hover {
+  background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.4) 100%
+    ),
+    #7b7b7b;
+}
+
+.artwork:hover .detail {
+  display: flex;
+}
+
+.detail {
+  width: 331px;
+  height: 331px;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+
+.detail img {
+  width: 36px;
+  height: 36px;
+}
+
+.pagination {
+  display: flex;
+  margin: 35px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 110px;
+}
+
+.pagination img {
+  margin-right: 35px;
+}
+
+.pagination img:last-child {
+  margin-right: 0;
+}
+.pagination p {
+  color: #acacac;
+  font-family: Noto Sans KR;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.4px;
+  margin-right: 35px;
+}
