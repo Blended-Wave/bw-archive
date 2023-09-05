@@ -1,0 +1,772 @@
+.background {
+  background: #fff;
+  height: 1848px;
+  display: flex;
+}
+
+/*사이드 바*/
+.sidebar {
+  width: 280px;
+  height: 100%;
+  flex-shrink: 0;
+  background: #261428;
+}
+
+.title {
+  width: 280px;
+  height: 77px;
+  flex-shrink: 0;
+  background: #5c4b4b;
+  display: flex;
+  align-items: center;
+  padding-left: 18px;
+  margin-bottom: 57px;
+}
+
+.title svg {
+  width: 21.001px;
+  height: 25px;
+  flex-shrink: 0;
+  margin-right: 14px;
+}
+
+.title p {
+  color: #fff;
+  font-family: Noto Sans KR;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.manage,
+.manage_active {
+  display: flex;
+  align-items: center;
+  margin-bottom: 31px;
+  height: 30px;
+}
+
+.manage svg {
+  margin-right: 22px;
+  margin-left: 27px;
+}
+
+.manage path {
+  fill: #929292;
+}
+.manage p {
+  color: #929292;
+  font-family: Noto Sans KR;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  letter-spacing: -0.45px;
+}
+
+.manage_active svg:first-child {
+  margin-left: 3px;
+  margin-right: 17px;
+}
+
+.manage_active p {
+  margin-left: 21px;
+  color: #fff;
+  font-family: Noto Sans KR;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.45px;
+}
+
+.content {
+  margin-top: 77px;
+  margin-left: 100px;
+}
+
+.content_info:first-child {
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.9px;
+  margin-bottom: 34px;
+}
+
+.content_info:nth-child(2) {
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.4px;
+  margin-bottom: 19px;
+}
+
+/*작업물 추가 버튼*/
+.work_plus {
+  width: 120px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: #5aadf9;
+  display: flex;
+  border: none;
+  align-items: center;
+  margin-bottom: 55px;
+}
+
+.work_plus svg {
+  margin-left: 13px;
+  margin-right: 7px;
+}
+
+.work_plus p {
+  color: #fff;
+  text-align: center;
+  font-family: Noto Sans KR;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: 15px; /* 100% */
+  letter-spacing: -0.375px;
+}
+
+/*작업물 표*/
+.data {
+  width: 1350px;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.data tr {
+  height: 113px;
+}
+
+.data td {
+  color: #000;
+  text-align: center;
+  font-family: Noto Sans KR;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.4px;
+}
+
+.data tr:first-child {
+  color: #326baf;
+  font-family: Noto Sans KR;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.4px;
+  height: 31px;
+}
+
+.data th:not(:first-child),
+.data th:not(:last-child) {
+  border: 1px solid #ddd;
+  border-right: none;
+}
+.data th:first-child {
+  border-radius: 10px 0px 0px 0px;
+  border: 1px solid #ddd;
+  border-right: none;
+}
+.data th:last-child {
+  border-radius: 0 10px 0px 0px;
+  border: 1px solid #ddd;
+}
+
+.data th:first-child,
+.data td:first-child {
+  width: 100px;
+}
+.data th:nth-child(2),
+.data td:nth-child(2) {
+  width: 125px;
+}
+.data th:nth-child(3),
+.data td:nth-child(3) {
+  width: 90px;
+}
+.data th:nth-child(4),
+.data td:nth-child(4),
+.data th:nth-child(5),
+.data td:nth-child(5) {
+  width: 229px;
+}
+.data th:nth-child(6),
+.data td:nth-child(6),
+.data th:nth-child(7),
+.data td:nth-child(7),
+.data th:nth-child(8),
+.data td:nth-child(8) {
+  width: 145px;
+}
+
+.delete {
+  width: 60px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: none;
+  background: #df7272;
+  color: #fff;
+  font-family: Noto Sans KR;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: normal;
+  letter-spacing: -0.35px;
+}
+
+/*업로드 모달*/
+.modal_container {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.workmodal_content {
+  position: relative;
+  display: flex;
+  width: 1066px;
+  height: 705px;
+  flex-shrink: 0;
+  background: #fff;
+  box-shadow: 0px 4px 10px 10px rgba(0, 0, 0, 0.25);
+  padding: 32px 0 0 20px;
+}
+
+/*업로드 제목*/
+.modal_title {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  margin-left: 27px;
+  margin-bottom: 9px;
+}
+
+.modal_title p {
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.35px;
+}
+
+.modal_title_box {
+  display: flex;
+  width: 491px;
+  padding: 6px 10px 6px 10px;
+  margin-left: 19px;
+  border: 1px solid #8b8b8b;
+}
+
+.modal_title_box p {
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.3px;
+}
+
+/*업로드 시리즈*/
+.modal_series {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  margin-left: 14px;
+  margin-bottom: 9px;
+}
+
+.modal_series p {
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.35px;
+}
+
+.modal_series_box {
+  display: flex;
+  width: 491px;
+  padding: 6px 10px 6px 10px;
+  margin-left: 19px;
+  border: 1px solid #8b8b8b;
+}
+
+.modal_series_box p {
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.3px;
+}
+
+/*업로드 설명*/
+.modal_info {
+  display: flex;
+  height: 193px;
+  margin-left: 27px;
+  margin-bottom: 25px;
+}
+
+.modal_info p {
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.35px;
+}
+
+.modal_info_box {
+  display: flex;
+  width: 647px;
+  height: 193px;
+  padding: 6px 10px 6px 10px;
+  margin-left: 19px;
+
+  border: 1px solid #8b8b8b;
+}
+
+.modal_info_box p {
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.3px;
+}
+
+/*업로드 아티스트*/
+.modal_artist {
+  display: flex;
+  align-items: center;
+  height: 26px;
+  margin-bottom: 13px;
+}
+
+.modal_artist p {
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.35px;
+  margin-right: 19px;
+}
+
+.modal_artist div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.35px;
+}
+
+.modal_artist div:nth-child(2) {
+  width: 43px;
+  height: 26px;
+  border: 1px solid #8b8b8b;
+  margin-right: 12px;
+}
+
+.modal_artist_name {
+  background: #dfdfdf;
+  height: 24px;
+  padding: 6px 9px;
+  margin-right: 10px;
+  font-size: 12px;
+  line-height: 100%; /* 12px */
+  letter-spacing: -0.3px;
+}
+
+/*업로드 파일*/
+.modal_file {
+  display: flex;
+  margin-left: 27px;
+}
+
+.modal_file p {
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.35px;
+}
+
+.modal_file_button p {
+  color: #0075ff;
+  font-family: Noto Sans KR;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: normal;
+  letter-spacing: -0.33px;
+  margin: 3px 0 9px 0;
+}
+
+.modal_file_button button {
+  border: 1px solid #696969;
+  background: #fff;
+  display: flex;
+  width: 80px;
+  height: 28px;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; /* 12px */
+  letter-spacing: -0.3px;
+}
+
+.modal_file_box {
+  width: 517px;
+  height: 308px;
+  flex-shrink: 0;
+  background: #d9d9d9;
+}
+
+/*업로드 파일 정보*/
+.modal_file_info {
+  position: absolute;
+  left: 50px;
+  bottom: 45px;
+  width: 100px;
+  height: 38px;
+}
+
+.modal_file_info p {
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; /* 12px */
+  letter-spacing: -0.3px;
+  margin-bottom: 14px;
+}
+
+/*업로드 모달 체크박스*/
+.modal_checkbox {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 46px;
+  left: 611px;
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: 100%; /* 11px */
+  letter-spacing: -0.275px;
+}
+
+.modal_checkbox p {
+  display: flex;
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: 100%; /* 11px */
+  letter-spacing: -0.275px;
+  margin-bottom: 9px;
+  align-items: center;
+}
+
+.modal_checkbox p input {
+  width: 13px;
+  height: 13px;
+  margin-right: 9px;
+}
+
+.modal_preview {
+  margin-left: 35px;
+}
+
+/*업로드 미리보기*/
+.modal_thumnail {
+  width: 250px;
+  height: 30px;
+  display: flex;
+  width: 250px;
+  padding-left: 6px;
+  margin-bottom: 9px;
+  align-items: center;
+  background: #858585;
+  color: #fff;
+  font-family: Noto Sans KR;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.3px;
+}
+
+.modal_preview img {
+  width: 250px;
+  height: 250px;
+  margin-bottom: 13px;
+  flex-shrink: 0;
+  background: #d9d9d9;
+}
+
+.modal_preview_update {
+  width: 250px;
+  margin-bottom: 9px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.modal_preview_update button {
+  display: flex;
+  width: 80px;
+  height: 28px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 5px;
+  border: 1px solid #696969;
+  background: #fff;
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; /* 12px */
+  letter-spacing: -0.3px;
+}
+
+.modal_preview_update p {
+  position: absolute;
+  right: 16px;
+  top: 7px;
+  color: #0075ff;
+  font-family: Noto Sans KR;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: normal;
+  letter-spacing: -0.33px;
+}
+
+.modal_thumnail_info {
+  color: #656565;
+  font-family: Noto Sans KR;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: normal;
+  letter-spacing: -0.33px;
+}
+
+/*버튼 모듬*/
+.modal_work_button {
+  position: absolute;
+  display: flex;
+
+  right: 39px;
+  bottom: 29px;
+}
+
+.modal_work_button button {
+  display: flex;
+  border: 1px solid #696969;
+  background: #fff;
+  width: 111px;
+  height: 28px;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; /* 14px */
+  letter-spacing: -0.35px;
+}
+
+.modal_close_button {
+  position: absolute;
+  right: 125px;
+  bottom: 0px;
+}
+
+.modal_preview_publish {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal_preview_publish button:first-child {
+  margin-bottom: 12px;
+}
+
+/*아티스트 검색 모달*/
+.artistmodal_container {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.artistmodal_content {
+  position: relative;
+  display: flex;
+  width: 448px;
+  height: 284px;
+  flex-shrink: 0;
+  background: #fff;
+  box-shadow: 0px 4px 10px 10px rgba(0, 0, 0, 0.25);
+  padding: 14px 0 0 12px;
+}
+
+/*맴버 리스트*/
+.member_list p {
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 150%; /* 18px */
+  letter-spacing: -0.3px;
+  margin-bottom: 10px;
+}
+.member_list select {
+  width: 132px;
+  height: 230px;
+  flex-shrink: 0;
+  border: 1px solid #000;
+}
+.member_list select:focus {
+  outline: none;
+  box-shadow: none;
+}
+.member_list select option {
+  padding: 0 0 6px 6px;
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 21px */
+  letter-spacing: -0.35px;
+}
+.member_list select option:first-child {
+  padding-top: 7px;
+}
+.member_list select option:checked {
+  background: #a6cbdf;
+}
+/*스크롤바 숨기기*/
+.member_list select::-webkit-scrollbar {
+  display: none;
+}
+
+/*아티스트 리스트*/
+.artist_list {
+  margin-left: 13px;
+}
+
+.artist_list p {
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 150%; /* 18px */
+  letter-spacing: -0.3px;
+  margin-bottom: 10px;
+}
+
+.artist_box {
+  padding: 6px 9px;
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+  background: #dfdfdf;
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 12px */
+  letter-spacing: -0.3px;
+  margin-right: 7px;
+}
+
+.submit_button {
+  position: absolute;
+  right: 16px;
+  bottom: 13px;
+  border: 1px solid #696969;
+  background: #fff;
+  display: flex;
+  width: 104px;
+  height: 28px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 5px;
+  color: #000;
+  font-family: Noto Sans KR;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; /* 14px */
+  letter-spacing: -0.35px;
+}
+
+.close_button {
+  position: absolute;
+  top: 9px;
+  right: 20px;
+}
