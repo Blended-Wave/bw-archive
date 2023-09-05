@@ -43,6 +43,7 @@
   display: flex;
   align-items: center;
   margin-bottom: 31px;
+  height: 30px;
 }
 
 .manage svg {
@@ -151,7 +152,6 @@
   font-weight: 350;
   line-height: normal;
   letter-spacing: -0.4px;
-  text-align: center;
   border-bottom: 1px solid #cecece;
 }
 

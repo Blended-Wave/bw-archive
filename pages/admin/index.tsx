@@ -1,13 +1,14 @@
 import { useRef, useState } from "react";
 import styles from "../../styles/Member.module.css";
+import Link from "next/link";
 
 export default function Member() {
+  const modalBackground = useRef();
   const [profilemodalOpen, setProfilemodalOpen] = useState(false);
   const [addmembermodalOpen, setAddmembermodalOpen] = useState(false);
   const [twittermodalOpen, setTwittermodalOpen] = useState(false);
   const [instargrammodalOpen, setInstargrammodalOpen] = useState(false);
   const [rolemodalOpen, setRolemodalOpen] = useState(false);
-  const ModalBackground = useRef();
 
   return (
     <div className={styles.background}>
@@ -28,7 +29,7 @@ export default function Member() {
           </svg>
           <p>BW Admin Panel</p>
         </div>
-        <div className={styles.manage_active}>
+        <Link className={styles.manage_active} href="/admin">
           <svg
             width="4"
             height="30"
@@ -52,8 +53,8 @@ export default function Member() {
             />
           </svg>
           <p>맴버 관리</p>
-        </div>
-        <div className={styles.manage}>
+        </Link>
+        <Link className={styles.manage} href="/admin/work">
           <svg
             width="21"
             height="21"
@@ -68,7 +69,7 @@ export default function Member() {
             />
           </svg>
           <p>작업물 관리</p>
-        </div>
+        </Link>
       </div>
       <div className={styles.content}>
         <p className={styles.content_info}>맴버 관리</p>
@@ -192,9 +193,9 @@ export default function Member() {
       {addmembermodalOpen && (
         <div
           className={styles.modal_container}
-          ref={ModalBackground}
+          ref={modalBackground}
           onClick={(e) => {
-            if (e.target === ModalBackground.current) {
+            if (e.target === modalBackground.current) {
               setAddmembermodalOpen(false);
             }
           }}
@@ -392,9 +393,9 @@ export default function Member() {
       {rolemodalOpen && (
         <div
           className={styles.modal_container}
-          ref={ModalBackground}
+          ref={modalBackground}
           onClick={(e) => {
-            if (e.target === ModalBackground.current) {
+            if (e.target === modalBackground.current) {
               setRolemodalOpen(false);
             }
           }}
