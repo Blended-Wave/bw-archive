@@ -1,0 +1,82 @@
+/*p태그 공통 설정*/
+.artist p {
+  color: #fff;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  line-height: normal;
+}
+.artist {
+  margin-right: 20px;
+  margin-bottom: 24px;
+}
+
+.artist_image {
+  background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.4) 100%
+    ),
+    #7b7b7b;
+  position: relative;
+  width: 292px;
+  height: 292px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*hover시 설정*/
+.artist_image:hover {
+  background: #7b7b7b;
+}
+.artist_image:hover .detail {
+  display: block;
+}
+
+/*아티스트 분류*/
+.art {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 9px;
+  left: 8px;
+}
+.art img {
+  width: 29px;
+  height: 29px;
+}
+
+/*hover시 나타나는 view detail*/
+.detail {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: rgba(0, 0, 0, 0.3);
+  display: none;
+}
+.detail svg {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  top: 22px;
+}
+.detail p {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 350;
+}
+
+.name {
+  position: relative;
+  top: 4px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex-shrink: 0;
+  font-size: 16.591px;
+  font-weight: 700;
+}
