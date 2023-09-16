@@ -24,7 +24,16 @@ export default function Work() {
             className={styles.artwork_image}
             onClick={() => setModalOpen(true)}
           >
-            <img src="/plus_icon.svg" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path d="M18 0V36" stroke="white" stroke-width="3" />
+              <path d="M0 18H36" stroke="white" stroke-width="3" />
+            </svg>
           </div>
         </div>
         <div className={styles.artwork}>
@@ -32,7 +41,16 @@ export default function Work() {
             className={styles.artwork_image}
             onClick={() => setModalOpen(true)}
           >
-            <img src="/plus_icon.svg" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path d="M18 0V36" stroke="white" stroke-width="3" />
+              <path d="M0 18H36" stroke="white" stroke-width="3" />
+            </svg>
           </div>
         </div>
         <div className={styles.artwork}>
@@ -40,7 +58,16 @@ export default function Work() {
             className={styles.artwork_image}
             onClick={() => setModalOpen(true)}
           >
-            <img src="/plus_icon.svg" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path d="M18 0V36" stroke="white" stroke-width="3" />
+              <path d="M0 18H36" stroke="white" stroke-width="3" />
+            </svg>
           </div>
         </div>
         <div className={styles.artwork}>
@@ -48,7 +75,16 @@ export default function Work() {
             className={styles.artwork_image}
             onClick={() => setModalOpen(true)}
           >
-            <img src="/plus_icon.svg" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path d="M18 0V36" stroke="white" stroke-width="3" />
+              <path d="M0 18H36" stroke="white" stroke-width="3" />
+            </svg>
           </div>
         </div>
         <div className={styles.artwork}>
@@ -56,7 +92,16 @@ export default function Work() {
             className={styles.artwork_image}
             onClick={() => setModalOpen(true)}
           >
-            <img src="/plus_icon.svg" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path d="M18 0V36" stroke="white" stroke-width="3" />
+              <path d="M0 18H36" stroke="white" stroke-width="3" />
+            </svg>
           </div>
         </div>
         <div className={styles.artwork}>
@@ -64,7 +109,16 @@ export default function Work() {
             className={styles.artwork_image}
             onClick={() => setModalOpen(true)}
           >
-            <img src="/plus_icon.svg" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path d="M18 0V36" stroke="white" stroke-width="3" />
+              <path d="M0 18H36" stroke="white" stroke-width="3" />
+            </svg>
           </div>
         </div>
         <div className={styles.artwork}>
@@ -72,7 +126,16 @@ export default function Work() {
             className={styles.artwork_image}
             onClick={() => setModalOpen(true)}
           >
-            <img src="/plus_icon.svg" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path d="M18 0V36" stroke="white" stroke-width="3" />
+              <path d="M0 18H36" stroke="white" stroke-width="3" />
+            </svg>
           </div>
         </div>
         <div className={styles.artwork}>
@@ -80,7 +143,16 @@ export default function Work() {
             className={styles.artwork_image}
             onClick={() => setModalOpen(true)}
           >
-            <img src="/plus_icon.svg" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path d="M18 0V36" stroke="white" stroke-width="3" />
+              <path d="M0 18H36" stroke="white" stroke-width="3" />
+            </svg>
           </div>
         </div>
         <div className={styles.artwork}>
@@ -88,7 +160,16 @@ export default function Work() {
             className={styles.artwork_image}
             onClick={() => setModalOpen(true)}
           >
-            <img src="/plus_icon.svg" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path d="M18 0V36" stroke="white" stroke-width="3" />
+              <path d="M0 18H36" stroke="white" stroke-width="3" />
+            </svg>
           </div>
         </div>
         <div className={styles.artwork}>
@@ -96,7 +177,16 @@ export default function Work() {
             className={styles.artwork_image}
             onClick={() => setModalOpen(true)}
           >
-            <img src="/plus_icon.svg" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path d="M18 0V36" stroke="white" stroke-width="3" />
+              <path d="M0 18H36" stroke="white" stroke-width="3" />
+            </svg>
           </div>
         </div>
         <div className={styles.artwork}>
@@ -104,7 +194,16 @@ export default function Work() {
             className={styles.artwork_image}
             onClick={() => setModalOpen(true)}
           >
-            <img src="/plus_icon.svg" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path d="M18 0V36" stroke="white" stroke-width="3" />
+              <path d="M0 18H36" stroke="white" stroke-width="3" />
+            </svg>
           </div>
         </div>
         <div className={styles.artwork}>
@@ -112,7 +211,16 @@ export default function Work() {
             className={styles.artwork_image}
             onClick={() => setModalOpen(true)}
           >
-            <img src="/plus_icon.svg" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path d="M18 0V36" stroke="white" stroke-width="3" />
+              <path d="M0 18H36" stroke="white" stroke-width="3" />
+            </svg>
           </div>
         </div>
       </div>
