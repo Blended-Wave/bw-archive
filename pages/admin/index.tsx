@@ -249,9 +249,9 @@ export default function Member() {
         {profilemodalOpen && (
           <div
             className={styles.modal_container}
-            ref={ModalBackground}
+            ref={modalBackground}
             onClick={(e) => {
-              if (e.target === ModalBackground.current) {
+              if (e.target === modalBackground.current) {
                 setProfilemodalOpen(false);
               }
             }}
@@ -327,9 +327,9 @@ export default function Member() {
         {twittermodalOpen && (
           <div
             className={styles.modal_container}
-            ref={ModalBackground}
+            ref={modalBackground}
             onClick={(e) => {
-              if (e.target === ModalBackground.current) {
+              if (e.target === modalBackground.current) {
                 setTwittermodalOpen(false);
               }
             }}
@@ -366,9 +366,9 @@ export default function Member() {
         {instargrammodalOpen && (
           <div
             className={styles.modal_container}
-            ref={ModalBackground}
+            ref={modalBackground}
             onClick={(e) => {
-              if (e.target === ModalBackground.current) {
+              if (e.target === modalBackground.current) {
                 setInstargrammodalOpen(false);
               }
             }}
