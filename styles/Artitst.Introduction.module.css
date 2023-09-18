@@ -6,7 +6,7 @@
 
 .background p {
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 28px;
   font-style: normal;
   font-weight: 700;
@@ -37,7 +37,7 @@
 
   /* 글 관련 */
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -47,7 +47,7 @@
 .button:hover {
   background: #fff;
   color: #252429;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
