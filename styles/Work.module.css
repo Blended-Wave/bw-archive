@@ -5,7 +5,7 @@
 
 .main {
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 28px;
   font-style: normal;
   font-weight: 700;
@@ -24,7 +24,7 @@
 .sort p,
 .sort a {
   color: var(--unselecetd-text, #acacac);
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;
@@ -94,7 +94,7 @@
 }
 .pagination p {
   color: #acacac;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -154,7 +154,7 @@
 
 .detail_artist p {
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 32px;
   font-style: normal;
   font-weight: 700;
@@ -172,7 +172,7 @@
 }
 .detail_arttitle p {
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-style: normal;
   line-height: normal;
 }
@@ -192,7 +192,7 @@
 
 .detail_artdate p {
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -205,7 +205,7 @@
 
 .description p:first-child {
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 15px;
   font-style: normal;
   font-weight: 700;
@@ -239,7 +239,7 @@
 
 .description_container p {
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -249,7 +249,7 @@
 
 .credits p:first-child {
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 16.591px;
   font-style: normal;
   font-weight: 700;
@@ -275,7 +275,7 @@
 
 .credit p {
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 13px;
   font-style: normal;
   font-weight: 400;

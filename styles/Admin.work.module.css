@@ -32,7 +32,7 @@
 
 .title p {
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
@@ -57,7 +57,7 @@
 }
 .manage p {
   color: #929292;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 18px;
   font-style: normal;
   font-weight: 300;
@@ -73,7 +73,7 @@
 .manage_active p {
   margin-left: 21px;
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -88,7 +88,7 @@
 
 .content_info:first-child {
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 36px;
   font-style: normal;
   font-weight: 500;
@@ -99,7 +99,7 @@
 
 .content_info:nth-child(2) {
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -129,7 +129,7 @@
 .work_plus p {
   color: #fff;
   text-align: center;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 15px;
   font-style: normal;
   font-weight: 350;
@@ -151,7 +151,7 @@
 .data td {
   color: #000;
   text-align: center;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -161,7 +161,7 @@
 
 .data tr:first-child {
   color: #326baf;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
@@ -220,7 +220,7 @@
   border: none;
   background: #df7272;
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 350;
@@ -263,7 +263,7 @@
 
 .modal_title p {
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -281,7 +281,7 @@
 
 .modal_title_box p {
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -300,7 +300,7 @@
 
 .modal_series p {
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -318,7 +318,7 @@
 
 .modal_series_box p {
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -336,7 +336,7 @@
 
 .modal_info p {
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -356,7 +356,7 @@
 
 .modal_info_box p {
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -374,7 +374,7 @@
 
 .modal_artist p {
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -388,7 +388,7 @@
   justify-content: center;
   align-items: center;
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -421,7 +421,7 @@
 
 .modal_file p {
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -431,7 +431,7 @@
 
 .modal_file_button p {
   color: #0075ff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 11px;
   font-style: normal;
   font-weight: 350;
@@ -451,7 +451,7 @@
   align-items: center;
   flex-shrink: 0;
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -477,7 +477,7 @@
 
 .modal_file_info p {
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -494,7 +494,7 @@
   top: 46px;
   left: 611px;
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 11px;
   font-style: normal;
   font-weight: 350;
@@ -505,7 +505,7 @@
 .modal_checkbox p {
   display: flex;
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 11px;
   font-style: normal;
   font-weight: 350;
@@ -536,7 +536,7 @@
   align-items: center;
   background: #858585;
   color: #fff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -571,7 +571,7 @@
   border: 1px solid #696969;
   background: #fff;
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -584,7 +584,7 @@
   right: 16px;
   top: 7px;
   color: #0075ff;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 11px;
   font-style: normal;
   font-weight: 350;
@@ -594,7 +594,7 @@
 
 .modal_thumnail_info {
   color: #656565;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 11px;
   font-style: normal;
   font-weight: 350;
@@ -622,7 +622,7 @@
   align-items: center;
   flex-shrink: 0;
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -672,7 +672,7 @@
 /*맴버 리스트*/
 .member_list p {
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 300;
@@ -693,7 +693,7 @@
 .member_list select option {
   padding: 0 0 6px 6px;
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -718,7 +718,7 @@
 
 .artist_list p {
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 300;
@@ -734,7 +734,7 @@
   height: 24px;
   background: #dfdfdf;
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -757,7 +757,7 @@
   flex-shrink: 0;
   gap: 5px;
   color: #000;
-  font-family: Noto Sans KR;
+  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
