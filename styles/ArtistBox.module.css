@@ -1,9 +1,6 @@
 /*p태그 공통 설정*/
 .artist p {
   color: #fff;
-  font-family: "Noto Sans KR", sans-serif;
-  font-style: normal;
-  line-height: normal;
 }
 .artist {
   margin-right: 20px;

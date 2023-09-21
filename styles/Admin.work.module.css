@@ -32,11 +32,8 @@
 
 .title p {
   color: #fff;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 24px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
 }
 
 .manage,
@@ -57,11 +54,8 @@
 }
 .manage p {
   color: #929292;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 18px;
-  font-style: normal;
   font-weight: 300;
-  line-height: normal;
   letter-spacing: -0.45px;
 }
 
@@ -73,11 +67,8 @@
 .manage_active p {
   margin-left: 21px;
   color: #fff;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 18px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.45px;
 }
 
@@ -88,22 +79,16 @@
 
 .content_info:first-child {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 36px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.9px;
   margin-bottom: 34px;
 }
 
 .content_info:nth-child(2) {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.4px;
   margin-bottom: 19px;
 }
@@ -129,9 +114,7 @@
 .work_plus p {
   color: #fff;
   text-align: center;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 15px;
-  font-style: normal;
   font-weight: 350;
   line-height: 15px; /* 100% */
   letter-spacing: -0.375px;
@@ -151,21 +134,15 @@
 .data td {
   color: #000;
   text-align: center;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.4px;
 }
 
 .data tr:first-child {
   color: #326baf;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.4px;
   height: 31px;
 }
@@ -220,11 +197,8 @@
   border: none;
   background: #df7272;
   color: #fff;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 350;
-  line-height: normal;
   letter-spacing: -0.35px;
 }
 
@@ -263,11 +237,8 @@
 
 .modal_title p {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.35px;
 }
 
@@ -281,11 +252,8 @@
 
 .modal_title_box p {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.3px;
 }
 
@@ -300,11 +268,8 @@
 
 .modal_series p {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.35px;
 }
 
@@ -318,11 +283,8 @@
 
 .modal_series_box p {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.3px;
 }
 
@@ -336,11 +298,8 @@
 
 .modal_info p {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.35px;
 }
 
@@ -350,17 +309,13 @@
   height: 193px;
   padding: 6px 10px 6px 10px;
   margin-left: 19px;
-
   border: 1px solid #8b8b8b;
 }
 
 .modal_info_box p {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.3px;
 }
 
@@ -374,11 +329,8 @@
 
 .modal_artist p {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.35px;
   margin-right: 19px;
 }
@@ -388,11 +340,8 @@
   justify-content: center;
   align-items: center;
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.35px;
 }
 
@@ -421,21 +370,15 @@
 
 .modal_file p {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.35px;
 }
 
 .modal_file_button p {
   color: #0075ff;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 11px;
-  font-style: normal;
   font-weight: 350;
-  line-height: normal;
   letter-spacing: -0.33px;
   margin: 3px 0 9px 0;
 }
@@ -451,9 +394,7 @@
   align-items: center;
   flex-shrink: 0;
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
-  font-style: normal;
   font-weight: 500;
   line-height: 100%; /* 12px */
   letter-spacing: -0.3px;
@@ -477,9 +418,7 @@
 
 .modal_file_info p {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
-  font-style: normal;
   font-weight: 500;
   line-height: 100%; /* 12px */
   letter-spacing: -0.3px;
@@ -494,9 +433,7 @@
   top: 46px;
   left: 611px;
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 11px;
-  font-style: normal;
   font-weight: 350;
   line-height: 100%; /* 11px */
   letter-spacing: -0.275px;
@@ -505,9 +442,7 @@
 .modal_checkbox p {
   display: flex;
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 11px;
-  font-style: normal;
   font-weight: 350;
   line-height: 100%; /* 11px */
   letter-spacing: -0.275px;
@@ -536,11 +471,8 @@
   align-items: center;
   background: #858585;
   color: #fff;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.3px;
 }
 
@@ -571,9 +503,7 @@
   border: 1px solid #696969;
   background: #fff;
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
-  font-style: normal;
   font-weight: 500;
   line-height: 100%; /* 12px */
   letter-spacing: -0.3px;
@@ -584,21 +514,15 @@
   right: 16px;
   top: 7px;
   color: #0075ff;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 11px;
-  font-style: normal;
   font-weight: 350;
-  line-height: normal;
   letter-spacing: -0.33px;
 }
 
 .modal_thumnail_info {
   color: #656565;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 11px;
-  font-style: normal;
   font-weight: 350;
-  line-height: normal;
   letter-spacing: -0.33px;
 }
 
@@ -606,7 +530,6 @@
 .modal_work_button {
   position: absolute;
   display: flex;
-
   right: 39px;
   bottom: 29px;
 }
@@ -622,9 +545,7 @@
   align-items: center;
   flex-shrink: 0;
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
   line-height: 100%; /* 14px */
   letter-spacing: -0.35px;
@@ -672,9 +593,7 @@
 /*맴버 리스트*/
 .member_list p {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
-  font-style: normal;
   font-weight: 300;
   line-height: 150%; /* 18px */
   letter-spacing: -0.3px;
@@ -693,9 +612,7 @@
 .member_list select option {
   padding: 0 0 6px 6px;
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 400;
   line-height: 150%; /* 21px */
   letter-spacing: -0.35px;
@@ -718,9 +635,7 @@
 
 .artist_list p {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
-  font-style: normal;
   font-weight: 300;
   line-height: 150%; /* 18px */
   letter-spacing: -0.3px;
@@ -734,9 +649,7 @@
   height: 24px;
   background: #dfdfdf;
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
-  font-style: normal;
   font-weight: 400;
   line-height: 100%; /* 12px */
   letter-spacing: -0.3px;
@@ -757,9 +670,7 @@
   flex-shrink: 0;
   gap: 5px;
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
   line-height: 100%; /* 14px */
   letter-spacing: -0.35px;

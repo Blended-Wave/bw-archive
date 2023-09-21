@@ -31,11 +31,8 @@
 
 .title p {
   color: #fff;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 24px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
 }
 
 .manage,
@@ -56,11 +53,8 @@
 }
 .manage p {
   color: #929292;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 18px;
-  font-style: normal;
   font-weight: 300;
-  line-height: normal;
   letter-spacing: -0.45px;
 }
 
@@ -72,11 +66,8 @@
 .manage_active p {
   margin-left: 21px;
   color: #fff;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 18px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.45px;
 }
 
@@ -87,21 +78,15 @@
 
 .content_info:first-child {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 36px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.9px;
   margin-bottom: 22px;
 }
 .content_info:nth-child(2) {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.4px;
   margin-bottom: 31px;
 }
@@ -126,9 +111,7 @@
 .member_plus p {
   color: #fff;
   text-align: center;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 15px;
-  font-style: normal;
   font-weight: 350;
   line-height: 15px; /* 100% */
   letter-spacing: -0.375px;
@@ -146,11 +129,8 @@
 .data td {
   color: #000;
   text-align: center;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
-  font-style: normal;
   font-weight: 350;
-  line-height: normal;
   letter-spacing: -0.4px;
   border-bottom: 1px solid #cecece;
 }
@@ -158,11 +138,8 @@
 .data tr:first-child {
   background: #ebebeb;
   color: #dca05b;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 20px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.5px;
   height: 45px;
 }
@@ -219,11 +196,8 @@
   border: none;
   background: #df7272;
   color: #fff;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 350;
-  line-height: normal;
   letter-spacing: -0.35px;
 }
 
@@ -285,21 +259,15 @@
 
 .addmembermodal_content p:first-child {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 23px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.575px;
   margin-bottom: 7px;
 }
 .addmembermodal_content p:nth-child(2) {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.4px;
   margin-bottom: 26px;
 }
@@ -311,11 +279,8 @@
   background: #fff;
   padding-left: 3px;
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.4px;
   margin-bottom: 41px;
 }
@@ -338,11 +303,8 @@
   border: 1px solid #929292;
   background: #fff;
   color: #929292;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 19px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.475px;
   margin: 13px;
 }
@@ -357,11 +319,8 @@
   border: 1px solid #0075ff;
   background: #fff;
   color: #0075ff;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 19px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.475px;
 }
 
@@ -387,21 +346,15 @@
 
 .profilemodal_info p:first-child {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 23px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.575px;
   margin-bottom: 7px;
 }
 .profilemodal_info p:nth-child(2) {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.4px;
   margin-bottom: 34px;
 }
@@ -422,11 +375,8 @@
   background: #fff;
   margin-bottom: 7px;
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.35px;
   align-items: center;
 }
@@ -438,11 +388,8 @@
   border: 1px solid #696969;
   background: #fff;
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.35px;
   align-items: center;
 }
@@ -460,11 +407,8 @@
 
 .twittermodal_content p {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 23px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.575px;
   margin-bottom: 36px;
 }
@@ -478,11 +422,8 @@
   border: 1px solid #000;
   background: #fff;
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.4px;
 }
 
@@ -499,22 +440,16 @@
 
 .rolemodal_content p {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 23px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   letter-spacing: -0.575px;
   margin-bottom: 34px;
 }
 
 .rolemodal_checkbox {
   color: #000;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 16px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
   letter-spacing: -0.4px;
 }
 
