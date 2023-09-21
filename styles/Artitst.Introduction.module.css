@@ -6,11 +6,8 @@
 
 .background p {
   color: #fff;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 28px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
   letter-spacing: -0.56px;
   margin-left: 30%;
   padding-top: 73px;
@@ -32,24 +29,17 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-
   margin-top: 87px;
 
   /* 글 관련 */
   color: #fff;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
 }
 
 .button:hover {
   background: #fff;
   color: #252429;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
-  font-style: normal;
   font-weight: 400;
-  line-height: normal;
 }
