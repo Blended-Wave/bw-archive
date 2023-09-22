@@ -1,5 +1,5 @@
 .background {
-  height: 1920px;
+  height: 100%;
   background-color: #252429;
 }
 
@@ -22,4 +22,5 @@
   top: 50px;
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 180px;
 }
