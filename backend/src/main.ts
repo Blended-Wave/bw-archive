@@ -4,7 +4,9 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');	// <- global prefix
 
+  
   // CORS 설정 옵션 정의
   const corsOptions: CorsOptions = {
     origin: true, // 모든 origin을 허용하거나, 특정 origin을 지정
