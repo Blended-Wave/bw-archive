@@ -6,7 +6,7 @@ import { AdminUserModule } from './admin/user/admin.user.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [AdminUserModule, AdminWorkModule, ConfigModule.forRoot()],
+  imports: [AdminUserModule, AdminWorkModule, ConfigModule.forRoot( {isGlobal:true} )],
   controllers: [AppController],
   providers: [AppService],
 })
