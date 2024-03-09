@@ -1,0 +1,45 @@
+.background {
+  height: 1920px;
+  background-color: #252429;
+  position: relative;
+}
+
+.background p {
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.56px;
+  margin-left: 30%;
+  padding-top: 73px;
+  margin-bottom: 46px;
+}
+
+.button {
+  width: 140px;
+  height: 35px;
+  flex-shrink: 0;
+  border: 1.5px solid #fff;
+
+  /* 안에 요소 가운데 정렬 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* div 태그 수평 가운데 정렬 */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 87px;
+
+  /* 글 관련 */
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.button:hover {
+  background: #fff;
+  color: #252429;
+  font-size: 12px;
+  font-weight: 400;
+}

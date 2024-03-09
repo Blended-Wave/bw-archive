@@ -1,0 +1,47 @@
+.background {
+  height: 100%;
+  background-color: #252429;
+}
+
+.main {
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.56px;
+  margin: 59px 0 50px 13%;
+}
+
+.sort {
+  display: flex;
+  align-items: center;
+  margin: 0 0 32px 13%;
+}
+.sort p,
+.sort a {
+  color: #acacac;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: -0.26px;
+  margin-right: 10px;
+}
+
+.artwork_container {
+  margin: 0 13% 0;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.pagination {
+  display: flex;
+  margin: 110px 0 172px;
+  justify-content: center;
+}
+
+.pagination p {
+  color: #acacac;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: -0.4px;
+  margin-right: 35px;
+}
