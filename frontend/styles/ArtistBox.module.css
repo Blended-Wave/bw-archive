@@ -1,0 +1,68 @@
+.artist_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 31%;
+    height: 31%;
+    max-width: 300px;
+    margin-bottom: 10px;
+}
+
+.artist_box {
+    position: inherit;
+}
+
+.arts {
+    position: absolute;
+    width: 12%;
+    height: 12%;
+    left: 5px;
+    top: 5px;
+}
+
+.artist_box:hover {
+    filter: brightness(0.6);
+}
+
+.artist_box:hover .detail {
+    display: block;
+}
+
+.artist_box img {
+    box-sizing: inherit;
+    width: 100%;
+    height: 100%;
+}
+
+.detail {
+    position: absolute;
+    width: 40%;
+    height: 40%;
+    background: rgba(0, 0, 0, 0.3);
+    display: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.detail svg {
+    position: absolute;
+    width: 40%;
+    height: 40%;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.detail p {
+    position: absolute;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 350;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap
+}
