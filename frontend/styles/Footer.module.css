@@ -1,0 +1,25 @@
+.footer_container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    margin: 0 25%;
+    height: 110px;
+    background-color: 252429;
+    align-items: center;
+}
+
+.footer_container p {
+    font-size: 12px;
+    color: rgb(255, 255, 255, 0.6);
+}
+
+.footer_box {
+    display: flex;
+    align-items: center;
+}
+
+.footer_container img {
+    opacity: 0.6;
+    width: 230px;
+    height: 21px;
+    gap: 30px;
+}

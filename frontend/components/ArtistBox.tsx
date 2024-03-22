@@ -26,7 +26,7 @@ export default function ArtistBox() {
                 </Link>
                 <img src="https://picsum.photos/300/300" />
             </div>
-            <div>Artist</div>
+            <div>artist</div>
         </div>
     )
 }

@@ -22,7 +22,7 @@
 }
 
 .artist_box:hover {
-    filter: brightness(0.6);
+    filter: brightness(1.4);
 }
 
 .artist_box:hover .detail {
@@ -65,4 +65,8 @@
     left: 50%;
     transform: translate(-50%, -50%);
     white-space: nowrap
+}
+
+.artist_container{
+    font-weight: 700;
 }

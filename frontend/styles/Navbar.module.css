@@ -23,5 +23,6 @@
 .menu ul{
     display: flex;
     list-style:none;
-    gap: 25px;
+    gap: 60px;
+    font-size: 13px;
 }
