@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 import { WorkService } from "./works.service";
 
 @Controller('work')
-export class WorkController {
+export class WorksController {
     constructor(private readonly workSerivce: WorkService) {}
 
     @Get()
