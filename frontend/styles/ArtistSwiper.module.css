@@ -1,7 +1,0 @@
-.Swiper {
-  height: 585px;
-  width: calc(900px * 3 + 74px);
-  position: absolute;
-  left: 50%;
-  margin-left: calc((900px * 3 + 74px) / -2) !important;
-}
