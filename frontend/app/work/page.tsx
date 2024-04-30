@@ -37,9 +37,7 @@ export default function Work() {
                     <WorkBox />
                     <WorkBox />
                     <WorkBox />
-                    <WorkBox />
-                    <WorkBox />
-                    <WorkBox />
+
                 </div>
                 <div className={styles.pagination}>
                     <img src="/left_arrow.svg" style={{ margin: "0 35px 0 0" }} />

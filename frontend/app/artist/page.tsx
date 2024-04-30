@@ -13,7 +13,7 @@ export default function Artist() {
                     <ArtistBox />
                     <ArtistBox />
                     <ArtistBox />
-                    <ArtistBox />
+
                 </div>
             </div>
         </div>

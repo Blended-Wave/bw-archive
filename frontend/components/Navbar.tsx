@@ -25,6 +25,11 @@ export default function Navbar() {
                             INFO
                         </Link>
                     </li>
+                    <li>
+                        <Link href="../admin">
+                            Login
+                        </Link>
+                    </li>
                 </ul>
             </div>
         </nav>
