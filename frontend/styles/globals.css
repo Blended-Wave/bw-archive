@@ -116,7 +116,16 @@ a {
   background: #acacac;
 }
 
+.screen_container {
+  position: relative;
+  padding-bottom: 61%; /*56.25%*/
+  height: 0;
+}
+
 .screen{
+  position: absolute;
+  top: 0;
+  left: 0;
   border: none;
   width: 100%;
   height: 100%;
