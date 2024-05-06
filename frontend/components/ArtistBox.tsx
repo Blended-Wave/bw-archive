@@ -1,8 +1,5 @@
-import styles from '@/styles/ArtistBox.module.css';
-
 import Link from 'next/link';
-import { useState } from 'react';
-
+import styles from '@/styles/ArtistBox.module.css';
 
 export default function ArtistBox() {
     return (
