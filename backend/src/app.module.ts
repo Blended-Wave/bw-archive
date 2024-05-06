@@ -5,7 +5,7 @@ import { AdminWorksModule } from './admin/works/admin.works.module';
 import { AdminUserModule } from './admin/users/admin.users.module';
 import { ConfigModule } from '@nestjs/config'; // process.env.NODE_ENV === 'prod' 에 삼항연산자를 통해 애플리케이션 모드에 따라서 다른 env파일을 불러오도록 한다
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './app/users/user.entity';
+import { UserEntity } from './app/users/entities/user.entity';
 @Module({
   imports: [AdminUserModule, AdminWorksModule, 
             ConfigModule.forRoot( {isGlobal:true , envFilePath: `src/config/.env.${process.env.NODE_ENV}`} ),
