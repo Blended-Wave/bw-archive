@@ -26,7 +26,7 @@ export default function Navbar() {
                         </Link>
                     </li>
                     <li>
-                        <Link href="../admin">
+                        <Link href="/admin">
                             Login
                         </Link>
                     </li>
