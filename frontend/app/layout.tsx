@@ -1,12 +1,9 @@
-'use client';
-
 import '@/styles/globals.css';
 
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-
+import { useState, useEffect } from 'react';
 
 export default function RootLayout({
     children,
@@ -15,9 +12,11 @@ export default function RootLayout({
 }) {
     const pathname = usePathname();
     const [isAdminPage, setIsAdminPage] = useState(pathname.startsWith('/admin'));
-    useEffect(() => {
 
-    }, []);
+    useEffect(() => {
+        setIsAdminPage(pathname.startsWith('/admin'));
+    }, [pathname]);
+
     return (
         <html>
             <body>
