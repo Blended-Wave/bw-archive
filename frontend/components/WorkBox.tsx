@@ -17,7 +17,7 @@ export default function WorkBox() {
         <>
             <div onClick={() => { setModalOpen(true) }}
                 className={styles.work_container} >
-                <img src="https://picsum.photos/331/331" />
+                <img src="/tmp_img/tmpImg.png" />
                 <div className={styles.detail}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

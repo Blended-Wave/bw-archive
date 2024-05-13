@@ -3,9 +3,9 @@
 import '@/styles/globals.css';
 
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-
 
 
 export default function RootLayout({
@@ -14,7 +14,10 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     const pathname = usePathname();
-    const isAdminPage = pathname.startsWith('/admin');
+    const [isAdminPage, setIsAdminPage] = useState(pathname.startsWith('/admin'));
+    useEffect(() => {
+
+    }, []);
     return (
         <html>
             <body>

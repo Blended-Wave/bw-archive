@@ -27,7 +27,7 @@ export default function ArtistBox() {
                     </svg>
                     <p>VIEW DETAIL</p>
                 </Link>
-                <img src="https://picsum.photos/300/300" />
+                <img src="/tmp_img/tmpImg.png" />
             </div>
             <div>artist</div>
         </div>
