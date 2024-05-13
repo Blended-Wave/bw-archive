@@ -1,9 +1,9 @@
 import React from "react";
 import { useTable } from "react-table";
 
-import styles from "@/styles/MemberTable.module.css";
+import styles from "@/styles/WorksTable.module.css";
 
-export default function MemberTable({ columns, data }) {
+export default function WorksTable({ columns, data }) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data });
 
   return (

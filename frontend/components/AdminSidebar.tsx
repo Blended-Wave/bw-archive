@@ -30,11 +30,11 @@ export default function AdminSidebar({ handleSelectedMenu }) {
                         <img src="/admin_icon/human_icon.svg" />
                         <p>멤버 관리</p>
                     </li>
-                    <li onClick={() => setSelectedMenu("works")}
-                        style={getStyle("works")}
+                    <li onClick={() => setSelectedMenu("worksmanagement")}
+                        style={getStyle("worksmanagement")}
                     >
                         <img src="/admin_icon/work_icon.svg" />
-                        <p>작업물</p>
+                        <p>작업물 관리</p>
                     </li>
                 </ul>
             </div>
