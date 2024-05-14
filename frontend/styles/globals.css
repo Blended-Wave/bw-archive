@@ -91,7 +91,9 @@ body {
   font-style: normal;
   line-height: normal;
 }
-
+.admin_body {
+  all: unset;
+}
 a {
   color: inherit;
   text-decoration: none;

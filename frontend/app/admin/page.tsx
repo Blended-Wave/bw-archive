@@ -9,11 +9,9 @@ import { useState } from 'react';
 
 export default function Admin() {
     const [selectedMenu, setSelectedMenu] = useState('membermanagement');
-
-
     return (
         <div className={styles.admin_container}>
-            <AdminSidebar handleSelectedMenu={setSelectedMenu}/>
+            <AdminSidebar handleSelectedMenu={setSelectedMenu} />
             {selectedMenu === 'membermanagement' && <MemberManagement />}
             {selectedMenu === 'worksmanagement' && <WorksManagement />}
         </div>
