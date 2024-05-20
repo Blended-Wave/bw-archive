@@ -12,16 +12,31 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     const pathname = usePathname();
-    const [isAdminPage, setIsAdminPage] = useState(false);
+    const [page, setPage] = useState('');
 
     useEffect(() => {
-        setIsAdminPage(pathname.startsWith('/admin'));
+        if (pathname.startsWith('/admin')) {
+            setPage('admin');
+        }
+        else if (pathname.startsWith('/artist/instroduction')) {
+            setPage('artist/instroduction');
+        }
     }, [pathname]);
 
-    if (isAdminPage) {
+    if (page === 'admin') {
         return (
             <html>
                 <body className="admin_body">
+                    {children}
+                </body>
+            </html>
+        );
+    }
+    else if (page === 'artist/instroduction') {
+        return (
+            <html>
+                <body>
+                    <Navbar />
                     {children}
                 </body>
             </html>

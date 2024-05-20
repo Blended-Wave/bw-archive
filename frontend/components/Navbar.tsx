@@ -6,7 +6,7 @@ export default function Navbar() {
     return (
         <nav className={styles.navbar}>
             <a href="/">
-                <img src="main_logo.svg" alt="logo" className={styles.logo} />
+                <img src="/main_logo.svg" alt="logo" className={styles.logo} />
             </a>
             <div className={styles.menu}>
                 <ul>

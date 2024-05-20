@@ -13,12 +13,12 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 export default function ArtistSwiper({ children }) {
   return (
     <Swiper
-      spaceBetween={20}
-      slidesPerView={1}
-      navigation
+      spaceBetween={50}
+      slidesPerView={2.0}
+      navigation ={false}
       pagination={{ clickable: true }}
-      scrollbar={{ draggable: true }}
-      className={styles.swiperContainer}
+      className={styles.swiperContainer} 
+      centeredSlides={true}
     >
       {children.map((child, index) => (
         <SwiperSlide key={index} className={styles.swiperSlide}>

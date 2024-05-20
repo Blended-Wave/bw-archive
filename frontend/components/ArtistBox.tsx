@@ -1,20 +1,7 @@
-'use client';
-
-import { useState } from 'react';
 import styles from '@/styles/ArtistBox.module.css';
-import ArtistModal from '@/components/ArtistModal';
+import Link from 'next/link';
 
 export default function ArtistBox() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <div className={styles.artist_container}>
       <div className={styles.artist_box}>
@@ -24,7 +11,7 @@ export default function ArtistBox() {
           <img src="/artist_icon/ani_icon.svg" />
           <img src="/artist_icon/writer_icon.svg" />
         </div>
-        <div className={styles.detail} onClick={openModal}>
+        <Link className={styles.detail} href="/artist/instroduction">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="36"
@@ -36,11 +23,10 @@ export default function ArtistBox() {
             <path d="M-1.52588e-05 18H36" stroke="white" strokeWidth="3" />
           </svg>
           <p>VIEW DETAIL</p>
-        </div>
+        </Link>
         <img src="/tmp_img/tmpImg.png" />
       </div>
       <div>artist</div>
-      <ArtistModal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
 }

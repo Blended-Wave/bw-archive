@@ -1,6 +1,6 @@
 import styles from '@/styles/Artist.module.css';
 import Link from 'next/link';
-import ArtistBox from '@/components/ArtistBox';
+import ArtistBox from '@/components/ArtistBox.tsx';
 
 export default function Artist() {
     return (
@@ -13,7 +13,6 @@ export default function Artist() {
                     <ArtistBox />
                     <ArtistBox />
                     <ArtistBox />
-
                 </div>
             </div>
         </div>
