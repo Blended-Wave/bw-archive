@@ -29,6 +29,11 @@
     display: block;
 }
 
+.artist_box:hover .detail:hover {
+   cursor: pointer;
+}
+
+
 .artist_box img {
     box-sizing: inherit;
     width: 100%;
@@ -68,5 +73,5 @@
 }
 
 .artist_container{
-    font-weight: 700;
+    font-weight: bold;
 }
