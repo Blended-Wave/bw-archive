@@ -16,5 +16,25 @@
   height: 585px;
   width: 900px;
   object-fit: contain;
-  /* 비율을 유지하면서 컨테이너에 맞춤 */
+}
+
+.prev{
+  z-index: 1;
+  height: 585px;
+  width: 442px;
+  position: absolute;
+  border: none;
+  top: 14.5%;
+  left:0%;
+  opacity: 0;
+}
+.next{
+  z-index: 1;
+  height: 585px;
+  width: 442px;
+  position: absolute;
+  border: none;
+  top: 14.5%;
+  left:77%;
+  opacity: 0;
 }

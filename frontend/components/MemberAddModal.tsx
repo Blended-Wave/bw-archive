@@ -6,6 +6,7 @@ import styles from '@/styles/MemberAddModal.module.css';
 const MemberAddModal = ({ isOpen, onClose, onAddMember }) => {
     const [newMember, setNewMember] = useState({
         user_id: '',
+        password: '',
         avatar_image_url: '',
         nickname: '',
         role: '',
@@ -21,8 +22,9 @@ const MemberAddModal = ({ isOpen, onClose, onAddMember }) => {
 
     const handleSubmit = async () => {
         try {
-            await axios.post('/api/admin/users', {
+            await axios.post('/api/admin/users_add', {
                 user_id: newMember.user_id,
+                password: newMember.password,
                 avatar_image_url: newMember.avatar_image_url,
                 nickname: newMember.nickname,
                 role: newMember.role.split(','),
@@ -37,6 +39,7 @@ const MemberAddModal = ({ isOpen, onClose, onAddMember }) => {
         onAddMember(newMember);
         setNewMember({
             user_id: '',
+            password: '',
             avatar_image_url: '',
             nickname: '',
             role: '',
@@ -54,6 +57,12 @@ const MemberAddModal = ({ isOpen, onClose, onAddMember }) => {
             <div className={styles.modalContent}>
                 <span className={styles.close} onClick={onClose}>&times;</span>
                 <h2>새 멤버 추가</h2>
+                <input
+                    name="password"
+                    placeholder="password"
+                    value={newMember.password}
+                    onChange={handleChange}
+                />
                 <input
                     name="avatar_image_url"
                     placeholder="Avatar URL"
