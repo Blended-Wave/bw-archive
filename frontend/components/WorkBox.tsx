@@ -17,7 +17,7 @@ export default function WorkBox() {
         <>
             <div onClick={() => { setModalOpen(true) }}
                 className={styles.work_container} >
-                <img src="/tmp_img/tmpImg.png" />
+                <img src="https://blended-wave-s3.s3.ap-northeast-2.amazonaws.com/tempImg.png" />
                 <div className={styles.detail}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

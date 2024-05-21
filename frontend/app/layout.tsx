@@ -21,6 +21,9 @@ export default function RootLayout({
         else if (pathname.startsWith('/artist/instroduction')) {
             setPage('artist/instroduction');
         }
+        else {
+            setPage('');
+        }
     }, [pathname]);
 
     if (page === 'admin') {

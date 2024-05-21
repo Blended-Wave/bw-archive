@@ -23,21 +23,23 @@ export default function ArtistSwiper({ children }) {
   }
   return (
     <>
-      <Swiper
-        spaceBetween={50}
-        slidesPerView={2}
-        pagination={{ clickable: true }}
-        className={styles.swiperContainer}
-        centeredSlides={true}
-        onSwiper={(e) => { setSwiper(e) }}
-        loop={true}
-      >
-        {children.map((child, index) => (
-          <SwiperSlide key={index} className={styles.swiperSlide}>
-            {child}
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      <div className={styles.swiper_container}>
+        <Swiper
+          spaceBetween={50}
+          slidesPerView={2}
+          pagination={{ clickable: true }}
+          className={styles.swiperContainer}
+          centeredSlides={true}
+          onSwiper={(e) => { setSwiper(e) }}
+          loop={true}
+        >
+          {children.map((child, index) => (
+            <SwiperSlide key={index} className={styles.swiperSlide}>
+              {child}
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
       <div>
         <button className={styles.prev} onClick={handlePrev} />
         <button className={styles.next} onClick={handleNext} />
