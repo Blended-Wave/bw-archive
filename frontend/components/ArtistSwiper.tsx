@@ -30,6 +30,7 @@ export default function ArtistSwiper({ children }) {
         className={styles.swiperContainer}
         centeredSlides={true}
         onSwiper={(e) => { setSwiper(e) }}
+        loop={true}
       >
         {children.map((child, index) => (
           <SwiperSlide key={index} className={styles.swiperSlide}>
