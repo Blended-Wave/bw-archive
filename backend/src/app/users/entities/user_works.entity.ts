@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn,UpdateDateColumn,CreateDateColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { WorksEntity } from '../../works/entities/works.entity';
 
@@ -15,9 +15,9 @@ export class UserWorksEntity {
     @JoinColumn({ name: 'works_id' })
     works: WorksEntity;
 
-    @Column({ type: 'date', nullable: false })
+    @CreateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)' })
     created_at: Date;
 
-    @Column({ type: 'date', nullable: false })
+    @UpdateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
     updated_at: Date;
 }

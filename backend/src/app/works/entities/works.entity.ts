@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, BeforeUpdate,PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { SeriesEntity } from './series.entity';
 import { WorksFileEntity } from './worksFile.entity';
 import { ThumbnailEntity } from './thumnail.entity';
@@ -37,7 +37,15 @@ export class WorksEntity {
 
     @Column({ type: 'int', nullable: false })
     private_option: number;
+    
+    @Column({ type: 'varchar', length: 15, nullable: false, default: 'active' })
+    status: string;
+    
 
+    @Column({ type: 'timestamp', nullable: true })
+    inactive_date: Date;
+
+    
     @Column({ type: 'date', nullable: false })
     created_at: Date;
 

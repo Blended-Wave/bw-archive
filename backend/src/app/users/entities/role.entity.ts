@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn,CreateDateColumn,UpdateDateColumn,Column } from 'typeorm';
 
 @Entity('roles')
 export class RoleEntity {
@@ -8,9 +8,9 @@ export class RoleEntity {
     @Column({ type: 'varchar', length: 30, nullable: false })
     name: string;
 
-    @Column({ type: 'date', nullable: false })
+    @CreateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)' })
     created_at: Date;
 
-    @Column({ type: 'date', nullable: true })
+    @UpdateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
     updated_at: Date;
 }

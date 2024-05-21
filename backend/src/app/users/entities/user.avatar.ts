@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne,JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn,CreateDateColumn, UpdateDateColumn,Column, ManyToOne,JoinColumn } from 'typeorm';
 import { UserEntity } from './user.entity'; // UserEntity 파일 경로에 맞게 변경하세요.
 
 @Entity('user_avatar')
@@ -9,10 +9,10 @@ export class UserAvatar {
     @Column({ type: 'text', nullable: true })
     image_url: string;
 
-    @Column({ type: 'date', nullable: false })
+    @CreateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)' })
     created_at: Date;
 
-    @Column({ type: 'date', nullable: false })
+    @UpdateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
     updated_at: Date;
 
     @ManyToOne(() => UserEntity)
