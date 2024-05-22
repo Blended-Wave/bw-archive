@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {CreateUserDto} from './dto/create-user.dto'
 import { ClinetUserDto } from './dto/client.user.dto';
-import { UserEntity,UserRoleEntity,RoleEntity } from './entities';
+import { UserEntity,UserRoleEntity,RoleEntity,UserAvatarEntity } from './entities';
 @Injectable()
 export class UserService {
     constructor(
@@ -12,16 +12,29 @@ export class UserService {
         @InjectRepository(UserRoleEntity)
         private userRoleRepository: Repository<UserRoleEntity>,
         @InjectRepository(RoleEntity)
-        private RoleRepository: Repository<RoleEntity>
+        private RoleRepository: Repository<RoleEntity>,
+        @InjectRepository(UserAvatarEntity)
+        private userAvatarRepository: Repository<UserAvatarEntity>
     ) {}
 
     async getRoleIdByUserId(userId:number):Promise<number[]> {
         const userRoles = await this.userRoleRepository.find({where:{user:{id:userId}} , relations: ['user', 'role'] });
+
+        if(!userRoles){
+            throw new Error('❎ User-Role Entity not found');
+        }
         return userRoles.map(userRole => userRole.role.id);
     }
     
+    async getAvatarUrlByUserId(userId:number):Promise<string> {
+        const userAvatar = await this.userAvatarRepository.findOne({where:{user:{id:userId}}, relations: ['user']});
+        if(!userAvatar){
+            return 'default avatar';
+        }
+        return userAvatar.image_url;
+    }
 
-    async findAll(): Promise<ClinetUserDto[]> {
+    async getUsersAtClient(): Promise<ClinetUserDto[]> {
         const users = await this.userRepository.find();
         const clientUserDtos: ClinetUserDto[] = [];
     
@@ -30,6 +43,7 @@ export class UserService {
             clientUserDto.user_id = user.id;
             clientUserDto.nickname = user.nickname;
             clientUserDto.roles = await this.getRoleIdByUserId(user.id); // 비동기 작업이므로 await 사용
+            clientUserDto.avatar = await this.getAvatarUrlByUserId(user.id);
             clientUserDtos.push(clientUserDto);
         }
     

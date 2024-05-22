@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn,CreateDateColumn, UpdateDateColumn,Colum
 import { UserEntity } from './user.entity'; // UserEntity 파일 경로에 맞게 변경하세요.
 
 @Entity('user_avatar')
-export class UserAvatar {
+export class UserAvatarEntity {
     @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
     id: number;
 
@@ -16,6 +16,6 @@ export class UserAvatar {
     updated_at: Date;
 
     @ManyToOne(() => UserEntity)
-    @JoinColumn()
+    @JoinColumn({name: 'user_id'})
     user: UserEntity;
 }
