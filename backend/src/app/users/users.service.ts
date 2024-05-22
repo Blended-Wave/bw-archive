@@ -1,14 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import {CreateUserDto} from '../users/create-user.dto'
+import {CreateUserDto} from './dto/create-user.dto'
+import { ClinetUserDto } from './dto/client.user.dto';
+import { UserEntity,UserRoleEntity,RoleEntity } from './entities';
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(UserEntity)
         private userRepository: Repository<UserEntity>, // <> 은 제네릭 타입
+        @InjectRepository(UserRoleEntity)
+        private userRoleRepository: Repository<UserRoleEntity>,
+        @InjectRepository(RoleEntity)
+        private RoleRepository: Repository<RoleEntity>
     ) {}
+
+    async getRoleIdByUserId(userId:number):Promise<number[]> {
+        const userRoles = await this.userRoleRepository.find({where:{user:{id:userId}} , relations: ['user', 'role'] });
+        return userRoles.map(userRole => userRole.role.id);
+    }
+    
+
+    async findAll(): Promise<ClinetUserDto[]> {
+        const users = await this.userRepository.find();
+        const clientUserDtos: ClinetUserDto[] = [];
+    
+        for (const user of users) {
+            const clientUserDto = new ClinetUserDto();
+            clientUserDto.user_id = user.id;
+            clientUserDto.nickname = user.nickname;
+            clientUserDto.roles = await this.getRoleIdByUserId(user.id); // 비동기 작업이므로 await 사용
+            clientUserDtos.push(clientUserDto);
+        }
+    
+        return clientUserDtos;
+    }
 
     async deleteUser(id: number): Promise<UserEntity> {
         const user = await this.userRepository.findOne({where: {id:id}});
@@ -25,7 +51,3 @@ export class UserService {
         return this.userRepository.save(newUser);
     }
 }
-    
-        // findAll() : Promise<UserEntity[]> { //Promise + Generic 문법 공부 필요, UserEntites 자리에 User가 들어가야 하는지 그대로 둬도 되는지 확인필요
-        //     return this.userRepository.find(); 
-        // }
