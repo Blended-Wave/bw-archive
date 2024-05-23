@@ -38,7 +38,7 @@ export class UserService {
         return userAvatar.image_url;
     }
 
-    async getUsersAtClient(): Promise<ClinetUserDto[]> {
+    async getAllUsersAtClient(): Promise<ClinetUserDto[]> {
         try{const users = await this.userRepository.find();
         const clientUserDtos: ClinetUserDto[] = [];
     

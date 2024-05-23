@@ -7,7 +7,7 @@ export class UserController {
     constructor(private readonly userSerivce: UserService) {}
 
     @Get()
-    async getUsersAtClient(): Promise<ClinetUserDto[]> { // 컨트롤러 메서드 이름은 중요하지않음
-        return await this.userSerivce.getUsersAtClient();
+    async getAllUsersAtClient(): Promise<ClinetUserDto[]> { // 컨트롤러 메서드 이름은 중요하지않음
+        return await this.userSerivce.getAllUsersAtClient();
     }
 }
