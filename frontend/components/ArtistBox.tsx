@@ -1,15 +1,15 @@
 import styles from '@/styles/ArtistBox.module.css';
 import Link from 'next/link';
 
-export default function ArtistBox() {
+export default function ArtistBox({ artist }) {
   return (
     <div className={styles.artist_container}>
       <div className={styles.artist_box}>
         <div className={styles.arts}>
-          <img src="/artist_icon/illustrator_icon.svg" />
-          <img src="/artist_icon/composer_icon.svg" />
-          <img src="/artist_icon/ani_icon.svg" />
-          <img src="/artist_icon/writer_icon.svg" />
+          {artist.roles.includes(1) && <img src="/artist_icon/illustrator_icon.svg" />}
+          {artist.roles.includes(2) && <img src="/artist_icon/composer_icon.svg" />}
+          {artist.roles.includes(3) && <img src="/artist_icon/ani_icon.svg" />}
+          {artist.roles.includes(4) && <img src="/artist_icon/writer_icon.svg" />}
         </div>
         <Link className={styles.detail} href="/artist/instroduction">
           <svg
@@ -24,9 +24,9 @@ export default function ArtistBox() {
           </svg>
           <p>VIEW DETAIL</p>
         </Link>
-        <img src="/tmp_img/tmpImg.png" />
+        {artist.avatar_image_url === 'default avatar' ? <img src="/admin_icon/alt_img.svg" style={{ width: 300, height: 300 }} /> : <img src={artist.avatar_image_url} />}
       </div>
-      <div>artist</div>
+      <div>{artist.nickname}</div>
     </div>
   );
 }

@@ -25,7 +25,7 @@ export default function ArtistSwiper({ children }) {
     <>
       <div className={styles.swiper_container}>
         <Swiper
-          spaceBetween={50}
+          spaceBetween={40}
           slidesPerView={2}
           pagination={{ clickable: true }}
           className={styles.swiperContainer}

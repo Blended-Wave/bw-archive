@@ -1,53 +1,53 @@
+'use client'
+
 import styles from '@/styles/MemberManagement.module.css';
 import MemberTable from '@/components/MemberTable';
 import MemberAddModal from '@/components/MemberAddModal';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function MemberManagement() {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      avatar_image_url: 'https://via.placeholder.com/150',
-      nickname: '',
-      role: '',
-      twitter_url: '',
-      instar_url: '',
-      works: '',
-    },
-    {
-      id: 2,
-      avatar_image_url: 'https://via.placeholder.com/150',
-      nickname: '',
-      role: '',
-      twitter_url: '',
-      instar_url: '',
-      works: '',
-    },
-  ]);
+  const [data, setData] = useState([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const columns = useMemo(
     () => [
-      { Header: 'ID', accessor: 'id' },
+      { Header: 'ID', accessor: 'user_id' },
       {
         Header: 'Avatar',
         accessor: 'avatar_image_url',
         Cell: ({ value }) => (
-          <img src={value} alt="Avatar" style={{ width: 142, height: 142 }} />
+          value === "default avatar" ? <img src="/admin_icon/alt_img.svg" alt="Avatar" style={{ width: 142, height: 142 }} /> : <img src={value} alt="Avatar" style={{ width: 142, height: 142 }} />
         ),
       },
       { Header: 'Nickname', accessor: 'nickname' },
-      { Header: 'Role', accessor: 'role' },
+      {
+        Header: 'Role',
+        accessor: 'roles',
+        Cell: ({ value }) => (
+          <div>
+            {value.includes(1) && <img src="/admin_icon/illustrator_icon.svg" />}
+            {value.includes(2) && <img src="/admin_icon/songwriter_icon.svg" />}
+            {value.includes(3) && <img src="/admin_icon/animator_icon.svg" />}
+            {value.includes(4) && <img src="/admin_icon/writer_icon.svg" />}
+          </div>
+        ),
+      },
+
+      /*
+      {data.map((artist, index) => (
+              <ArtistBox key={index} artist={artist} />
+            ))}
+            */
       { Header: 'Twitter', accessor: 'twitter_url' },
       { Header: 'Instagram', accessor: 'instar_url' },
-      { Header: 'Works', accessor: 'works' },
+      { Header: 'Works', accessor: 'works_count' },
       {
         Header: 'Delete',
         accessor: 'delete',
         Cell: ({ cell }) => (
           <button
-            onClick={() => deleteMember(cell.row.original.id)}
             className={styles.delete_button}
           >
             삭제
@@ -58,20 +58,28 @@ export default function MemberManagement() {
     []
   );
 
-  const addMember = (newMember) => {
-    const updatedMember = {
-      ...newMember,
-      id: data.length + 1,
-    };
-    setData([...data, updatedMember]);
-  };
+  /*
+   const deleteMember = (id) => {
+     setData(prevData => {
+       const newData = prevData.filter(member => member.id !== id);
+       return newData.map((member, index) => ({ ...member, id: index + 1 }));
+     });
+   };
+  */
 
-  const deleteMember = (id) => {
-    setData(prevData => {
-      const newData = prevData.filter(member => member.id !== id);
-      return newData.map((member, index) => ({ ...member, id: index + 1 }));
-    });
-  };
+   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/api/admin/users');
+        const filteredData = response.data.filter(member => member.status === "active");
+        setData(filteredData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -81,12 +89,11 @@ export default function MemberManagement() {
         ID(자동생성), 닉네임은 데이터 혼동을 방지하기 위하여 처음 생성 이후 직접
         데이터베이스를 수정하는 방식 외에는 수정이 불가능합니다.
       </p>
-      <button onClick={() => setIsModalOpen(true)}> + 멤버 추가 </button>
+      <button className={styles.add_button} onClick={() => setIsModalOpen(true)}> + 멤버 추가 </button>
       <MemberTable columns={columns} data={data} />
       <MemberAddModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onAddMember={addMember}
       />
     </div>
   );

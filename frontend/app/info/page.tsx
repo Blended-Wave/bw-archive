@@ -15,11 +15,17 @@ export default function Info() {
                 </p>
                 <p className={styles.p3}>CONTACT</p>
                 <div className={styles.contact_container}>
-                    <img src="twitter.svg" />
-                    <img src="instagram.svg" />
-                    <img src="mail.svg" />
+                    <a href="https://x.com">
+                        <img src="twitter.svg" />
+                    </a>
+                    <a href="https://www.instagram.com/" >
+                        <img src="instagram.svg" />
+                    </a>
+                    <a href="mailto:메일주소" rel="noopener">
+                        <img src="mail.svg" />
+                    </a>
                 </div>
             </div>
-        </main>
+        </main >
     );
 }
