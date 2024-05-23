@@ -2,7 +2,8 @@ import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 import { UserService } from "./users.service";
 import { UserDto } from "./dto/user.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
-
+import { response } from "src/config/response";
+import { status } from "src/config/response.status";
 @Controller('artist')
 export class ClinetUserController {
     constructor(private readonly userSerivce: UserService) {}
@@ -27,7 +28,7 @@ export class AdminUserController{
         return await this.userService.getAllUsersAtAdmin();
     }
     @Post('user_add')
-    async postCreateUser(@Body() createUserDto: CreateUserDto) {
-        return this.userService.postCreateUser(createUserDto);
+    async postCreateUser(@Body() createUserDto: CreateUserDto):Promise<Object> {
+        return response(status.CREATE_SUCCESS, await this.userService.postCreateUser(createUserDto))
     }
 }

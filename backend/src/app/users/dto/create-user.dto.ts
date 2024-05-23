@@ -13,7 +13,7 @@ export class CreateUserDto {
   readonly user_id: number;
   readonly avatar_image_url: string;
   readonly nickname: string;
-  readonly role: number[];
+  readonly roles: number[];
   readonly twitter_url: string;
   readonly instar_url: string;
 }

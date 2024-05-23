@@ -111,14 +111,38 @@ export class UserService {
             throw new BaseError(status.USER_NOT_FOUND)
         }
     }
+    async connectUserRole(userId: number, roles: number[]) {
+        const userRolePromises = roles.map(async (role) => {
+            const userRole = this.userRoleRepository.create({
+                user: { id: userId },
+                role: { id: role }
+            });
+            return this.userRoleRepository.save(userRole); //생성된 값들을 모두 userRoleParmises에 저장
+        });
 
-    async postCreateUser(createUserDto: CreateUserDto): Promise<UserEntity> {
-        const newUser = this.userRepository.create(createUserDto);
-        return this.userRepository.save(newUser);
+        const result = await Promise.all(userRolePromises); //모든 Promise를 기다리고 배열로 반환
+        return result;
     }
+    async postCreateUser(createUserDto: CreateUserDto): Promise<Object> {
+        const newUser = this.userRepository.create(createUserDto);
+        const savedUser = await this.userRepository.save(newUser);
+        const createdRoleConnections = await this.connectUserRole(savedUser.id, createUserDto.roles);
+
+        const savedUserRoles = createdRoleConnections.map(userRole=>userRole.role.id);
+
+        return {
+            created_user_info: savedUser,
+            created_user_roles: savedUserRoles
+        };
+    }
+
+
+
+
+    
     //seed
     async createUserSeed(createUserSeedDto: CreateUserSeedDto): Promise<Object> { //seeder 사용하는 경우
         const newUser = await this.userRepository.create(createUserSeedDto);
-        return response(status.SUCCESS, await this.userRepository.save(newUser))
+        return await this.userRepository.save(newUser);
     }
 }

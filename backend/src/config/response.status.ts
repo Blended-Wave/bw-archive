@@ -12,6 +12,7 @@ export interface Status {
 export const status: {[key:string]: Status} = {
     //success
     SUCCESS: {status:StatusCodes.ACCEPTED, isSuccess: true, code: 2000, message: "success!"},
+    CREATE_SUCCESS: {status:StatusCodes.CREATED, isSuccess: true, code: 2000, message: "create success!"},
 
     // error
     // common err
