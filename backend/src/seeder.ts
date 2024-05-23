@@ -12,7 +12,7 @@ async function bootstrap() {
   ];
 
   for (const user of users) {
-    await userService.createUser(user);
+    await userService.createUserSeed(user);
   }
 
   await app.close();

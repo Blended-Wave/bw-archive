@@ -1,4 +1,5 @@
 import { StatusCodes } from "http-status-codes";
+// 클라이언트에 대한 응답 메세지를 형식화 해놓은 것, 성공 여부, 상태 코드, 메세지 등
 
 //명시적으로 타입 지정
 interface Status {
@@ -25,10 +26,15 @@ export const status: {[key:string]: Status} = {
     PARAMETER_IS_WRONG: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "DB001", message: "잘못된 파라미터입니다." },
     EMAIL_ALREADY_EXIST: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "DB002", message: "중복된 이메일이 있습니다." },
     
-    // member err
-    MEMBER_NOT_FOUND: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "MEMBER4001", message: "사용자가 없습니다." },
-    NICKNAME_NOT_EXIST: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "MEMBER4002", message: "닉네임은 필수입니다." },
-    
-    // article err
-    ARTICLE_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "ARTICLE4001", message: "게시글이 없습니다." }
+    // user err
+    USER_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "USER4001", message: "사용자가 없습니다." },
+    NICKNAME_NOT_EXIST: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "USER4002", message: "닉네임은 필수입니다." },
+    USER_ROLE_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "USER4003", message: "유저-역할 엔터티를 찾을 수 없습니다."},
+    ROLE_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "USER4004", message: "역할 엔터티를 찾을 수 없습니다."},
+    AVATAR_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "USER4005", message: "사용자 아바타를 찾을 수 없습니다."},
+    // work err
+    WORK_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "ARTICLE4001", message: "게시글(작업물)이 없습니다." },
+    THUMNAIL_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "ARTICLE4002", message: "게시글 썸네일이 없습니다." },
+    FILE_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "ARTICLE4003", message: "게시글 파일(이미지,비디오,음성파일)이 없습니다." },
+    USER_WORK_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "ARTICLE4003", message: "유저-작업물 관계 데이터가 없습니다." },
 };
