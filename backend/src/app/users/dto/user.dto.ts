@@ -7,4 +7,5 @@ export class UserDto {
     instar_url: string;
     works: Object[];
     works_count: number;
+    status: string;
 }

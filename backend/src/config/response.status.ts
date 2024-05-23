@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 // 클라이언트에 대한 응답 메세지를 형식화 해놓은 것, 성공 여부, 상태 코드, 메세지 등
 
 //명시적으로 타입 지정
-interface Status {
+export interface Status {
     status: number; //상태코드
     isSuccess: boolean; //성공여부
     code: string | number;

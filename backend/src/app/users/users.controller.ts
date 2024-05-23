@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 import { UserService } from "./users.service";
 import { UserDto } from "./dto/user.dto";
+import { CreateUserDto } from "./dto/create-user.dto";
 
 @Controller('artist')
 export class ClinetUserController {
@@ -24,5 +25,9 @@ export class AdminUserController{
     @Get('users')
     async getAllUsersAtAdmin(): Promise<UserDto[]> {
         return await this.userService.getAllUsersAtAdmin();
+    }
+    @Post('user_add')
+    async postCreateUser(@Body() createUserDto: CreateUserDto) {
+        return this.userService.postCreateUser(createUserDto);
     }
 }
