@@ -60,10 +60,8 @@ export default function MemberManagement() {
   );
 
   const deleteMember = async (userId) => {
-    console.log('deleteMember:', userId);
     try {
       await axios.patch(`http://localhost:4000/api/admin/user_modify/${userId}`, { status: 'inactive' });
-      setData(prevData => prevData.filter(member => member.user_id !== userId));
     } catch (error) {
       console.error('Error updating user status:', error);
     }
