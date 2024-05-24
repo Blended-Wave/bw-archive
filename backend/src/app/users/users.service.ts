@@ -7,7 +7,7 @@ import { UserEntity, UserRoleEntity, RoleEntity, UserAvatarEntity } from './enti
 import { BaseError } from 'src/config/error';
 import { status } from 'src/config/response.status';
 import { response } from 'src/config/response';
-import { UserInfo } from 'os';
+import { UserInfo, userInfo } from 'os';
 
 @Injectable()
 export class UserService {
@@ -130,9 +130,17 @@ export class UserService {
         const result = await Promise.all(userRolePromises); //모든 Promise를 기다리고 배열로 반환
         return result;
     }
-    async updateRoleConnections(userId:number, roles: number[]){
-
+    async unconnectUserRole(userId: number, roles: number[]) {
+        for (const roleId of roles) {
+            const target = await this.userRoleRepository.findOne({ where: { user: { id: userId }, role: { id: roleId } } });
+            if (!target) {
+                throw new BaseError(status.USER_ROLE_NOT_FOUND);
+            }
+            await this.userRoleRepository.remove(target);
+        }
     }
+
+
     async postCreateUser(userInfoDto: UserInfoDto): Promise<Object> {
         const newUser = this.userRepository.create(userInfoDto);
         const savedUser = await this.userRepository.save(newUser);
@@ -145,26 +153,39 @@ export class UserService {
             created_user_roles: savedUserRoles
         };
     }
-    async updateUserInfo(userId:number, userInfoDto: UserInfoDto): Promise<Object> {
-        const user = await this.getUserById(userId);
-
-        if(!user){
+    
+    async updateUserInfo(userId: number, userInfoDto: UserInfoDto): Promise<Object> {
+        const user = await this.getUserById(userId); // 정보 수정할 유저
+        if (!user) {
             console.log('서비스에서 발생한 에러입니다.');
             throw new BaseError(status.USER_NOT_FOUND);
         }
+        // 입력받은 userDto에서 roles, avatar_image_url추출 ⚠️ 추후 avatar_image_url 수정도 구현 해야함
+        const { avatar_image_url, roles, ...userInfoWithoutRolesAvatar } = userInfoDto;
+        const updatedResult = await this.userRepository.update(userId, userInfoWithoutRolesAvatar);
+        //업데이트 결과 확인(수정여부)
+        if (updatedResult.affected === 0){
+            console.log('업데이트 된 행이 없습니다.');
+            throw new BaseError(status.USER_UPDATE_FAILED);
+        }
+        // 업데이트된 유저 정보
+        const updatedUser = await this.getUserById(userId);
+        
+        // uesr - role 관계 갱신
+        const foundUserRoles = await this.userRoleRepository.find({ where: { user: { id: userId } }, relations: ['user', 'role'] }); //기존 user-role 관계 연결
+        const roleIds = foundUserRoles.map(userRole => userRole.role.id); // 연결된 role 리스트
+        
+        // 기존 관계 테이블 유저-역할 연결 제거
+        await this.unconnectUserRole(userId, roleIds);
+        // 새로운 연결 생성
+        const savedUserRoles = await this.connectUserRole(userId, userInfoDto.roles);
 
-        const updatedUser = {...user, ...userInfoDto};
-        console.log(updatedUser);
-        // const savedUser = await this.userRepository.save(updatedUser);
 
-        // return {
-        //     updated_user_info: '',
-        //     created_user_roles: '',
-        // }
-        return updatedUser;
+        return {
+            updated_user_info: updatedUser,
+            created_user_roles: savedUserRoles,
+        }
     }
-
-
 
 
     //seed

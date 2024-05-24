@@ -38,7 +38,7 @@ export class AdminUserController{
             console.log('요청받은 user_id:', userId);
             return await this.userService.updateUserInfo(userId, userInfoDto);
         }catch (err){
-            console.log('컨트롤러에서 발생한 에러입니다.');
+            console.log('컨트롤러에서 발생한 에러입니다: ', err);
             throw new BaseError(status.USER_NOT_FOUND);
         }
     }

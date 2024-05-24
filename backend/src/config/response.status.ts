@@ -33,6 +33,9 @@ export const status: {[key:string]: Status} = {
     USER_ROLE_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "USER4003", message: "유저-역할 엔터티를 찾을 수 없습니다."},
     ROLE_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "USER4004", message: "역할 엔터티를 찾을 수 없습니다."},
     AVATAR_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "USER4005", message: "사용자 아바타를 찾을 수 없습니다."},
+    USER_UPDATE_FAILED: { status: StatusCodes.NOT_MODIFIED, isSuccess: false, code: "USER4006", message: "업데이트 된 유저 정보가 없습니다."},
+
+
     // work err
     WORK_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "ARTICLE4001", message: "게시글(작업물)이 없습니다." },
     THUMNAIL_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "ARTICLE4002", message: "게시글 썸네일이 없습니다." },
