@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto, CreateUserSeedDto } from './dto/create-user.dto'
+import { UserInfoDto, CreateUserSeedDto } from './dto/user.info.dto'
 import { UserDto } from './dto/user.dto';
 import { UserEntity, UserRoleEntity, RoleEntity, UserAvatarEntity } from './entities';
 import { BaseError } from 'src/config/error';
 import { status } from 'src/config/response.status';
 import { response } from 'src/config/response';
+import { UserInfo } from 'os';
 
 @Injectable()
 export class UserService {
@@ -46,7 +47,7 @@ export class UserService {
 
             for (const user of users) {
                 const clientUserDto = new UserDto();
-                const {id, nickname,status} = user;
+                const { id, nickname, status } = user;
 
                 clientUserDto.user_id = id;
                 clientUserDto.nickname = nickname;
@@ -61,11 +62,11 @@ export class UserService {
             throw new BaseError(status.USER_NOT_FOUND)
         }
     }
-    async getUserAtClinet(userId: number): Promise<UserDto> {
+    async getUserById(userId: number): Promise<UserDto> {
         try {
-            const user = await this.userRepository.findOne({ where: { id: userId } });
+            const user = await this.userRepository.findOneBy({ id: userId });
             const clientUserDto = new UserDto();
-            const {id, nickname, twitter_url, instar_url, } = user; //가독성을 위한 구조분해 할당
+            const { id, nickname, twitter_url, instar_url, } = user; //가독성을 위한 구조분해 할당
 
             clientUserDto.user_id = id;
             clientUserDto.nickname = nickname;
@@ -95,10 +96,10 @@ export class UserService {
         try {
             const users = await this.userRepository.find();
             const adminUserDtos: UserDto[] = [];
-            
+
             for (const user of users) {
                 const adminUserDto = new UserDto();
-                const {id, nickname, twitter_url, instar_url, status} = user;
+                const { id, nickname, twitter_url, instar_url, status } = user;
 
                 adminUserDto.user_id = id;
                 adminUserDto.avatar_image_url = await this.getAvatarUrlByUserId(id);
@@ -129,20 +130,38 @@ export class UserService {
         const result = await Promise.all(userRolePromises); //모든 Promise를 기다리고 배열로 반환
         return result;
     }
-    async postCreateUser(createUserDto: CreateUserDto): Promise<Object> {
-        const newUser = this.userRepository.create(createUserDto);
-        const savedUser = await this.userRepository.save(newUser);
-        const createdRoleConnections = await this.connectUserRole(savedUser.id, createUserDto.roles);
+    async updateRoleConnections(userId:number, roles: number[]){
 
-        const savedUserRoles = createdRoleConnections.map(userRole=>userRole.role.id);
+    }
+    async postCreateUser(userInfoDto: UserInfoDto): Promise<Object> {
+        const newUser = this.userRepository.create(userInfoDto);
+        const savedUser = await this.userRepository.save(newUser);
+        const createdRoleConnections = await this.connectUserRole(savedUser.id, userInfoDto.roles);
+
+        const savedUserRoles = createdRoleConnections.map(userRole => userRole.role.id);
 
         return {
             created_user_info: savedUser,
             created_user_roles: savedUserRoles
         };
     }
-    async updateUserInfo(updateUserDto) {
+    async updateUserInfo(userId:number, userInfoDto: UserInfoDto): Promise<Object> {
+        const user = await this.getUserById(userId);
 
+        if(!user){
+            console.log('서비스에서 발생한 에러입니다.');
+            throw new BaseError(status.USER_NOT_FOUND);
+        }
+
+        const updatedUser = {...user, ...userInfoDto};
+        console.log(updatedUser);
+        // const savedUser = await this.userRepository.save(updatedUser);
+
+        // return {
+        //     updated_user_info: '',
+        //     created_user_roles: '',
+        // }
+        return updatedUser;
     }
 
 

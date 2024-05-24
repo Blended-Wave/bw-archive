@@ -28,7 +28,7 @@ export const status: {[key:string]: Status} = {
     EMAIL_ALREADY_EXIST: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "DB002", message: "중복된 이메일이 있습니다." },
     
     // user err
-    USER_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "USER4001", message: "사용자가 없습니다." },
+    USER_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "USER4001", message: "❎사용자가 없습니다." },
     NICKNAME_NOT_EXIST: { status: StatusCodes.BAD_REQUEST, isSuccess: false, code: "USER4002", message: "닉네임은 필수입니다." },
     USER_ROLE_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "USER4003", message: "유저-역할 엔터티를 찾을 수 없습니다."},
     ROLE_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "USER4004", message: "역할 엔터티를 찾을 수 없습니다."},

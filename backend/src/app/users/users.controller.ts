@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import { UserService } from "./users.service";
 import { UserDto } from "./dto/user.dto";
-import { CreateUserDto } from "./dto/create-user.dto";
+import { UserInfoDto } from "./dto/user.info.dto";
 import { response } from "src/config/response";
 import { status } from "src/config/response.status";
+import { BaseError } from "src/config/error";
 @Controller('artist')
 export class ClinetUserController {
     constructor(private readonly userSerivce: UserService) {}
@@ -13,9 +14,9 @@ export class ClinetUserController {
         return await this.userSerivce.getAllUsersAtClient();
     }
     @Get(':user_id')
-    async getUserAtClinet(@Param('user_id') userId:number): Promise<UserDto> {
+    async getUserById(@Param('user_id') userId:number): Promise<UserDto> {
         console.log('요청 받은 user_id:', userId);
-        return await this.userSerivce.getUserAtClinet(userId);
+        return await this.userSerivce.getUserById(userId);
     }
 }
 
@@ -28,7 +29,17 @@ export class AdminUserController{
         return await this.userService.getAllUsersAtAdmin();
     }
     @Post('user_add')
-    async postCreateUser(@Body() createUserDto: CreateUserDto):Promise<Object> {
-        return response(status.CREATE_SUCCESS, await this.userService.postCreateUser(createUserDto))
+    async postCreateUser(@Body() userInfoDto: UserInfoDto):Promise<Object> {
+        return response(status.CREATE_SUCCESS, await this.userService.postCreateUser(userInfoDto))
+    }
+    @Patch('user_modify/:user_id')
+    async updateUserInfo(@Param('user_id') userId:number, @Body() userInfoDto: UserInfoDto) : Promise<Object> {
+        try{
+            console.log('요청받은 user_id:', userId);
+            return await this.userService.updateUserInfo(userId, userInfoDto);
+        }catch (err){
+            console.log('컨트롤러에서 발생한 에러입니다.');
+            throw new BaseError(status.USER_NOT_FOUND);
+        }
     }
 }

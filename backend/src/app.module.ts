@@ -8,6 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as UserEntities from './app/users/entities';
 import * as WorksEntities from './app/works/entities';
 import * as dotenv from 'dotenv';
+import { APP_FILTER } from '@nestjs/core';
+import { BaseErrorFilter } from './common/filters/base-error.filter';
 
 const ENV_PATH = `src/config/.env.${process.env.NODE_ENV}`
 
@@ -26,6 +28,11 @@ dotenv.config({path: ENV_PATH})
               logging: true,
             }),],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService, 
+    {
+      provide: APP_FILTER, 
+      useClass: BaseErrorFilter
+    },],
 })
 export class AppModule {}

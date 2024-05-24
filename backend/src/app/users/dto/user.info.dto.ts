@@ -7,7 +7,7 @@ export class CreateUserSeedDto {
     instarUrl: string | null;
   }
 
-export class CreateUserDto {
+export class UserInfoDto {
   readonly login_id: string;
   readonly password: string;
   readonly user_id: number;
@@ -16,4 +16,8 @@ export class CreateUserDto {
   readonly roles: number[];
   readonly twitter_url: string;
   readonly instar_url: string;
+}
+
+export class userStatusDto {
+  readonly status: string;
 }

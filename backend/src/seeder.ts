@@ -2,7 +2,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { UserService } from './app/users/users.service';
-import { CreateUserSeedDto } from './app/users/dto/create-user.dto';
+import { CreateUserSeedDto } from './app/users/dto/user.info.dto';
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
