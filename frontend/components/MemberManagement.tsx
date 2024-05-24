@@ -49,6 +49,7 @@ export default function MemberManagement() {
         Cell: ({ cell }) => (
           <button
             className={styles.delete_button}
+            onClick={() => deleteMember(cell.row.original.user_id)}
           >
             삭제
           </button>
@@ -58,16 +59,18 @@ export default function MemberManagement() {
     []
   );
 
-  /*
-   const deleteMember = (id) => {
-     setData(prevData => {
-       const newData = prevData.filter(member => member.id !== id);
-       return newData.map((member, index) => ({ ...member, id: index + 1 }));
-     });
-   };
-  */
+  const deleteMember = async (userId) => {
+    console.log('deleteMember:', userId);
+    try {
+      await axios.patch(`http://localhost:4000/api/admin/user_modify/${userId}`, { status: 'inactive' });
+      setData(prevData => prevData.filter(member => member.user_id !== userId));
+    } catch (error) {
+      console.error('Error updating user status:', error);
+    }
+  };
 
-   useEffect(() => {
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:4000/api/admin/users');

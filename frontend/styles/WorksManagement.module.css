@@ -1,14 +1,17 @@
-.container{
-    padding:5%;
+.container {
+    padding: 5%;
     width: 85%;
+    margin-left: auto;
 }
-.container p{
+
+.container p {
     font-size: 0.8rem;
     font-weight: 500;
     margin-top: 30px;
 
 }
-.container button{
+
+.container button {
     background-color: #5AADF9;
     color: white;
     border: 0;
@@ -17,12 +20,13 @@
     height: 36px;
     border-radius: 10px;
 }
-.container button:hover{
+
+.container button:hover {
     opacity: 0.7;
     cursor: pointer;
 }
 
-.delete_button{
+.delete_button {
     width: 77px;
     height: 38px;
     border: 0;
@@ -30,7 +34,8 @@
     color: white;
     border-radius: 12px;
 }
-.delete_button:hover{
+
+.delete_button:hover {
     opacity: 0.7;
     cursor: pointer;
 }
