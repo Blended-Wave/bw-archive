@@ -46,11 +46,13 @@ export class UserService {
 
             for (const user of users) {
                 const clientUserDto = new UserDto();
-                clientUserDto.user_id = user.id;
-                clientUserDto.nickname = user.nickname;
-                clientUserDto.roles = await this.getRoleIdByUserId(user.id); // 비동기 작업이므로 await 사용
-                clientUserDto.avatar_image_url = await this.getAvatarUrlByUserId(user.id);
-                clientUserDto.status = user.status;
+                const {id, nickname,status} = user;
+
+                clientUserDto.user_id = id;
+                clientUserDto.nickname = nickname;
+                clientUserDto.roles = await this.getRoleIdByUserId(id); // 비동기 작업이므로 await 사용
+                clientUserDto.avatar_image_url = await this.getAvatarUrlByUserId(id);
+                clientUserDto.status = status;
                 clientUserDtos.push(clientUserDto);
             }
 
@@ -63,11 +65,13 @@ export class UserService {
         try {
             const user = await this.userRepository.findOne({ where: { id: userId } });
             const clientUserDto = new UserDto();
-            clientUserDto.user_id = user.id;
-            clientUserDto.nickname = user.nickname;
-            clientUserDto.roles = await this.getRoleIdByUserId(user.id);
-            clientUserDto.twitter_url = user.twitter_url;
-            clientUserDto.instar_url = user.instar_url;
+            const {id, nickname, twitter_url, instar_url, } = user; //가독성을 위한 구조분해 할당
+
+            clientUserDto.user_id = id;
+            clientUserDto.nickname = nickname;
+            clientUserDto.roles = await this.getRoleIdByUserId(id);
+            clientUserDto.twitter_url = twitter_url;
+            clientUserDto.instar_url = instar_url;
             clientUserDto.works = [];
             return clientUserDto;
         } catch (err) {
@@ -91,17 +95,19 @@ export class UserService {
         try {
             const users = await this.userRepository.find();
             const adminUserDtos: UserDto[] = [];
-
+            
             for (const user of users) {
                 const adminUserDto = new UserDto();
-                adminUserDto.user_id = user.id;
-                adminUserDto.avatar_image_url = await this.getAvatarUrlByUserId(user.id);
-                adminUserDto.nickname = user.nickname;
-                adminUserDto.roles = await this.getRoleIdByUserId(user.id); // 비동기 작업이므로 await 사용
-                adminUserDto.twitter_url = user.twitter_url;
-                adminUserDto.instar_url = user.instar_url;
+                const {id, nickname, twitter_url, instar_url, status} = user;
+
+                adminUserDto.user_id = id;
+                adminUserDto.avatar_image_url = await this.getAvatarUrlByUserId(id);
+                adminUserDto.nickname = nickname;
+                adminUserDto.roles = await this.getRoleIdByUserId(id); // 비동기 작업이므로 await 사용
+                adminUserDto.twitter_url = twitter_url;
+                adminUserDto.instar_url = instar_url;
                 adminUserDto.works_count = 0;
-                adminUserDto.status = user.status;
+                adminUserDto.status = status;
                 adminUserDtos.push(adminUserDto);
             }
 
@@ -135,11 +141,13 @@ export class UserService {
             created_user_roles: savedUserRoles
         };
     }
+    async updateUserInfo(updateUserDto) {
+
+    }
 
 
 
 
-    
     //seed
     async createUserSeed(createUserSeedDto: CreateUserSeedDto): Promise<Object> { //seeder 사용하는 경우
         const newUser = await this.userRepository.create(createUserSeedDto);
