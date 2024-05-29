@@ -7,7 +7,8 @@ import { UserEntity, UserRoleEntity, RoleEntity, UserAvatarEntity } from './enti
 import { BaseError } from 'src/config/error';
 import { status } from 'src/config/response.status';
 import { response } from 'src/config/response';
-import { UserInfo, userInfo } from 'os';
+import * as bcrypt from 'bcrypt';
+
 
 @Injectable()
 export class UserService {
@@ -80,27 +81,16 @@ export class UserService {
         }
     }
 
-
-    // async deleteUser(id: number): Promise<UserEntity> {  << ㅂ
-    //     const user = await this.userRepository.findOne({where: {id:id}});
-
-    //     if (!user) {
-    //       throw new BaseError(status.USER_NOT_FOUND);
-    //     }
-
-    //     user.status = 'inactive';
-    //     return this.userRepository.save(user);
-    // }
     //admin
     async getAllUsersAtAdmin(): Promise<UserDto[]> {
         try {
             const users = await this.userRepository.find();
             const adminUserDtos: UserDto[] = [];
-
+            
             for (const user of users) {
                 const adminUserDto = new UserDto();
                 const { id, nickname, twitter_url, instar_url, status } = user;
-
+                
                 adminUserDto.user_id = id;
                 adminUserDto.avatar_image_url = await this.getAvatarUrlByUserId(id);
                 adminUserDto.nickname = nickname;
@@ -111,7 +101,7 @@ export class UserService {
                 adminUserDto.status = status;
                 adminUserDtos.push(adminUserDto);
             }
-
+            
             return adminUserDtos;
         }
         catch (err) {
@@ -126,7 +116,7 @@ export class UserService {
             });
             return this.userRoleRepository.save(userRole); //생성된 값들을 모두 userRoleParmises에 저장
         });
-
+        
         const result = await Promise.all(userRolePromises); //모든 Promise를 기다리고 배열로 반환
         return result;
     }
@@ -139,15 +129,26 @@ export class UserService {
             await this.userRoleRepository.remove(target);
         }
     }
-
-
+    
+    
     async postCreateUser(userInfoDto: UserInfoDto): Promise<Object> {
-        const newUser = this.userRepository.create(userInfoDto);
+        // 비밀번호 해시 처리
+        let hashedPasswordUserInfo = { ...userInfoDto };
+        if (userInfoDto.password){
+            const hashedPassword = await bcrypt.hash(userInfoDto.password, 10);
+            hashedPasswordUserInfo = {
+                ...userInfoDto,
+                password: hashedPassword
+            }
+        }
+        
+        // 새로운 사용자 생성 및 저장
+        const newUser = this.userRepository.create(hashedPasswordUserInfo);
         const savedUser = await this.userRepository.save(newUser);
+        // 사용자 역할 연결
         const createdRoleConnections = await this.connectUserRole(savedUser.id, userInfoDto.roles);
-
         const savedUserRoles = createdRoleConnections.map(userRole => userRole.role.id);
-
+        
         return {
             created_user_info: savedUser,
             created_user_roles: savedUserRoles
@@ -179,15 +180,30 @@ export class UserService {
         await this.unconnectUserRole(userId, roleIds);
         // 새로운 연결 생성
         const savedUserRoles = await this.connectUserRole(userId, userInfoDto.roles);
-
-
+        
+        
         return {
             updated_user_info: updatedUser,
             created_user_roles: savedUserRoles,
         }
     }
+    
+    async inactiveUser(userId: number): Promise<string>{
+        const user = await this.userRepository.findOneBy({id:userId});
+        user.status = 'inactive';  
+        await this.userRepository.save(user); 
 
+        return user.status;
+    }
+    async activeUser(userId: number): Promise<string>{
+        const user = await this.userRepository.findOneBy({id:userId});
+        user.status = 'active';   
+        await this.userRepository.save(user);
 
+        return user.status;
+    }
+    
+    
     //seed
     async createUserSeed(createUserSeedDto: CreateUserSeedDto): Promise<Object> { //seeder 사용하는 경우
         const newUser = await this.userRepository.create(createUserSeedDto);
