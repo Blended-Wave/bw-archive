@@ -1,6 +1,7 @@
 .container{
     padding:5%;
     width: 85%;
+    margin-left: auto;
 }
 .container p{
     font-size: 0.8rem;

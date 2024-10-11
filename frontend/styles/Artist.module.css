@@ -26,5 +26,5 @@
 .artists {
     display: flex;
     flex-wrap: wrap;
-    gap: 3.5%;
+    gap: 3%;
 }

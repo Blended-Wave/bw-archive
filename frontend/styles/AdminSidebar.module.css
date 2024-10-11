@@ -1,12 +1,13 @@
 .sidebar{
     display: flex;
-    position: relative;
+    position: fixed;
     flex-direction: column;
     width: 15%;
     height: 100%;
     overflow: hidden;
     background-color: #261428;
     color: white;
+    
 }
 .adminpanel{
     display: flex;
