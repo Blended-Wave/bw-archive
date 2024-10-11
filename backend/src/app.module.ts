@@ -53,7 +53,12 @@ export class AppModule {
         secret: process.env.SESSION_SECRET, // 추후 Redis 도입
         resave: false,
         saveUninitialized: false,
-        cookie: {secure:false}, // https를 쓸 경우 사용
+        cookie: {
+          secure:false,
+          httpOnly: true, // 클라이언트 Javascript에서 쿠키 접근 불가
+          maxAge: 24 * 60 * 60 * 1000, // 쿠키 유효기간 (밀리초 단위 - 24시간 기준)
+          sameSite: 'lax' 
+        }, // https를 쓸 경우 사용
       }),
       passport.initialize(), // passport초기화
       passport.session(), //passport 세션 관리
