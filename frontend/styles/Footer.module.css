@@ -1,25 +1,36 @@
 .footer_container {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    margin: 0 25%;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    margin: 0 10%;
     height: 110px;
-    background-color: 252429;
+    background-color: #252429;
     align-items: center;
+    gap: 30px; /* 요소 간 간격 추가 */
+    padding: 0 20px; /* 좌우 패딩 추가 */
 }
 
 .footer_container p {
     font-size: 12px;
     color: rgb(255, 255, 255, 0.6);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
 }
 
 .footer_box {
     display: flex;
     align-items: center;
+    justify-content: center;
+    gap: 20px; /* 내부 요소 간 간격 */
 }
 
 .footer_container img {
     opacity: 0.6;
     width: 230px;
     height: 21px;
-    gap: 30px;
+}
+
+.footer_login {
+    color: rgb(255, 255, 255, 0.2) !important;
 }
