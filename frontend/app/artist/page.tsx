@@ -8,7 +8,8 @@ import { useState, useEffect } from 'react';
 
 export default function Artist() {
     const [data, setData] = useState([]);
-
+    // axios url 경로 하드코딩 -> 환경변수로 수정하기
+    // 중복되는 api 요청이 두번 이상 발생할 경우 서비스 폴더 만들어서 요청 로직 분리하기
     useEffect(() => {
         const fetchData = async () => {
             try {

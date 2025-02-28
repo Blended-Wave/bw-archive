@@ -5,9 +5,16 @@ import MemberTable from '@/components/MemberTable';
 import MemberAddModal from '@/components/MemberAddModal';
 import { useMemo, useState, useEffect } from 'react';
 import axios from 'axios';
+import {CellProps} from 'react-table';
+
+
+interface Member {
+  status: string;
+}
 
 export default function MemberManagement() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Member[]>([]);
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -17,15 +24,15 @@ export default function MemberManagement() {
       {
         Header: 'Avatar',
         accessor: 'avatar_image_url',
-        Cell: ({ value }) => (
-          value === "default avatar" ? <img src="/admin_icon/alt_img.svg" alt="Avatar" style={{ width: 142, height: 142 }} /> : <img src={value} alt="Avatar" style={{ width: 142, height: 142 }} />
-        ),
+        Cell: ({ value }: { value?: string }) => (
+          value && value !== "default avatar" ? <img src={value} alt="Avatar" /> : <img src="/admin_icon/alt_img.svg" alt="Avatar" />
+        )        
       },
       { Header: 'Nickname', accessor: 'nickname' },
       {
         Header: 'Role',
         accessor: 'roles',
-        Cell: ({ value }) => (
+        Cell: ({ value }: { value: number[] }) => (
           <div>
             {value.includes(1) && <img src="/admin_icon/illustrator_icon.svg" />}
             {value.includes(2) && <img src="/admin_icon/songwriter_icon.svg" />}
@@ -46,7 +53,7 @@ export default function MemberManagement() {
       {
         Header: 'Delete',
         accessor: 'delete',
-        Cell: ({ cell }) => (
+        Cell: ({ cell }: CellProps<{ user_id: number }>) => (
           <button
             className={styles.delete_button}
             onClick={() => deleteMember(cell.row.original.user_id)}
@@ -59,7 +66,7 @@ export default function MemberManagement() {
     []
   );
 
-  const deleteMember = async (userId) => {
+  const deleteMember = async (userId:number) => {
     try {
       await axios.patch(`http://localhost:4000/api/admin/user_modify/${userId}`, { status: 'inactive' });
     } catch (error) {
@@ -71,13 +78,13 @@ export default function MemberManagement() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/admin/users');
+        const response = await axios.get<Member[]>("http://localhost:4000/api/admin/users");
         const filteredData = response.data.filter(member => member.status === "active");
         setData(filteredData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
-    };
+    };    
 
     fetchData();
   }, []);
