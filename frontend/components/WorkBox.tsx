@@ -12,7 +12,7 @@ export default function WorkBox() {
     useEffect(() => {
         console.log('Modal is now', modalOpen ? 'open' : 'closed');
     }, [modalOpen]);
-
+    // s3경로 환경변수로 수정하기
     return (
         <>
             <div onClick={() => { setModalOpen(true) }}
