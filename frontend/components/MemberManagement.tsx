@@ -10,6 +10,13 @@ import {CellProps} from 'react-table';
 
 interface Member {
   status: string;
+  user_id: number;
+  avatar_image_url: string;
+  nickname: string;
+  roles: number[];
+  twitter_url: string;
+  instar_url: string;
+  works_count: number;
 }
 
 export default function MemberManagement() {
@@ -33,7 +40,7 @@ export default function MemberManagement() {
         Header: 'Role',
         accessor: 'roles',
         Cell: ({ value }: { value: number[] }) => (
-          <div>
+          <div className={styles.role_container}>
             {value.includes(1) && <img src="/admin_icon/illustrator_icon.svg" />}
             {value.includes(2) && <img src="/admin_icon/songwriter_icon.svg" />}
             {value.includes(3) && <img src="/admin_icon/animator_icon.svg" />}
@@ -78,9 +85,33 @@ export default function MemberManagement() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<Member[]>("http://localhost:4000/api/admin/users");
-        const filteredData = response.data.filter(member => member.status === "active");
-        setData(filteredData);
+        // const response = await axios.get<Member[]>("http://localhost:4000/api/admin/users");
+        // const filteredData = response.data.filter(member => member.status === "active");
+        // setData(filteredData);
+        const dummyData: Member[] = [
+          {
+            status: "active",
+            user_id: 1,
+            avatar_image_url: "/admin_icon/alt_img.svg",
+            nickname: "DISCUZZ",
+            roles: [1, 3], // 일러스트레이터 & 애니메이터
+            twitter_url: "https://twitter.com/user1",
+            instar_url: "https://instagram.com/user1",
+            works_count: 3,
+          },
+          {
+            status: "active",
+            user_id: 2,
+            avatar_image_url: "/admin_icon/alt_img.svg",
+            nickname: "GUEST",
+            roles: [2], // 작곡가
+            twitter_url: "NONE",
+            instar_url: "NONE",
+            works_count: 0,
+          },
+        ];
+  
+        setData(dummyData); // 임시 데이터 적용
       } catch (error) {
         console.error("Error fetching data:", error);
       }

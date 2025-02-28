@@ -77,8 +77,7 @@ const MemberAddModal = ({ isOpen, onClose }) => {
     return (
         <div className={styles.modal}>
             <div className={styles.modalContent}>
-                <span className={styles.close} onClick={onClose}>&times;</span>
-                <h2>새 멤버 추가</h2>
+                <h2 className={styles.title}>새 멤버 추가</h2>
                 <input
                     name="login_id"
                     placeholder="login_id"
@@ -123,7 +122,10 @@ const MemberAddModal = ({ isOpen, onClose }) => {
                 />
                 <div className={styles.buttons}>
                     <button onClick={() => onClose()} className={styles.close_btn}>Close</button>
-                    <button onClick={handleSubmit} className={styles.save_btn}>Save</button>
+                    <button className={styles.save_btn}>
+                        <img src="/admin_icon/save_icon.svg" alt="Save Icon" className={styles.save_icon} />
+                        Save
+                    </button>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@
 .sidebar {
     display: flex;
     flex-direction: column;
-    width: 280px; /* 고정 너비 */
+    width: 270px; /* 고정 너비 */
     height: 100vh; /* 전체 화면 높이 */
     background-color: #0D092C; /* 🌟 피그마 배경색 */
     color: #FFFFFF; /* 🌟 기본 텍스트 색상 */
@@ -47,7 +47,7 @@
     align-items: center;
     padding: 12px 15px;
     font-size: 1rem;
-    gap: 12px;
+    gap: 12px;  
     border-radius: 8px;
     transition: background-color 0.3s ease, transform 0.2s ease;
     color: #929292; /* 🌟 기본 메뉴 텍스트 색상 */

@@ -6,10 +6,10 @@ export default function WorksManagement() {
   const [data, setData] = useState([
     {
       id: 1,
-      avatar: 'https://via.placeholder.com/150',
+      thumbnail: 'https://blended-wave-s3.s3.ap-northeast-2.amazonaws.com/tempImg.png',
       type: 'video',
-      arttitle: 'Lorem Ipsum',
-      seriesname: 'Lorem Ipsum',
+      artTitle: 'Lorem Ipsum',
+      seriesName: 'Lorem Ipsum',
       credit: 'DISUCZZ',
       datetime: new Date().toLocaleDateString(),
     },
@@ -21,17 +21,17 @@ export default function WorksManagement() {
     () => [ // 각 객체들은 테이블의ㅣ 컬럼을 정의
       { Header: 'ID', accessor: 'id' }, // Header: 테이블 헤더에 표시될 텍스트
       {
-        Header: 'avatar',
-        accessor: 'avatar', // accessor: 데이터 객체에서 가져올 속성 이름(ex. id, type)
+        Header: 'Thumbnail',
+        accessor: 'thumbnail', // accessor: 데이터 객체에서 가져올 속성 이름(ex. id, type)
         Cell: ({ value }) => ( // Cell: 이미지같은 데이터 렌더링 가능
-          <img src={value} alt="avatar" style={{ width: 142, height: 142 }} />
+          <img src={value} alt="Thumbnail" style={{ width: 142, height: 142 }} />
         ),
       },
-      { Header: 'type', accessor: 'type' },
-      { Header: 'arttitle', accessor: 'arttitle' },
-      { Header: 'seriesname', accessor: 'seriesname' },
-      { Header: 'credit', accessor: 'credit' },
-      { Header: 'datetime', accessor: 'datetime' },
+      { Header: 'Type', accessor: 'type' },
+      { Header: 'Art Title', accessor: 'artTitle' },
+      { Header: 'Series Name', accessor: 'seriesName' },
+      { Header: 'Credit', accessor: 'credit' },
+      { Header: 'Datetime', accessor: 'datetime' },
       {
         Header: 'Delete',
         accessor: 'delete',
@@ -51,12 +51,12 @@ export default function WorksManagement() {
   const addMember = () => {
     const newMember = {
       id: data.length + 1,
-      avatar: 'https://via.placeholder.com/150',
-      type: 'vedio',
-      arttitle: 'Lorem Ipsum',
-      seriesname: 'Lorem Ipsum',
+      thumbnail: 'https://blended-wave-s3.s3.ap-northeast-2.amazonaws.com/tempImg.png',
+      type: 'video',
+      artTitle: 'Lorem Ipsum',
+      seriesName: 'Lorem Ipsum',
       credit: 'DISUCZZ',
-      datetime: new Date().getDate(),
+      datetime: new Date().toLocaleDateString(),
     };
     setData([...data, newMember]);
   };
