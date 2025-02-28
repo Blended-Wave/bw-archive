@@ -7,7 +7,7 @@ export default function WorksManagement() {
     {
       id: 1,
       avatar: 'https://via.placeholder.com/150',
-      type: 'vedio',
+      type: 'video',
       arttitle: 'Lorem Ipsum',
       seriesname: 'Lorem Ipsum',
       credit: 'DISUCZZ',
@@ -15,13 +15,15 @@ export default function WorksManagement() {
     },
   ]);
 
-  const columns = useMemo(
-    () => [
-      { Header: 'ID', accessor: 'id' },
+  /**  React Table을 통해 컬럼(column)을 정의하는 코드
+    *  useMemo를 통해 memoizattion (React Hook) 불필요한 렌더링 방지하고 성능 최적화, useMemo를 통해 columns 배열을 한번만 생성(데이터가 바뀌지 않는한 그대로 유지) */
+  const columns = useMemo( 
+    () => [ // 각 객체들은 테이블의ㅣ 컬럼을 정의
+      { Header: 'ID', accessor: 'id' }, // Header: 테이블 헤더에 표시될 텍스트
       {
         Header: 'avatar',
-        accessor: 'avatar',
-        Cell: ({ value }) => (
+        accessor: 'avatar', // accessor: 데이터 객체에서 가져올 속성 이름(ex. id, type)
+        Cell: ({ value }) => ( // Cell: 이미지같은 데이터 렌더링 가능
           <img src={value} alt="avatar" style={{ width: 142, height: 142 }} />
         ),
       },
@@ -35,7 +37,7 @@ export default function WorksManagement() {
         accessor: 'delete',
         Cell: ({ cell }) => (
           <button
-            onClick={() => deleteMember(cell.row.original.id)}
+            onClick={() => deleteMember(cell.row.original.id)} // 해당 행의 id 값을 가져와서 삭제할 수 있도록 설정
             className={styles.delete_button}
           >
             삭제
