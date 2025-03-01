@@ -1,8 +1,26 @@
+'use client';
+
 import styles from '@/styles/Work.module.css';
 import Link from 'next/link';
 import WorkBox from '@/components/WorkBox';
+import Pagination from '@/components/Pagination';
+import { useSearchParams } from "next/navigation";
+import { useState, useEffect } from 'react';
 
 export default function Work() {
+    const searchParams = useSearchParams();
+    const pageParam = searchParams.get("page");
+    const currentPage = parseInt(pageParam) || 1;
+    const itemCountPerPage = 12;
+
+    const [totalItems, setTotalItems] = useState(26);
+    const [works, setWorks] = useState([...Array(26)].map((_, index) => ({ id: index }))); // 각 work에 ID 부여 예시
+
+    // 현재 페이지에 맞게 work를 필터링
+    const indexOfLastItem = currentPage * itemCountPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemCountPerPage;
+    const currentWorks = works.slice(indexOfFirstItem, indexOfLastItem);
+
     return (
         <div className={styles.background}>
             <div className={styles.work_container}>
@@ -28,26 +46,15 @@ export default function Work() {
                     <Link href="/work/views">조회수순</Link>
                 </div>
                 <div className={styles.works}>
-                    <WorkBox />
-                    <WorkBox />
-                    <WorkBox />
-                    <WorkBox />
-                    <WorkBox />
-                    <WorkBox />
-                    <WorkBox />
-                    <WorkBox />
-                    <WorkBox />
-
+                    {currentWorks.map((work, i) => (
+                        <WorkBox work={work} key={i} />
+                    ))}
                 </div>
-                <div className={styles.pagination}>
-                    <img src="/left_arrow.svg" style={{ margin: "0 35px 0 0" }} />
-                    <p>1</p>
-                    <p>2</p>
-                    <p>3</p>
-                    <p>4</p>
-                    <p>5</p>
-                    <img src="/right_arrow.svg" />
-                </div>
+                <Pagination
+                    totalItems={totalItems}
+                    currentPage={currentPage}
+                    pageCount={5}
+                    itemCountPerPage={itemCountPerPage} />
             </div>
         </div>
     );

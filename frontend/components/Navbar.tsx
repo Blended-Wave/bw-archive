@@ -6,7 +6,7 @@ export default function Navbar() {
     return (
         <nav className={styles.navbar}>
             <a href="/">
-                <img src="main_logo.svg" alt="logo" className={styles.logo} />
+                <img src="/main_logo.svg" alt="logo" className={styles.logo} />
             </a>
             <div className={styles.menu}>
                 <ul>
@@ -25,10 +25,11 @@ export default function Navbar() {
                             INFO
                         </Link>
                     </li>
+                    {/* 로그인 로직은 추후 수정할 수도(디자인), 로직은 로그인 페이지로 넘어간 뒤, 로그인 정보 있을 땐 admin 페이지로 수정 */}
                     <li>
-                        <Link href="../admin">
-                            Login
-                        </Link>
+                        {/* <Link href="/admin">
+                            LOGIN
+                        </Link> */}
                     </li>
                 </ul>
             </div>

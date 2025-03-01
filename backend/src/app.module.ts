@@ -1,25 +1,67 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AdminWorksModule } from './admin/works/admin.works.module';
 import { AdminUserModule } from './admin/users/admin.users.module';
-import { ConfigModule } from '@nestjs/config'; // process.env.NODE_ENV === 'prod' 에 삼항연산자를 통해 애플리케이션 모드에 따라서 다른 env파일을 불러오도록 한다
+import {UserModule} from './app/users/users.module'
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './app/users/user.entity';
+import * as session from 'express-session';
+import * as passport from 'passport';
+import RedisStore from 'connect-redis';
+import * as redis from 'redis';
+import * as ormconfig from './config/ormconfig'
+import * as dotenv from 'dotenv';
+import { APP_FILTER } from '@nestjs/core';
+import { BaseErrorFilter } from './common/filters/base-error.filter';
+import { AuthModule } from './app/auth/auth/auth.module';
+
+const ENV_PATH = `src/config/.env.${process.env.NODE_ENV}`
+dotenv.config({path: ENV_PATH}) 
+console.log('REDIS_HOST:', process.env.REDIS_HOST);
+console.log('REDIS_PORT:', process.env.REDIS_PORT);
+console.log('SESSION_SECRET:', process.env.SESSION_SECRET);
 @Module({
-  imports: [AdminUserModule, AdminWorksModule, 
-            ConfigModule.forRoot( {isGlobal:true , envFilePath: `src/config/.env.${process.env.NODE_ENV}`} ),
-            TypeOrmModule.forRoot({ //host와 password는 외부에 알려지면 안됨, env설정
-              type: 'mysql',
-              host: process.env.DATABASE_HOST, // 로컬환경에서는 localhost 또는 외부 데이터베이스 서버의 IP주소 또는 도메인 이름
-              port: +process.env.DATABASE_PORT,
-              username: process.env.DATABASE_USERNAME,
-              password: process.env.DATABASE_PASSWORD,
-              database: process.env.DATABASE_DB,
-              entities: [UserEntity],
-              synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',  // 앱 실행 시 스키마 자동 생성 및 동기화 옵션, 개발 환경에서만 켜둘것
-            }),],
+  imports: [AdminUserModule, 
+            AdminWorksModule, 
+            UserModule,
+            AuthModule,
+            TypeOrmModule.forRoot(ormconfig),],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService, 
+    {
+      provide: APP_FILTER, 
+      useClass: BaseErrorFilter
+    },],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer){
+    const redisClient = redis.createClient({
+      url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`
+    });
+
+    redisClient.connect().catch(console.error);
+
+    const redisStore = new RedisStore({
+      client: redisClient
+    })
+
+    consumer
+    .apply(
+      session({ //세션 설정
+        store: redisStore,
+        secret: process.env.SESSION_SECRET, // 추후 Redis 도입
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+          secure:false,
+          httpOnly: true, // 클라이언트 Javascript에서 쿠키 접근 불가
+          maxAge: 24 * 60 * 60 * 1000, // 쿠키 유효기간 (밀리초 단위 - 24시간 기준)
+          sameSite: 'lax' 
+        }, // https를 쓸 경우 사용
+      }),
+      passport.initialize(), // passport초기화
+      passport.session(), //passport 세션 관리
+    ).forRoutes('*'); // 모든 루트에 대해 해당 미들웨어 적용
+  }
+}

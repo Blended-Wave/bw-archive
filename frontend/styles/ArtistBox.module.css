@@ -1,72 +1,92 @@
-.artist_container{
+.artist_container {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    width: 31%;
+    width: 100%;
     height: 31%;
     max-width: 300px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.artist_container p {
+    margin: 0  !important;
+    margin-top: 12px !important;
 }
 
 .artist_box {
-    position: inherit;
-}
-
-.arts {
-    position: absolute;
-    width: 12%;
-    height: 12%;
-    left: 5px;
-    top: 5px;
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    filter: brightness(0.6); /* 기본적으로 어두운 필터 적용 */
+    transition: filter 0.3s ease-in-out;
 }
 
 .artist_box:hover {
-    filter: brightness(1.4);
-}
-
-.artist_box:hover .detail {
-    display: block;
+    filter: brightness(1); /* 마우스를 올리면 원래 밝기로 돌아옴 */
 }
 
 .artist_box img {
-    box-sizing: inherit;
     width: 100%;
     height: 100%;
+    object-fit: cover;
 }
 
+/* 직업 아이콘 위치 */
+.arts {
+    position: absolute;
+    width: 15%;
+    height: 15%;
+    left: 10px;
+    top: 10px;
+}
+
+/* Detail 박스 (기본적으로 숨겨짐) */
 .detail {
     position: absolute;
     width: 40%;
     height: 40%;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.4); /* 반투명한 정사각형 박스 */
     display: none;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
-
-.detail svg {
-    position: absolute;
-    width: 40%;
-    height: 40%;
-    display: block;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.detail p {
-    position: absolute;
     text-align: center;
-    font-size: 0.7rem;
-    font-weight: 350;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    white-space: nowrap
+    transition: opacity 0.2s ease-in-out;
 }
 
-.artist_container{
-    font-weight: 700;
+/* 마우스를 올리면 디테일 박스 표시 */
+.artist_box:hover .detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* + 아이콘 */
+.detail svg {
+    width: 30%;
+    height: 30%;
+}
+
+/* VIEW DETAIL 텍스트 */
+.detail p {
+    font-size: 15px !important;
+    font-weight: 300;
+    color: white;
+    white-space: nowrap;
+}
+
+/* 마우스를 올리면 커서 변경 */
+.artist_box:hover .detail:hover {
+    cursor: pointer;
+}
+
+.artistName {
+    font-size: 20px;
+    margin-top:8px;
+    font-weight: 600;
 }

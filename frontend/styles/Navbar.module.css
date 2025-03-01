@@ -1,28 +1,52 @@
-.navbar{
+.navbar {
     display: flex;
     width: 100%;
     height: 60px;
-    background-color: 252429;
+    background-color: #252429;
     align-items: center;
     justify-content: space-between;
     padding: 0 40px;
+    font-weight: 300;
 }
 
-.logo{
+.logo {
     width: 180px;
 }
 
-.menu{
+.menu {
     color: white;
 }
-.menu a{
+
+.menu a {
     color: inherit;
-    text-decoration: none; 
+    text-decoration: none;
+    position: relative; 
+    padding-bottom: 2px; 
 }
 
-.menu ul{
+
+.menu a::after {
+    content: "";
+    position: absolute;
+    left: 0; 
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background-color: white;
+    transform: scaleY(0.5); 
+    transition: width 0.3s ease-in-out; 
+}
+
+
+.menu a:hover::after {
+    width: 100%;
+    transform: scaleY(0.5); 
+}
+
+
+.menu ul {
     display: flex;
-    list-style:none;
+    list-style: none;
     gap: 60px;
-    font-size: 13px;
+    font-size: 15px;
 }

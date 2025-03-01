@@ -1,0 +1,41 @@
+.container {
+    padding: 5%;
+    width: 85%;
+    margin-left: auto;
+}
+
+.container p {
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-top: 20px;
+    color: #3b3b3b;
+}
+
+.container button {
+    background-color: #5AADF9;
+    color: white;
+    border: 0;
+    margin: 20px 0;
+    width: 110px;
+    height: 32px;
+    border-radius: 8px;
+}
+
+.container button:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.delete_button {
+    width: 77px;
+    height: 38px;
+    border: 0;
+    background-color: #DF7272 !important;
+    color: white;
+    border-radius: 12px;
+}
+
+.delete_button:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}

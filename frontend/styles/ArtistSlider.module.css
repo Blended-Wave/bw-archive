@@ -1,0 +1,75 @@
+.sliderContainer {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .sliderTrack {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+  
+  /* 개별 슬라이드 */
+  .slide {
+    width: 900px;
+    height: 585px;
+    object-fit: cover;
+    position: absolute;
+    transition: transform 0.45s ease-in-out, opacity 0.3s ease-in-out;
+  }
+  
+  /* 중앙 이미지 */
+  .centerSlide {
+    transform: translateX(0);
+    opacity: 1;
+    z-index: 2;
+  }
+  
+  /* 왼쪽 이미지 */
+  .leftSlide {
+    transform: translateX(-110%);
+    opacity: 0.5;
+    z-index: 1;
+  }
+  
+  /* 오른쪽 이미지 */
+  .rightSlide {
+    transform: translateX(110%);
+    opacity: 0.5;
+    z-index: 1;
+  }
+  
+  /* 끝으로 이동하는 이미지 숨김 처리 */
+  .hiddenSlide {
+    transform: translateX(-120%);
+    opacity: 0;
+    z-index: 0;
+  }
+  
+  /* 애니메이션 효과 추가 (끝에서 끝으로 이동 감추기) */
+  .fadeEffect {
+    opacity: 0 !important;
+  }
+  
+  /* 네비게이션 버튼 */
+  .prevButton, .nextButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .prevButton { left: 10px; }
+  .nextButton { right: 10px; }
+  

@@ -1,0 +1,40 @@
+.container {
+    text-align: center;
+}
+
+.container p {
+    color: white;
+    font-size: 1.5rem;
+}
+
+.title {
+    margin: auto;
+    margin-top: 60px;
+    margin-bottom: 90px;
+    text-align: left;
+    width: 900px;
+}
+.title p {
+    font-size:  2.0rem;
+    font-weight: 700;
+}
+.back {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 700px; /* Optional: Adjust the margin */
+  }
+  
+.back a {
+    color: white;
+    background-color: rgba(0,0,0,0);
+    padding: 10px 20px;
+    border: 1px solid white;
+    font-size: 0.8rem;
+  }
+.back a:hover {
+    cursor: pointer;
+    background-color: white;
+    color: black;
+}

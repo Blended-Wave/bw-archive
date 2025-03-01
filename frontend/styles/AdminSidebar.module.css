@@ -1,0 +1,71 @@
+/* 🌟 사이드바 전체 */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 270px; /* 고정 너비 */
+    height: 100vh; /* 전체 화면 높이 */
+    background-color: #0D092C; /* 🌟 피그마 배경색 */
+    color: #FFFFFF; /* 🌟 기본 텍스트 색상 */
+    padding: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 🌟 상단 헤더 패널 */
+.adminpanel {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* 좌측 정렬 */
+    height: 80px; /* 고정 높이 */
+    padding-left: 20px;
+    background-color: #1C2256; /* 🌟 피그마 헤더 색상 */
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #FFFFFF;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.adminpanel img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+/* 🌟 메뉴 목록 */
+.menu {
+    margin-top: 20px;
+    padding-left: 10px;
+}
+
+/* 개별 메뉴 항목 */
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    font-size: 1rem;
+    gap: 12px;  
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #929292; /* 🌟 기본 메뉴 텍스트 색상 */
+}
+
+.menu li:hover {
+    background-color: #4C4294; /* 🌟 피그마 Hover 색상 */
+    cursor: pointer;
+}
+
+.menu .active {
+    background-color: #1C2256; /* 🌟 선택된 메뉴 색상 */
+    color: white;
+    font-weight: bold;
+}
+
+/* 메뉴 아이콘 */
+.menu li img {
+    width: 20px;
+    height: 20px;
+}

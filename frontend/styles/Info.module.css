@@ -4,12 +4,14 @@
     align-items: center;
     flex-direction: column;
 }
-.info_container h1{
+
+.info_container h1 {
     font-size: 1.5rem;
     font-weight: bold;
     margin: 30px 0 150px 0;
 }
-.logo_img{
+
+.logo_img {
     width: 25%;
     margin-bottom: 30px;
 }
@@ -21,22 +23,26 @@
     margin: 30px 0;
     text-align: center;
 }
-.p2{
+
+.p2 {
     width: 25%;
     font-size: 0.68rem;
     margin: 30px 0;
     text-align: center;
 }
-.p3{
+
+.p3 {
     font-weight: bold;
 }
+
 .background_img {
     position: absolute;
 }
-.contact_container{
+
+.contact_container {
     display: flex;
     width: 25%;
     justify-content: center;
     margin: 30px 0 300px 0;
-    gap:25px;
+    gap: 25px;
 }
