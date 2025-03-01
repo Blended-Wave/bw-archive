@@ -26,7 +26,7 @@ export default function ArtistBox({ artist }) {
         </Link>
         {artist.avatar_image_url === 'default avatar' ? <img src="/admin_icon/alt_img.svg" style={{ width: 300, height: 300 }} /> : <img src={artist.avatar_image_url} />}
       </div>
-      <div>{artist.nickname}</div>
+      <div className={styles.artistName}>{artist.nickname}</div>
     </div>
   );
 }
