@@ -27,6 +27,5 @@
 - React
 - Next.js
 - Nest.js
-### Communication
-- Notion
+
 ## 화면 구성
