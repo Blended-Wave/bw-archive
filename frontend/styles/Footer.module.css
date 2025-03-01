@@ -31,6 +31,10 @@
     height: 21px;
 }
 
-.footer_login {
+.footer_login button{
+    background: none;
+    border: none;
     color: rgb(255, 255, 255, 0.2) !important;
+    font-weight: 300;
+    cursor: pointer;
 }
