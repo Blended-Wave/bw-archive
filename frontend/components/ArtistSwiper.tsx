@@ -103,7 +103,9 @@ export default function ArtistSwiper({ artists }) {
               <div className={styles.artistInfo}>
                 <h3>{artist.name}</h3>
                 <p>{artist.role}</p>
-                <Link href={artist.link}>More Info</Link>
+                <Link href={artist.link}>More Info</Link> 
+                {/* 받아오는 값은 응답 DTO랑 pages.tsx단에서 배열 만들 때 구조화 시켜서 문자열로 통일 */}
+                {/* 링크아이콘은 개수만큼 조건문으로 렌더링(아이콘으로)  */}
               </div>
             </div>
           </SwiperSlide>
