@@ -26,6 +26,8 @@
 - TypeScript
 - React
 - Next.js
+- Vercel
 - Nest.js
+- Redis
 
 ## 화면 구성
