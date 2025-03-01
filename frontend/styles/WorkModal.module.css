@@ -32,29 +32,28 @@
     color: white;
     width: 25.5%;
     background-color: #202024;
-    border-radius: 3%;
+    border-radius: 15px;
     padding: 1%;
 }
 
 .main_artist {
     display: flex;
     align-items: center;
-    gap: 8%;
-    margin-top: 5%;
+    gap: 4%;
+    margin-top: 6%;
 }
 
 .main_artist h1 {
-    font-size: 1.8rem;
+    font-size: 32px;
 }
 
 .main_artist img {
     border-radius: 50%;
-    margin-left: 8%;
 }
 
-.art_title {
-    font-size: 1.0rem;
-    margin-top: 8%;
+.art_title h2 {
+    font-size: 28px;
+    margin-top: 10%;
 }
 
 .art_series_name {
@@ -65,21 +64,46 @@
 }
 
 .description {
-    margin-top: 8%;
+    margin-top: 10%;
 }
 
 .description h3 {
-    font-size: 1.0rem;
+    font-size: 20px;
     font-weight: bold;
 }
 
 .description p {
     margin-top: 8%;
-    font-size: 0.8rem;
+    font-size: 14px;
     height: 240px;
     overflow-y: scroll;
-    padding-right: 1%;
+    padding-right: 12px;
+
 }
+
+/* ✅ 크롬, 사파리, 엣지(웹킷 기반 브라우저)용 스크롤바 */
+.description p::-webkit-scrollbar {
+    width: 4px; /* ✅ 스크롤바 너비 조정 */
+}
+
+/* ✅ 스크롤바 트랙 (배경) */
+.description p::-webkit-scrollbar-track {
+    background: #929292; /* ✅ 스크롤바 배경색 */
+    border-radius: 10px;
+}
+
+/* ✅ 스크롤바 핸들 (움직이는 부분) */
+.description p::-webkit-scrollbar-thumb {
+    background: #E9E9E9; /* ✅ 스크롤바 색상 */
+    outline: 1px solid #E9E9E9;
+    border-radius: 10px;
+}
+
+/* ✅ 스크롤바 핸들 (마우스 호버 시) */
+.description p::-webkit-scrollbar-thumb:hover {
+    background: #d3d3d3; /* ✅ 밝은 색으로 변경 */
+}
+
 
 .credits{
     margin-top: 8%;
@@ -91,6 +115,6 @@
     display: flex;
     align-items: center;
     font-size: 0.8rem;
-    margin-top: 2%;
+    margin-top: 3%;
     gap: 2%;
 }
