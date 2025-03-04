@@ -1,5 +1,6 @@
-import { Column, BeforeUpdate, Entity, CreateDateColumn,UpdateDateColumn , PrimaryGeneratedColumn, RelationId } from "typeorm";
-@Entity('users') // 이름, 동기화, 정렬 설정 및 엔진 지정이 가능 (동기화는 개발중에는 true 운영에서는 flase권장)
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+
+@Entity('users')
 export class UserEntity {
     @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
     id: number;
@@ -7,15 +8,14 @@ export class UserEntity {
     @Column({ type: 'varchar', length: 30, nullable: false })
     login_id: string;
 
-    @Column({ type: 'varchar', length: 256, nullable: false }) // hash 처리 필요
+    @Column({ type: 'varchar', length: 256, nullable: false })
     password: string;
 
     @Column({ type: 'varchar', length: 30, nullable: false })
     nickname: string;
-    
+
     @Column({ type: 'varchar', length: 15, nullable: false, default: 'active' })
     status: string;
-    
 
     @Column({ type: 'timestamp', nullable: true })
     inactive_date: Date;
@@ -25,6 +25,10 @@ export class UserEntity {
 
     @Column({ type: 'text', nullable: true })
     instar_url: string | null;
+
+    // avatar_url을 UserEntity에 직접 추가
+    @Column({ type: 'text', nullable: true })
+    avatar_url: string | null;  // 아바타 URL을 여기에서 관리
 
     @CreateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)' })
     created_at: Date;

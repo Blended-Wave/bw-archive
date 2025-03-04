@@ -33,7 +33,7 @@ export class AuthController {
   status(@Session() session: Record<string, any>) {
     return session;
   }
-  @Get('profile')
+  @Get('profile') // 인증된 사용자의 프로필 정보를 반환 (안쓰일거같음)
   getProfile(@Request() req) {
     if (req.isAuthenticated()) {
       return req.user;

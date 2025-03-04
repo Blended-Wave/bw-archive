@@ -1,4 +1,4 @@
-import { Entity, BeforeUpdate,PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, BeforeUpdate,PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { SeriesEntity } from './series.entity';
 import { WorksFileEntity } from './worksFile.entity';
 import { ThumbnailEntity } from './thumnail.entity';
@@ -12,17 +12,17 @@ export class WorksEntity {
     @JoinColumn({ name: 'series_id' })
     series: SeriesEntity;
 
-    @ManyToOne(() => ThumbnailEntity)
+    @OneToOne(() => ThumbnailEntity)
     @JoinColumn({ name: 'thumbnail_id' })
     thumbnail: ThumbnailEntity;
 
-    @ManyToOne(() => WorksFileEntity)
+    @OneToOne(() => WorksFileEntity)
     @JoinColumn({ name: 'works_file_id' })
     works_file: WorksFileEntity;
 
     @Column({ type: 'varchar', length: 30, nullable: false })
     title: string;
-
+    
     @Column({ type: 'varchar', length: 15, nullable: false })
     type: string;
 
