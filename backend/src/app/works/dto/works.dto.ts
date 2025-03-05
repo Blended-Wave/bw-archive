@@ -23,16 +23,16 @@ export class WorksDetailResponseDto {
     type: string;  // type이 video냐 img에 따라 렌더링할 태그가 다름
     file_url: string;
     title: string;
-    description: string;
-    series: string;
+    description?: string;
+    series?: string;
     created_at: Date; //??
     views: number;
     main_artist: ArtistDto;
     credits: ArtistDto[];
     // 이 응답값을 화면에 렌더링할 일은 없지만 관리자 페이지에서 수정할 때, 사용가능
-    pinned: boolean; 
-    private: boolean;
-    status: boolean; 
+    pinned?: boolean; 
+    private?: boolean;
+    status?: boolean; 
 }
 
 export class InstWorksResponseDto {
