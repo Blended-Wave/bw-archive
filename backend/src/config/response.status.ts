@@ -34,6 +34,7 @@ export const status: {[key:string]: Status} = {
     ROLE_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "USER4004", message: "역할 엔터티를 찾을 수 없습니다."},
     AVATAR_NOT_FOUND: { status: StatusCodes.NOT_FOUND, isSuccess: false, code: "USER4005", message: "사용자 아바타를 찾을 수 없습니다."},
     USER_UPDATE_FAILED: { status: StatusCodes.NOT_MODIFIED, isSuccess: false, code: "USER4006", message: "업데이트 된 유저 정보가 없습니다."},
+    LOGIN_ID_ALREADY_EXIST: { status: StatusCodes.INTERNAL_SERVER_ERROR, isSuccess: false, code: "USER4007", message: "중복된 로그인 아이디입니다." },
 
 
     // work err

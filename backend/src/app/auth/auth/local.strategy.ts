@@ -12,7 +12,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
             passwordField: 'password'
         });
     }
-
     async validate(loginId: string, password: string) : Promise<any> {
         console.log(`Validating user: ${loginId}`);
         const user = await this.authService.validateUser(loginId, password);
@@ -21,6 +20,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
             throw new UnauthorizedException('Invalid login credentials'); // 로그인 실패 처리
         }
         console.log(`User validated successfully: ${loginId}`);
-    return user;
+        return user;
     }
 }

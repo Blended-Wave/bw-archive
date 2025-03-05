@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository,  In } from 'typeorm';
+import { Repository,  In, Not } from 'typeorm';
 import { UserReqDto, CreateUserSeedDto, InstUserResponseDto } from './dto/user.info.dto'
 import { UserResponseDto } from './dto/user.dto';
 import { UserEntity, UserRoleEntity, RoleEntity, UserWorksEntity } from './entities';
@@ -199,6 +199,8 @@ export class UserService {
         }
     }
     async connectUserRole(userId: number, roles: number[]) {
+        console.log('userId:', userId);
+        console.log('roles:', roles);
         const userRolePromises = roles.map(async (role) => {
             const userRole = this.userRoleRepository.create({
                 user: { id: userId },
@@ -224,26 +226,48 @@ export class UserService {
     async postCreateUser(userReqDto: UserReqDto): Promise<Object> {
         // 비밀번호 해시 처리
         let hashedPasswordUserInfo = { ...userReqDto };
-        if (userReqDto.password){
+        if (userReqDto.password) {
             const hashedPassword = await bcrypt.hash(userReqDto.password, 10);
             hashedPasswordUserInfo = {
                 ...userReqDto,
-                password: hashedPassword
-            }
+                password: hashedPassword  // 새로운 객체에 암호화된 비밀번호 할당
+            };
         }
-        
+    
+        // login_id 중복 체크
+        const existingUserByLoginId = await this.userRepository.findOne({
+            where: { login_id: userReqDto.login_id }
+        });
+        if (existingUserByLoginId) {
+            throw new BaseError(status.LOGIN_ID_ALREADY_EXIST);
+        }
+    
+        // nickname 중복 체크
+        const existingUserByNickname = await this.userRepository.findOne({
+            where: { nickname: userReqDto.nickname }
+        });
+        if (existingUserByNickname) {
+            throw new BaseError(status.NICKNAME_ALREADY_EXIST);
+        }
+    
         // 새로운 사용자 생성 및 저장
         const newUser = this.userRepository.create(hashedPasswordUserInfo);
         const savedUser = await this.userRepository.save(newUser);
+    
         // 사용자 역할 연결
-        const createdRoleConnections = await this.connectUserRole(savedUser.id, userReqDto.roles);
+        let createdRoleConnections = await this.connectUserRole(savedUser.id, userReqDto.roles);
+        createdRoleConnections = createdRoleConnections || [];  // 만약 역할 연결이 없으면 빈 배열 할당
+    
+        // 빈 배열을 처리하고 나서 map 호출
         const savedUserRoles = createdRoleConnections.map(userRole => userRole.role.id);
-        
+    
         return {
             created_user_info: savedUser,
             created_user_roles: savedUserRoles
         };
     }
+    
+    
     
     async updateUserInfo(userId: number, userReqDto: UserReqDto): Promise<Object> {
         const user = await this.getUserById(userId); // 정보 수정할 유저
@@ -251,31 +275,53 @@ export class UserService {
             console.log('서비스에서 발생한 에러입니다.');
             throw new BaseError(status.USER_NOT_FOUND);
         }
-        // 입력받은 userDto에서 roles, avatar_image_url추출 ⚠️ 추후 avatar_image_url 수정도 구현 해야함
+        
+        // login_id 중복 체크
+        const existingUserByLoginId = await this.userRepository.findOne({
+            where: { login_id: userReqDto.login_id, id: Not(userId) }  // 로그인 아이디 중복 체크 (자기 자신 제외)
+        });
+        if (existingUserByLoginId) {
+            throw new BaseError(status.LOGIN_ID_ALREADY_EXIST);
+        }
+    
+        // nickname 중복 체크
+        const existingUserByNickname = await this.userRepository.findOne({
+            where: { nickname: userReqDto.nickname, id: Not(userId) }  // nickname 중복 체크 (자기 자신 제외)
+        });
+        if (existingUserByNickname) {
+            throw new BaseError(status.NICKNAME_ALREADY_EXIST);
+        }
+    
+        // 입력받은 userDto에서 roles, avatar_image_url 추출 ⚠️ 추후 avatar_image_url 수정도 구현해야 함
         const { avatar_image_url, roles, ...userInfoWithoutRolesAvatar } = userReqDto;
         const updatedResult = await this.userRepository.update(userId, userInfoWithoutRolesAvatar);
-        //업데이트 결과 확인(수정여부)
-        if (updatedResult.affected === 0){
+    
+        // 업데이트 결과 확인(수정 여부)
+        if (updatedResult.affected === 0) {
             console.log('업데이트 된 행이 없습니다.');
             throw new BaseError(status.USER_UPDATE_FAILED);
         }
+    
         // 업데이트된 유저 정보
         const updatedUser = await this.getUserById(userId);
-        
-        // uesr - role 관계 갱신
-        const foundUserRoles = await this.userRoleRepository.find({ where: { user: { id: userId } }, relations: ['user', 'role'] }); //기존 user-role 관계 연결
+    
+        // user-role 관계 갱신
+        const foundUserRoles = await this.userRoleRepository.find({
+            where: { user: { id: userId } },
+            relations: ['user', 'role']
+        }); // 기존 user-role 관계 연결
         const roleIds = foundUserRoles.map(userRole => userRole.role.id); // 연결된 role 리스트
-        
+    
         // 기존 관계 테이블 유저-역할 연결 제거
         await this.unconnectUserRole(userId, roleIds);
+    
         // 새로운 연결 생성
         const savedUserRoles = await this.connectUserRole(userId, userReqDto.roles);
-        
-        
+    
         return {
             updated_user_info: updatedUser,
             created_user_roles: savedUserRoles,
-        }
+        };
     }
     
     async inactiveUser(userId: number): Promise<string>{

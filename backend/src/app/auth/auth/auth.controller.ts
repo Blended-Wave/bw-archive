@@ -11,7 +11,8 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Req() req: Request, @Res() res: Response) {
-    // req.login은 passport 제공 메서드
+    // req.login은 passport 제공 
+    console.log('로그테스트');
     req.login(req.user, (err:any) => {
       if (err) {
         return res.status(500).json({message: 'Login Failed', error: err})

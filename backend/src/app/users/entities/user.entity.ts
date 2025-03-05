@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Unique } from 'typeorm';
 
 @Entity('users')
+@Unique(['login_id']) 
 export class UserEntity {
     @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
     id: number;
