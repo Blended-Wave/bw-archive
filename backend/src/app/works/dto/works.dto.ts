@@ -1,3 +1,5 @@
+import { IsOptional } from 'class-validator';
+
 export class WorksResponseDto {
     works_id: number;
     thumb_url: string;
@@ -35,20 +37,31 @@ export class WorksDetailResponseDto {
     status?: boolean; 
 }
 
+export class PagedWorksResponseDto {
+    data: WorksDetailResponseDto[]; // 페이지에 해당하는 데이터 목록
+    totalCount: number; // 전체 데이터 개수
+    totalPages: number; // 전체 페이지 수
+    currentPage: number; // 현재 페이지 번호
+    pageSize: number; // 한 페이지 당 데이터 개수
+}
+
+
 export class InstWorksResponseDto {
     image_url: string;
 }
 
 export class WorksReqDto {
     works_id: number;
-    thumb_url: string | null; // 이문법맞냐
+    @IsOptional()
+    thumb_url?: string | null; // 이문법맞냐
     type: string;  // type이 video냐 img에 따라 렌더링할 태그가 다름
     file_url: string;
     title: string;
     description: string;
     series: string;
-    main_artist: ArtistDto
-    credits: ArtistDto[]
+    main_artist: ArtistDto // id만 받는게 맞는거같은데 쓰이는 곳 한번 확인해보자
+    @IsOptional()
+    credits?: ArtistDto[]
     pinned: boolean; 
     private: boolean;
 }

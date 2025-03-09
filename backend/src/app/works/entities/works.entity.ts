@@ -1,7 +1,7 @@
-import { Entity, BeforeUpdate,PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { Entity, BeforeUpdate, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { SeriesEntity } from './series.entity';
 import { WorksFileEntity } from './worksFile.entity';
-import { ThumbnailEntity } from './thumnail.entity';
+
 
 @Entity('works')
 export class WorksEntity {
@@ -11,10 +11,9 @@ export class WorksEntity {
     @ManyToOne(() => SeriesEntity)
     @JoinColumn({ name: 'series_id' })
     series: SeriesEntity;
-
-    @OneToOne(() => ThumbnailEntity)
-    @JoinColumn({ name: 'thumbnail_id' })
-    thumbnail: ThumbnailEntity;
+    
+    @Column({ type: 'text', nullable: true })
+    thumbnail_url: string |  null;
 
     @OneToOne(() => WorksFileEntity)
     @JoinColumn({ name: 'works_file_id' })
@@ -45,10 +44,16 @@ export class WorksEntity {
     @Column({ type: 'timestamp', nullable: true })
     inactive_date: Date;
 
-    
     @Column({ type: 'date', nullable: false })
     created_at: Date;
 
     @Column({ type: 'date', nullable: false })
     updated_at: Date;
+
+    @BeforeUpdate()
+    setInactiveDate() {
+        if (this.status === 'inactive' && !this.inactive_date) {
+            this.inactive_date = new Date();
+        }
+    }
 }

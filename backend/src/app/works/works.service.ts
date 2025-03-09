@@ -2,9 +2,9 @@ import { UserService } from './../users/users.service';
 import { UserReqDto } from './../users/dto/user.info.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SeriesEntity, ThumbnailEntity, WorksEntity, WorksFileEntity } from './entities';
+import { SeriesEntity, WorksEntity, WorksFileEntity } from './entities';
 import { Repository } from 'typeorm';
-import { InstWorksResponseDto, WorksDetailResponseDto, WorksResponseDto, WorksReqDto, ArtistDto } from './dto/works.dto';
+import { InstWorksResponseDto, WorksDetailResponseDto, WorksResponseDto, WorksReqDto, ArtistDto, PagedWorksResponseDto } from './dto/works.dto';
 import { InstUserResponseDto } from '../users/dto/user.info.dto';
 import { BaseError } from 'src/config/error';
 import { status } from 'src/config/response.status';
@@ -20,8 +20,6 @@ export class WorkService {
         private worksFileRepository: Repository<WorksFileEntity>,
         @InjectRepository(SeriesEntity) 
         private seriesRepository: Repository<SeriesEntity>,
-        @InjectRepository(ThumbnailEntity)
-        private thumbnailRepository: Repository<ThumbnailEntity>,
         @InjectRepository(UserWorksEntity)
         private userWorksRepository: Repository<UserWorksEntity>,
         @InjectRepository(UserEntity)
@@ -33,7 +31,7 @@ export class WorkService {
         try{
             const worksDtos: WorksResponseDto[] = [];
             const pinnedWorks = await this.worksRepository.find({
-                select: ['id', 'thumbnail'],
+                select: ['id', 'thumbnail_url'],
                 where : { 
                     status: 'active',
                     pinned_option: 1, // 0 -> false, 1->true
@@ -46,11 +44,11 @@ export class WorkService {
 
             for (const work of pinnedWorks) {
                 const worksDto = new WorksResponseDto();
-                const { id, thumbnail } = work; // works ID, thumbnail entity
+                const { id, thumbnail_url } = work; // works ID, thumbnail entity
 
                 // thumbnail id로 thumb url 검색
                 worksDto.works_id = id;
-                worksDto.thumb_url = await this.getThumbUrlById(thumbnail.id);
+                worksDto.thumb_url = thumbnail_url;
                 worksDtos.push(worksDto);
             }
 
@@ -61,19 +59,11 @@ export class WorkService {
 
         
     }
-    async getThumbUrlById(thumbId:number): Promise<string> {
-        try{
-            const thumb = await this.thumbnailRepository.findOneBy({id: thumbId});
-            return thumb.image_url;
-        } catch {
-            throw new BaseError(status.THUMNAIL_NOT_FOUND)
-        }
-    }
     async getViewSortedPubWorksSer(): Promise<WorksResponseDto[]> {
         try {
             const worksDtos: WorksResponseDto[] = [];
             const sortedWorks = await this.worksRepository.find({
-                select: ['id', 'thumbnail'],
+                select: ['id', 'thumbnail_url'],
                 where: {
                     status: 'active',
                     pinned_option: 0, // false
@@ -86,11 +76,11 @@ export class WorkService {
     
             for (const work of sortedWorks) {
                 const worksDto = new WorksResponseDto();
-                const { id, thumbnail } = work; // works ID, thumbnail entity
+                const { id, thumbnail_url } = work; // works ID, thumbnail entity
     
                 // thumbnail id로 thumb url 검색
                 worksDto.works_id = id;
-                worksDto.thumb_url = await this.getThumbUrlById(thumbnail.id);
+                worksDto.thumb_url = thumbnail_url;
                 worksDtos.push(worksDto);
             }
     
@@ -105,7 +95,7 @@ export class WorkService {
         try {
             const worksDtos: WorksResponseDto[] = [];
             const sortedWorks = await this.worksRepository.find({
-                select: ['id', 'thumbnail'],
+                select: ['id', 'thumbnail_url'],
                 where: {
                     status: 'active',
                     pinned_option: 0, // pinned: false
@@ -118,11 +108,11 @@ export class WorkService {
 
             for (const work of sortedWorks) {
                 const worksDto = new WorksResponseDto();
-                const { id, thumbnail } = work; // works ID, thumbnail entity
+                const { id, thumbnail_url } = work; // works ID, thumbnail entity
 
                 // thumbnail id로 thumb url 검색
                 worksDto.works_id = id;
-                worksDto.thumb_url = await this.getThumbUrlById(thumbnail.id);
+                worksDto.thumb_url = thumbnail_url;
                 worksDtos.push(worksDto);
             }
 
@@ -190,37 +180,33 @@ export class WorkService {
         }
     }
     /** Work도메인 admin 관련 서비스 */
-    async getAllWorksSer(): Promise<WorksDetailResponseDto[]> {
-        // 모든 works를 조회하고 series와 user_works 테이블의 관계를 조인
-        const works = await this.worksRepository.find({
+    async getAllWorksSer(page: number = 1, pageSize: number = 15): Promise<PagedWorksResponseDto> {
+        const [works, totalCount] = await this.worksRepository.findAndCount({
             relations: ['series', 'thumbnail'],  // works와 관련된 다른 엔티티만 로드
+            skip: (page - 1) * pageSize, // 페이지네이션의 skip (몇 번째 레코드부터 시작할지)
+            take: pageSize, // 한 페이지당 가져올 데이터 개수
         });
-
+    
         const workTableList: WorksDetailResponseDto[] = [];
-
+    
         for (const work of works) {
-            const thumbUrl = work.thumbnail?.image_url || null;
+            const thumbUrl = work?.thumbnail_url || null;
             const views = work.views || 0;
             const privateOption = work.private_option === 1;
-
+    
             // userWorksRepository를 통해 해당 works_id에 해당하는 userWorks 레코드 조회
             const userWorks = await this.userWorksRepository.find({
-                where: { works: { id: work.id } },  // work.id를 기준으로 userWorks 조회
+                where: { works: { id: work.id } },
                 relations: ['user'],  // user 관계를 함께 로드
             });
-
-            // is_main이 true인 아티스트를 메인 아티스트로, 나머지 아티스트는 크레딧으로
+    
             const mainArtistWork = userWorks.find((userWork) => userWork.is_main === true);
-            const mainArtist = mainArtistWork
-                ? new ArtistDto(mainArtistWork.user.nickname)
-                : null;
-
-            // is_main이 false인 아티스트는 크레딧
+            const mainArtist = mainArtistWork ? new ArtistDto(mainArtistWork.user.nickname) : null;
+    
             const credits = userWorks
                 .filter((userWork) => !userWork.is_main)
                 .map((userWork) => new ArtistDto(userWork.user.nickname));
-
-            // WorksDetailResponseDto 객체에 데이터를 매핑
+    
             const workDto = new WorksDetailResponseDto(); 
             workDto.works_id = work.id;
             workDto.thumb_url = thumbUrl;
@@ -231,12 +217,21 @@ export class WorkService {
             workDto.main_artist = mainArtist;
             workDto.credits = credits;
             workDto.private = privateOption;
-
+    
             workTableList.push(workDto);
         }
-
-        return workTableList;
+    
+        const totalPages = Math.ceil(totalCount / pageSize); // 전체 페이지 수 계산
+    
+        return {
+            data: workTableList,
+            totalCount,
+            totalPages,
+            currentPage: page,
+            pageSize
+        };
     }
+    
     
 
     async postWorksSer(worksReqDto: WorksReqDto): Promise<boolean> {
@@ -255,10 +250,10 @@ export class WorkService {
             worksFileEntity.type = worksReqDto.type; // type을 WorksFileEntity와 WorksEntity 모두에 설정(4번에서)
             await this.worksFileRepository.save(worksFileEntity);
     
-            // 3. ThumbnailEntity 처리 (thumb_url)
-            const thumbnailEntity = new ThumbnailEntity();
-            thumbnailEntity.image_url = worksReqDto.thumb_url;
-            await this.thumbnailRepository.save(thumbnailEntity);
+            // // 3. ThumbnailEntity 처리 (thumb_url)
+            // const thumbnailEntity = new ThumbnailEntity();
+            // thumbnailEntity.image_url = worksReqDto.thumb_url;
+            // await this.thumbnailRepository.save(thumbnailEntity);
     
             // 4. WorksEntity 처리
             const newWork = new WorksEntity();
@@ -270,7 +265,7 @@ export class WorkService {
             newWork.private_option = worksReqDto.private ? 1 : 0; // private 상태
             newWork.series = seriesEntity;
             newWork.works_file = worksFileEntity;
-            newWork.thumbnail = thumbnailEntity;
+            newWork.thumbnail_url = worksReqDto.thumb_url;
             newWork.created_at = new Date();
             newWork.updated_at = new Date();
             await this.worksRepository.save(newWork);
@@ -286,13 +281,14 @@ export class WorkService {
             }
     
             // 6. Credits 처리 (credits 배열 처리)
-            for (const credit of worksReqDto.credits) {
+            const creditsList = worksReqDto.credits || [];  // credits가 없으면 빈 배열로 처리
+            for (const credit of creditsList) {
                 const creditArtist = await this.userRepository.findOne({ where: { id: credit.id } });
                 if (creditArtist) {
                     const userWorksEntity = new UserWorksEntity();
                     userWorksEntity.user = creditArtist;
                     userWorksEntity.works = newWork;
-                    userWorksEntity.is_main = false; // credits는 is_main이 false
+                    userWorksEntity.is_main = false;
                     await this.userWorksRepository.save(userWorksEntity);
                 }
             }
@@ -319,7 +315,7 @@ export class WorkService {
             // `WorksEntity`에서 받은 데이터를 `WorksReqDto` 형태로 변환
             const worksReqDto = new WorksReqDto();
             worksReqDto.works_id = work.id;
-            worksReqDto.thumb_url = work.thumbnail?.image_url || null; // 썸네일 URL
+            worksReqDto.thumb_url = work?.thumbnail_url || null; // 썸네일 URL
             worksReqDto.type = work.works_file?.type || '';  // type은 works_file에서 가져옴
             worksReqDto.file_url = work.works_file?.file_url || '';  // file_url
             worksReqDto.title = work.title;
@@ -367,7 +363,7 @@ export class WorkService {
             // 1. 기존 works 찾기
             const existingWork = await this.worksRepository.findOne({
                 where: { id: worksId },
-                relations: ['series', 'works_file', 'thumbnail']
+                relations: ['series', 'works_file']
             });
     
             if (!existingWork) {
@@ -384,7 +380,7 @@ export class WorkService {
     
             // 관련된 entity들 수정
             if (worksReqDto.thumb_url) {
-                existingWork.thumbnail.image_url = worksReqDto.thumb_url;
+                existingWork.thumbnail_url = worksReqDto.thumb_url;
             }
             if (worksReqDto.file_url) {
                 existingWork.works_file.file_url = worksReqDto.file_url;
@@ -425,54 +421,54 @@ export class WorkService {
             return false;
         }
     }
-    
+    // soft delete를 위해 삭제 처리 active
     async inactiveWorksSer(worksId: number): Promise<boolean> {
         try {
-            // worksId로 게시글 조회
             const existingWork = await this.worksRepository.findOne({
                 where: { id: worksId }
             });
-    
+
             if (!existingWork) {
-                return false; // 게시글이 존재하지 않으면 false 반환
+                return false;
             }
-    
-            // 게시글 상태를 inactive로 설정
-            existingWork.status = 'inactive';  // 상태를 'inactive'로 변경
+
+            // 상태를 inactive로 변경하고, inactive_date는 @BeforeUpdate()에서 처리하도록 수정
+            existingWork.status = 'inactive';
             existingWork.updated_at = new Date();  // 수정 시간 갱신
-    
-            // 업데이트된 게시글 저장
+            // inactive_date는 @BeforeUpdate()에서 자동으로 처리되므로 별도로 설정할 필요 없음
+
             await this.worksRepository.save(existingWork);
-    
-            return true;  // 성공적으로 업데이트 완료
+
+            return true;
         } catch (error) {
             console.error("Error deactivating work:", error);
-            return false;  // 오류 발생 시 false 반환
+            return false;
         }
     }
-    
+
+    // 삭제 처리했던 데이터 다시 active로
     async activeWorksSer(worksId: number): Promise<boolean> {
         try {
-            // worksId로 게시글 조회
             const existingWork = await this.worksRepository.findOne({
                 where: { id: worksId }
             });
-    
+
             if (!existingWork) {
-                return false; // 게시글이 존재하지 않으면 false 반환
+                return false;
             }
-    
-            // 게시글 상태를 active로 설정
-            existingWork.status = 'active';  // 상태를 'active'로 변경
-            existingWork.updated_at = new Date();  // 수정 시간 갱신
-    
-            // 업데이트된 게시글 저장
+
+            // 상태를 active로 변경하고, inactive_date를 null로 설정
+            existingWork.status = 'active';
+            existingWork.updated_at = new Date();
+            existingWork.inactive_date = null; // inactive_date 초기화
+
             await this.worksRepository.save(existingWork);
-    
-            return true;  // 성공적으로 업데이트 완료
+
+            return true;
         } catch (error) {
             console.error("Error activating work:", error);
-            return false;  // 오류 발생 시 false 반환
+            return false;
         }
-    }    
+    }
+
 }

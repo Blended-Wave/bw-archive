@@ -286,15 +286,15 @@ export class UserService {
     
         // nickname 중복 체크
         const existingUserByNickname = await this.userRepository.findOne({
-            where: { nickname: userReqDto.nickname, id: Not(userId) }  // nickname 중복 체크 (자기 자신 제외)
+            where: { nickname: userReqDto.nickname, id: Not(userId) },  // nickname 중복 체크 (자기 자신 제외)
         });
         if (existingUserByNickname) {
             throw new BaseError(status.NICKNAME_ALREADY_EXIST);
         }
     
-        // 입력받은 userDto에서 roles, avatar_image_url 추출 ⚠️ 추후 avatar_image_url 수정도 구현해야 함
-        const { avatar_image_url, roles, ...userInfoWithoutRolesAvatar } = userReqDto;
-        const updatedResult = await this.userRepository.update(userId, userInfoWithoutRolesAvatar);
+        
+        const { roles, ...userInfoWithoutRoles } = userReqDto;
+        const updatedResult = await this.userRepository.update(userId, userInfoWithoutRoles);
     
         // 업데이트 결과 확인(수정 여부)
         if (updatedResult.affected === 0) {

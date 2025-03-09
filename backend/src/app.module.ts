@@ -1,8 +1,6 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AdminWorksModule } from './admin/works/admin.works.module';
-import { AdminUserModule } from './admin/users/admin.users.module';
 import {UserModule} from './app/users/users.module'
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as session from 'express-session';
@@ -14,6 +12,11 @@ import * as dotenv from 'dotenv';
 import { APP_FILTER } from '@nestjs/core';
 import { BaseErrorFilter } from './common/filters/base-error.filter';
 import { AuthModule } from './app/auth/auth/auth.module';
+import { WorksModule } from './app/works/works.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { UserEntity } from './app/users/entities';
+import { WorksEntity } from './app/works/entities';
+import { FileUploadModule } from './file-upload/file-upload.module';
 
 const ENV_PATH = `src/config/.env.${process.env.NODE_ENV}`
 dotenv.config({path: ENV_PATH}) 
@@ -21,13 +24,16 @@ console.log('REDIS_HOST:', process.env.REDIS_HOST);
 console.log('REDIS_PORT:', process.env.REDIS_PORT);
 console.log('SESSION_SECRET:', process.env.SESSION_SECRET);
 @Module({
-  imports: [AdminUserModule, 
-            AdminWorksModule, 
+  imports: [WorksModule, 
             UserModule,
             AuthModule,
-            TypeOrmModule.forRoot(ormconfig),],
+            ScheduleModule.forRoot(), 
+            TypeOrmModule.forRoot(ormconfig),
+            TypeOrmModule.forFeature([UserEntity, WorksEntity]),
+            FileUploadModule, // Repository 등록
+          ],
   controllers: [AppController],
-  providers: [
+  providers: [ 
     AppService, 
     {
       provide: APP_FILTER, 

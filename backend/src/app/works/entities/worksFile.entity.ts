@@ -12,7 +12,7 @@ export class WorksFileEntity {
     @Column({ type: 'varchar', length: 15, nullable: false })
     type: string;
 
-    @OneToOne(()=>WorksEntity, (works)=>works.thumbnail )
+    @OneToOne(()=>WorksEntity, (works)=>works.works_file )
     works: WorksEntity;
 
     @Column({ type: 'int', unsigned: true })

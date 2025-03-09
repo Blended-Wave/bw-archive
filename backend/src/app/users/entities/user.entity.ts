@@ -27,7 +27,7 @@ export class UserEntity {
     @Column({ type: 'text', nullable: true })
     instar_url: string | null;
 
-    // avatar_url을 UserEntity에 직접 추가
+
     @Column({ type: 'text', nullable: true })
     avatar_url: string | null;  // 아바타 URL을 여기에서 관리
 

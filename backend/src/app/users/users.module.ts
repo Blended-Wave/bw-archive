@@ -11,9 +11,9 @@ import { AuthMiddleware } from 'src/common/middlewares/AuthMiddleware';
     exports: [UserService]
 })
 export class UserModule {
-    // configure(consumer: MiddlewareConsumer) {
-    //     consumer
-    //         .apply(AuthMiddleware)
-    //         .forRoutes(AdminUserController);  // Admin User Controller에만 미들웨어 적용
-    // }
+    configure(consumer: MiddlewareConsumer) {
+        consumer
+            .apply(AuthMiddleware)
+            .forRoutes(AdminUserController);  // Admin User Controller에만 미들웨어 적용
+    }
 }
