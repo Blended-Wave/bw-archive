@@ -7,17 +7,24 @@ export class CreateUserSeedDto {
     instarUrl: string | null;
   }
 
-export class UserInfoDto {
+// user 추가 시 Req Dto
+export class UserReqDto {
   readonly login_id: string;
   readonly password: string;
-  readonly user_id: number;
+  readonly user_id: number; // 이건.. 왜있지(아직 쓰이는곳 없어보임)
   readonly avatar_image_url: string;
   readonly nickname: string;
   readonly roles: number[];
   readonly twitter_url: string;
   readonly instar_url: string;
 }
-
 export class userStatusDto {
   readonly status: string;
+}
+
+export class InstUserResponseDto {
+  nickname: string;
+  twitter_url: string | null;
+  instar_url: string | null;
+  roles: number[];
 }

@@ -15,6 +15,9 @@ export class UserWorksEntity {
     @JoinColumn({ name: 'works_id' })
     works: WorksEntity;
 
+    @Column({ type: 'int', nullable: false })
+    is_main: boolean; // true -> main_artist, false -> credits[]
+
     @CreateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)' })
     created_at: Date;
 
