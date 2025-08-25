@@ -11,9 +11,18 @@ export default function Admin() {
     const [selectedMenu, setSelectedMenu] = useState('membermanagement');
     return (
         <div className={styles.admin_container}>
-            <AdminSidebar handleSelectedMenu={setSelectedMenu} />
-            {selectedMenu === 'membermanagement' && <MemberManagement />}
-            {selectedMenu === 'worksmanagement' && <WorksManagement />}
+            <AdminSidebar selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
+            <div
+                style={{
+                    marginLeft: '270px',
+                    width: 'calc(100% - 270px)',
+                    padding: '40px',
+                    boxSizing: 'border-box',
+                }}
+            >
+                {selectedMenu === 'members' && <MemberManagement />}
+                {selectedMenu === 'works' && <WorksManagement />}
+            </div>
         </div>
     )
 }

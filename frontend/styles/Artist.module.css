@@ -24,9 +24,10 @@
 }
 
 .artists {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 3%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px 20px;
+    width: 100%;
 }
 
 .aritst_title {

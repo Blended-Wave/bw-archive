@@ -1,3 +1,50 @@
-h1{
-  color: white;
+/* styles/page.module.css */
+.screen_container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+  background: #000;
+}
+
+.screen_container iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.05); /* Hide player's letterboxing */
+  border: none;
+  pointer-events: none;
+}
+
+/* aspect-ratio media queries for a perfect 'cover' effect */
+@media (min-aspect-ratio: 16/9) {
+  .screen_container iframe {
+    width: 100vw;
+    height: calc(100vw * 9 / 16);
+  }
+}
+
+@media (max-aspect-ratio: 16/9) {
+  .screen_container iframe {
+    height: 100vh;
+    width: calc(100vh * 16 / 9);
+  }
+}
+
+.screen_padding_bottom {
+  height: 1225px;
+}
+
+.screen_padding_top {
+  height: 60px;
+}
+
+.main_container {
+  min-height: calc(100vh - 60px); /* 뷰포트 높이에서 헤더 높이(60px)를 뺀 값 */
+  padding: 0 40px; /* Navbar와 동일한 좌우 패딩 추가 */
+  max-width: 100vw; /* 너비가 뷰포트를 넘어가지 않도록 */
+  box-sizing: border-box; /* 패딩을 너비에 포함 */
 }

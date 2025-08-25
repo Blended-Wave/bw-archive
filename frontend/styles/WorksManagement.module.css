@@ -1,14 +1,20 @@
-.container {
-    padding: 5%;
-    width: 85%;
-    margin-left: auto;
+.managementContainer {
+  padding: 40px;
+  background-color: #f0f2f5;
+  color: #333;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.title {
+    color: #111; /* 어두운 텍스트 색상으로 롤백 */
 }
 
 .container p {
     font-size: 0.9rem;
     font-weight: 400;
     margin-top: 20px;
-    color: #3b3b3b;
+    color: #3b3b3b; /* 어두운 텍스트 색상으로 롤백 */
 }
 
 .container button {
@@ -38,4 +44,8 @@
 .delete_button:hover {
     opacity: 0.7;
     cursor: pointer;
+}
+
+.inactive_row {
+    opacity: 0.5;
 }

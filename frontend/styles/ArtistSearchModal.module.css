@@ -1,0 +1,113 @@
+.modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001; /* WorkModal보다 위에 표시 */
+}
+
+.modal_container {
+    background: white;
+    padding: 25px; /* Adjust padding */
+    border-radius: 8px;
+    width: 500px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.modal_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-right: 30px; /* Ensure title doesn't overlap with close icon */
+}
+
+/* --- THIS IS THE DEFINITIVE FIX for the close button --- */
+.modal_container .close_button_icon {
+    position: absolute !important;
+    top: 0px !important; /* Move up a bit */
+    right: 15px !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    width: auto !important; /* Reset width */
+    height: auto !important; /* Reset height */
+    line-height: 1 !important;
+}
+.close_button_icon img {
+    width: 20px; /* Slightly larger */
+    height: 20px; /* Slightly larger */
+}
+
+.artist_list {
+    overflow-y: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #eee;
+    padding: 10px;
+}
+
+.artist_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.artist_item:last-child {
+    border-bottom: none;
+}
+
+.artist_item div {
+    display: flex;
+    gap: 5px;
+}
+
+/* --- MASTER BUTTON STYLES FOR THIS MODAL --- */
+.modal_container button {
+    background: white !important;
+    border: 1px solid black !important;
+    color: black !important;
+    border-radius: 0 !important;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between icon and text */
+}
+.modal_container button:hover {
+    background-color: #f8f9fa !important;
+}
+
+/* Active state for Main/Credit buttons */
+.modal_container button.active {
+    background: #333 !important;
+    color: white !important;
+    border-color: #333 !important;
+}
+
+.modal_container button img {
+    width: 20px; /* Increase general icon size */
+    height: 20px;
+}
+
+.button_group {
+    display: flex;
+    justify-content: flex-end; /* Submit button to the right */
+    gap: 10px;
+    margin-top: 20px;
+}
+.button_group button {
+    padding: 8px 16px;
+} 

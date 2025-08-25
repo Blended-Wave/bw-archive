@@ -12,8 +12,8 @@ export class WorksController {
 
     // 클라이언트에서 불러오는 works는 pub, pin, active 를 체크해야 함
     @Get('pub_works')
-    async getPublicWorksCtr(@Query() query: any): Promise<WorksResponseDto[]> {
-        const pinnedWorks = await this.workService.getPublicPinnedPubWorksSer(); // 고정 작품들
+    async getPublicWorksCtr(@Query() query: any): Promise<WorksDetailResponseDto[]> {
+        // const pinnedWorks = await this.workService.getPublicPinnedPubWorksSer(); // 고정 작품들
         let sortedWorks;
 
         // 필터 조건에 따라 조회수순 또는 시간순으로 정렬
@@ -23,7 +23,7 @@ export class WorksController {
             sortedWorks = await this.workService.getRecentSortedPubWorksSer();
         }
 
-        return [...pinnedWorks, ...sortedWorks];
+        return sortedWorks;
     }
 
     @Get('art_inst_works/:user_id')

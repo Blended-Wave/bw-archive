@@ -2,17 +2,32 @@
 
 import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation, Pagination } from 'swiper';
+import { Navigation, Pagination } from 'swiper/modules';
+import SwiperCore from 'swiper';
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import styles from '@/styles/ArtistSwiper.module.css';
 import Link from 'next/link';
+import Image from 'next/image';
 
 SwiperCore.use([Navigation, Pagination]);
 
-export default function ArtistSwiper({ artists }) {
-  const [swiper, setSwiper] = useState<Swiper | null>(null);
+interface ArtistData {
+  img: string;
+  name: string;
+  roles: string[];
+  instagramUrl: string;
+  twitterUrl: string;
+  link: string;
+}
+
+interface ArtistSwiperProps {
+  artists: ArtistData[];
+}
+
+export default function ArtistSwiper({ artists }: ArtistSwiperProps) {
+  const [swiper, setSwiper] = useState<SwiperCore | null>(null);
 
   useEffect(() => {
     setTimeout(() => {
@@ -38,7 +53,6 @@ export default function ArtistSwiper({ artists }) {
         nextBtn.style.margin = "0";
         nextBtn.style.opacity = "0";
 
-        // ✅ 버튼 클릭 이벤트 추가 (슬라이드 이동)
         prevBtn.addEventListener("click", () => {
           if (swiper) swiper.slidePrev();
         });
@@ -50,35 +64,30 @@ export default function ArtistSwiper({ artists }) {
     }, 100);
 
     return () => {
-      // ✅ 이벤트 리스너 정리
       const prevBtn = document.querySelector('.swiper-button-prev') as HTMLDivElement;
       const nextBtn = document.querySelector('.swiper-button-next') as HTMLDivElement;
-      if (prevBtn) prevBtn.removeEventListener("click", () => swiper?.slidePrev());
-      if (nextBtn) nextBtn.removeEventListener("click", () => swiper?.slideNext());
+      if (prevBtn && swiper) prevBtn.removeEventListener("click", () => swiper.slidePrev());
+      if (nextBtn && swiper) nextBtn.removeEventListener("click", () => swiper.slideNext());
     };
   }, [swiper]);
 
   const handleTransitionEnd = () => {
-    // ✅ 모든 슬라이드의 이미지 필터 초기화
-    document.querySelectorAll('.swiper-slide img').forEach((img) => {
+    document.querySelectorAll<HTMLImageElement>('.swiper-slide img').forEach((img) => {
       img.style.filter = "brightness(0.5)";
     });
 
-    // ✅ 현재 활성화된 슬라이드의 이미지 밝게
-    document.querySelectorAll('.swiper-slide-active img').forEach((img) => {
+    document.querySelectorAll<HTMLImageElement>('.swiper-slide-active img').forEach((img) => {
       img.style.filter = "brightness(1)";
     });
 
-    // ✅ 모든 `.artistInfo` 투명하게 설정
-    document.querySelectorAll(`.${styles.artistInfo}`).forEach((info) => {
-      info.style.opacity = "0";  // 모든 정보 숨김
+    document.querySelectorAll<HTMLDivElement>(`.${styles.artistInfo}`).forEach((info) => {
+      info.style.opacity = "0";
     });
 
-    // ✅ 현재 활성화된 슬라이드의 `.artistInfo`만 보이도록 설정
-    document.querySelectorAll('.swiper-slide-active').forEach((slide) => {
+    document.querySelectorAll<HTMLElement>('.swiper-slide-active').forEach((slide) => {
       const info = slide.querySelector(`.${styles.artistInfo}`) as HTMLDivElement;
       if (info) {
-        info.style.opacity = "1";  // 활성화된 슬라이드 정보 보이기
+        info.style.opacity = "1";
       }
     });
   };
@@ -86,26 +95,35 @@ export default function ArtistSwiper({ artists }) {
   return (
     <div className={styles.swiperWrapper}>
       <Swiper
+        modules={[Navigation, Pagination]}
         spaceBetween={35}
         slidesPerView={3}
         centeredSlides={true}
         loop={true}
         navigation={true}
         onSwiper={setSwiper}
-        onTransitionEnd={handleTransitionEnd} // ✅ 기존 구조 유지
+        onTransitionEnd={handleTransitionEnd}
         className={styles.swiperContainer}
       >
         {artists.map((artist, index) => (
           <SwiperSlide key={index} className={styles.swiperSlide}>
             <div className={styles.artistCard}>
               <img src={artist.img} alt={artist.name} className={styles.artistImage} />
-              {/* ✅ 활성화된 슬라이드에서만 보이도록 JavaScript로 스타일 제어 */}
               <div className={styles.artistInfo}>
                 <h3>{artist.name}</h3>
-                <p>{artist.role}</p>
-                <Link href={artist.link}>More Info</Link> 
-                {/* 받아오는 값은 응답 DTO랑 pages.tsx단에서 배열 만들 때 구조화 시켜서 문자열로 통일 */}
-                {/* 링크아이콘은 개수만큼 조건문으로 렌더링(아이콘으로)  */}
+                {artist.roles && <p>{artist.roles.join(' & ').toUpperCase()}</p>}
+                <div className={styles.socialIcons}>
+                  {artist.instagramUrl && (
+                    <a href={artist.instagramUrl} target="_blank" rel="noopener noreferrer" className={styles.iconLink}>
+                      <Image src="/instagram.svg" alt="Instagram" layout="fill" />
+                    </a>
+                  )}
+                  {artist.twitterUrl && (
+                    <a href={artist.twitterUrl} target="_blank" rel="noopener noreferrer" className={styles.iconLink}>
+                      <Image src="/twitter.svg" alt="Twitter" layout="fill" />
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           </SwiperSlide>

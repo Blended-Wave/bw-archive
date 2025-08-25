@@ -3,9 +3,11 @@
 import { useState } from "react";
 import LoginModal from "./LoginModal";
 import styles from "@/styles/Footer.module.css";
+import useUserStore from "@/store/userStore";
 
 export default function Footer() {
     const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+    const { isLoggedIn } = useUserStore();
 
     return (
         <>
@@ -19,14 +21,14 @@ export default function Footer() {
                 </div>
                 <div className={styles.footer_right}>
                     <p>Copyright ©2025 Blended Wave. All rights reserved.</p>
-                    {/* ✅ 클릭 시 로그인 모달 띄우기 */}
-                    <p className={styles.footer_login}>
-                        <button onClick={() => setLoginModalOpen(true)}>Member Login</button>
-                    </p>
+                    {!isLoggedIn && (
+                        <p className={styles.footer_login}>
+                            <button onClick={() => setLoginModalOpen(true)}>Member Login</button>
+                        </p>
+                    )}
                 </div>
             </footer>
 
-            {/* ✅ 로그인 모달 */}
             {isLoginModalOpen && <LoginModal onClose={() => setLoginModalOpen(false)} />}
         </>
     );

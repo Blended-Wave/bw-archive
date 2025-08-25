@@ -1,8 +1,21 @@
-import Link from 'next/link'
+'use client';
 
+import Link from 'next/link'
 import styles from '../styles/Navbar.module.css'
+import useUserStore from '@/store/userStore';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
+    const { isLoggedIn, logout } = useUserStore();
+    const router = useRouter();
+
+    const handleLogout = () => {
+        logout();
+        // 필요하다면 로그아웃 API 호출 추가
+        // await axios.post('/api/auth/logout');
+        router.push('/'); // 로그아웃 후 홈으로 이동
+    };
+
     return (
         <nav className={styles.navbar}>
             <a href="/">
@@ -25,15 +38,22 @@ export default function Navbar() {
                             INFO
                         </Link>
                     </li>
-                    {/* 로그인 로직은 추후 수정할 수도(디자인), 로직은 로그인 페이지로 넘어간 뒤, 로그인 정보 있을 땐 admin 페이지로 수정 */}
-                    <li>
-                        {/* <Link href="/admin">
-                            LOGIN
-                        </Link> */}
-                    </li>
+                    {isLoggedIn && (
+                        <>
+                            <li>
+                                <Link href="/admin">
+                                    ADMIN
+                                </Link>
+                            </li>
+                            <li>
+                                <button onClick={handleLogout} className={styles.logoutButton}>
+                                    LOGOUT
+                                </button>
+                            </li>
+                        </>
+                    )}
                 </ul>
             </div>
         </nav>
     )
 }
-//

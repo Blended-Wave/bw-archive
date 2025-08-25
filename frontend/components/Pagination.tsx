@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import styles from "@/styles/Pagination.module.css"
 
 // 페이지네이션 핵심 값들
@@ -8,10 +7,11 @@ interface Props {
   itemCountPerPage: number; // 한 페이지당 표시할 아이템 개수 (예: 한 페이지당 10개)
   pageCount: number; // 한 번에 보여줄 페이지 개수
   currentPage: number; // 현재 선택된 페이지
+  onPageChange: (pageNumber: number) => void; // 페이지 변경 핸들러 함수
 }
 
 // 페이지 이동 버튼 기능(페이지네이션) 구현
-export default function Pagination({ totalItems, itemCountPerPage, pageCount, currentPage }: Props) {
+export default function Pagination({ totalItems, itemCountPerPage, pageCount, currentPage, onPageChange }: Props) {
   const totalPages = Math.ceil(totalItems / itemCountPerPage); // 전체 페이지 개수 계산 (ceil로 올림처리)
   const [start, setStart] = useState(1); // 현재 페이지 그룹의 시작 페이지
   const noPrev = start === 1; // 이전&다음 버튼 비활성화 조건
@@ -27,7 +27,7 @@ export default function Pagination({ totalItems, itemCountPerPage, pageCount, cu
       <ul>
         {/* 이전 버튼 */}
         <li className={`${styles.move} ${noPrev && styles.invisible}`}>
-          <Link href={`?page=${start - 1}`}>이전</Link>
+          <button onClick={() => onPageChange(start - 1)} disabled={noPrev}>이전</button>
         </li>
 
         {/* 페이지 번호 버튼 */}
@@ -35,10 +35,10 @@ export default function Pagination({ totalItems, itemCountPerPage, pageCount, cu
           <>
             {start + i <= totalPages && (
               <li key={i}>
-                <Link className={`${styles.page} ${currentPage === start + i && styles.active}`}
-                  href={`?page=${start + i}`}>
+                <button className={`${styles.page} ${currentPage === start + i && styles.active}`}
+                  onClick={() => onPageChange(start + i)}>
                   {start + i}
-                </Link>
+                </button>
               </li>
             )}
           </>
@@ -46,7 +46,7 @@ export default function Pagination({ totalItems, itemCountPerPage, pageCount, cu
         
         {/* 다음 버튼 */}
         <li className={`${styles.move} ${noNext && styles.invisible}`}>
-          <Link href={`?page=${start + pageCount}`}>다음</Link>
+          <button onClick={() => onPageChange(start + pageCount)} disabled={noNext}>다음</button>
         </li>
       </ul>
     </div>

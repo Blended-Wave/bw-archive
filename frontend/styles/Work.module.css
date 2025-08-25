@@ -1,17 +1,22 @@
 .background {
     display: flex;
-    justify-content: center;
     flex-direction: column;
-    margin: 0 14%;
-    align-items: center;
+    align-items: center; /* 자식 요소를 수평 중앙 정렬 */
     margin-bottom: 150px;
 }
 
 .work_container {
-    width:100%;
+    width: 72%; /* artist 페이지와 동일하게 너비 지정 */
     display: flex;
     flex-direction: column;
     color: white;
+}
+
+.work_container h1 {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin: 30px 0;
 }
 
 .work_container p {
@@ -21,10 +26,19 @@
     margin: 30px 0;
 }
 
+.message {
+    color: #acacac;
+    font-size: 1.2rem;
+    padding: 100px 0;
+    text-align: center;
+    width: 100%;
+}
+
 .works {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.2%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 330px); /* 썸네일 크기 330px로 수정 */
+    gap: 20px; /* 아이템 사이의 고정 간격 */
+    width: 100%;
 }
 
 .sort {
@@ -52,6 +66,7 @@
     display: flex;
     margin: 110px 0 172px;
     justify-content: center;
+    width: 100%;
 }
 
 .pagination p {

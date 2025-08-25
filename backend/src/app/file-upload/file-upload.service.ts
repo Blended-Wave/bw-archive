@@ -74,4 +74,23 @@ export class FileUploadService {
     
         return uploadedFiles;
       }
+
+    async deleteFileFromS3(fileUrl: string): Promise<void> {
+        try {
+            const bucket = process.env.S3_BUCKET_NAME;
+            // URL에서 객체 키(파일 경로) 추출. 예: https://bucket.s3.region.amazonaws.com/avatars/filename.jpg -> avatars/filename.jpg
+            const key = new URL(fileUrl).pathname.substring(1);
+
+            await this.s3.deleteObject({
+                Bucket: bucket,
+                Key: key,
+            }).promise();
+
+            console.log(`Successfully deleted ${key} from ${bucket}`);
+        } catch (error) {
+            console.error(`Failed to delete file from S3: ${fileUrl}`, error);
+            // 에러를 던져서 호출한 쪽에서 트랜잭션 등을 롤백할 수 있게 함
+            throw new Error('S3 file deletion failed');
+        }
+    }
 }

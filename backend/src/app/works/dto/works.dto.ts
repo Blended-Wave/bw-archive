@@ -20,25 +20,25 @@ export class ArtistDto{
 }
 
 export class WorksDetailResponseDto {
+    id: number; // 렌더링에 필요한 id
     works_id: number;
-    thumb_url: string | null; // 이문법맞냐
-    type: string;  // type이 video냐 img에 따라 렌더링할 태그가 다름
-    file_url: string;
+    thumb_url: string | null;
+    thumbnail_url: string | null; // thumb_url과 공존하도록 허용
+    file_url: string; // 작품 원본 파일 URL
+    type: string;
     title: string;
-    description?: string;
-    series?: string;
-    created_at: Date; //??
+    description: string;
+    series: string;
+    created_at: Date;
     views: number;
-    main_artist: ArtistDto;
+    main_artist: string | ArtistDto | null; // 서비스 로직에 따라 타입 확장
     credits: ArtistDto[];
-    // 이 응답값을 화면에 렌더링할 일은 없지만 관리자 페이지에서 수정할 때, 사용가능
-    pinned?: boolean; 
-    private?: boolean;
-    status?: boolean; 
+    private: boolean;
+    status: string;
 }
 
 export class PagedWorksResponseDto {
-    data: WorksDetailResponseDto[]; // 페이지에 해당하는 데이터 목록
+    works: WorksDetailResponseDto[]; // 페이지에 해당하는 데이터 목록
     totalCount: number; // 전체 데이터 개수
     totalPages: number; // 전체 페이지 수
     currentPage: number; // 현재 페이지 번호

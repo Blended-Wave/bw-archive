@@ -1,15 +1,24 @@
-.container{
-    padding:5%;
-    width: 85%;
-    margin-left: auto;
+.managementContainer{
+    padding: 40px;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100vh;
+    color: #333;
 }
-.container p {
+
+.title {
+    color: #111;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.managementContainer p {
     font-size: 0.9rem;
     font-weight: 400;
     margin-top: 20px;
     color: #3b3b3b;
 }
-.container button {
+.managementContainer button {
     background-color: #5AADF9;
     color: white;
     border: 0;
@@ -18,17 +27,25 @@
     height: 32px;
     border-radius: 8px;
 }
-.container button:hover{
+.managementContainer button:hover{
     opacity: 0.7;
     cursor: pointer;
 }
 
 .add_button{
-    background-color: #5AADF9;
     width: 120px;
     height: 36px;
+    border-radius: 8px;
+    background-color: #5AADF9;
+    color: white;
+    border: 0;
+    margin: 20px 0;
 }
 
+.add_button:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
 
 .delete_button{
     width: 77px;
@@ -45,7 +62,11 @@
 
 .role_container {
     display: flex;
-    flex-direction: column;  /* 아이콘을 세로로 정렬 */
-    gap: 5px;  /* 아이콘 간격 조정 */
-    align-items: center; /* 가운데 정렬 */
-  }
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+}
+
+.inactive_row {
+    opacity: 0.5;
+}

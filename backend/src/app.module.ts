@@ -16,7 +16,7 @@ import { WorksModule } from './app/works/works.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { UserEntity } from './app/users/entities';
 import { WorksEntity } from './app/works/entities';
-import { FileUploadModule } from './file-upload/file-upload.module';
+import { FileUploadModule } from './app/file-upload/file-upload.module';
 
 const ENV_PATH = `src/config/.env.${process.env.NODE_ENV}`
 dotenv.config({path: ENV_PATH}) 

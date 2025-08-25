@@ -1,0 +1,255 @@
+.preview_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.preview_container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    max-width: 1400px;
+    max-height: 800px;
+}
+
+/* Navigation Arrows */
+.nav_arrow_left,
+.nav_arrow_right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav_arrow_left {
+    left: 20px;
+}
+
+.nav_arrow_right {
+    right: 20px;
+}
+
+.nav_arrow_left img,
+.nav_arrow_right img {
+    width: 40px;
+    height: 40px;
+    filter: brightness(0) invert(1); /* Make arrows white */
+}
+
+/* Content Wrapper */
+.content_wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 40px; /* Spacing between image and description sections */
+    padding: 0 80px; /* Space for navigation arrows */
+}
+
+/* Image Section */
+.image_section {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+}
+
+.image_section img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0; /* No border radius for images */
+}
+
+.image_placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 0;
+}
+
+/* Description Section */
+.description_section {
+    flex: 1;
+    height: 100%;
+    background-color: #2a2a2a;
+    padding: 40px;
+    border-radius: 12px; /* Border radius only for description section */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Creator Info */
+.creator_info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.creator_icon {
+    width: 40px;
+    height: 40px;
+}
+
+.person_icon {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.creator_name {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Title Section */
+.title_section {
+    margin-bottom: 20px;
+}
+
+.title {
+    color: #fff;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0 0 15px 0;
+    line-height: 1.2;
+}
+
+.series_date_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.series_name {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.date {
+    color: #ccc;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* Description Block */
+.description_block {
+    margin-bottom: 30px;
+}
+
+.description_header {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0 0 20px 0;
+    letter-spacing: 1px;
+}
+
+.description_text {
+    color: #ccc;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Credits Block */
+.credits_block {
+    margin-top: auto;
+}
+
+.credits_header {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0 0 20px 0;
+    letter-spacing: 1px;
+}
+
+.credits_list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.credit_item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.credit_name {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .content_wrapper {
+        gap: 30px;
+        padding: 0 60px;
+    }
+    
+    .description_section {
+        padding: 30px;
+    }
+    
+    .title {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 768px) {
+    .content_wrapper {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .nav_arrow_left,
+    .nav_arrow_right {
+        display: none;
+    }
+    
+    .description_section {
+        padding: 25px;
+    }
+    
+    .title {
+        font-size: 24px;
+    }
+} 

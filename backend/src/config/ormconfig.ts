@@ -17,6 +17,7 @@ const config:TypeOrmModuleOptions = {
     entities: [...Object.values(UserEntities), ...Object.values(WorksEntities)], // 엔터티들을 배열로 변환하여 사용 
     synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',  // 앱 실행 시 스키마 자동 생성 및 동기화 옵션, 개발 환경에서만 켜둘것
     logging: true,
+    keepConnectionAlive: true, // 이 옵션을 추가합니다.
 }
 
 export = config;

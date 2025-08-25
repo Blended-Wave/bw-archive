@@ -3,10 +3,8 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    width: 23.8%;
-    height: 23.8%;
+    aspect-ratio: 1 / 1; /* 1:1 비율 (정사각형) 유지 */
     max-width: 331px;
-    margin-bottom: 1.2%;
 }
 
 .work_box {
