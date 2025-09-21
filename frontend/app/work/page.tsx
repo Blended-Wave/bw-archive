@@ -40,8 +40,6 @@ export default function WorkPage() {
             try {
                 setLoading(true);
                 const sortOrder = searchParams.get('sort') || 'recent';
-                console.log('Fetching works with sort order:', sortOrder);
-                
                 // sort 파라미터에 따라 올바른 엔드포인트 선택
                 let endpoint = '';
                 switch (sortOrder) {
@@ -61,27 +59,14 @@ export default function WorkPage() {
                     withCredentials: true,
                 });
                 
-                console.log('Raw API response:', response);
-                console.log('Response data:', response.data);
-                console.log('Response status:', response.status);
-
                 // 백엔드 response 구조에 맞게 데이터 추출
                 const fetchedWorks = response.data?.result || [];
-                console.log('Fetched works array:', fetchedWorks);
-                console.log('Number of works:', fetchedWorks.length);
                 
                 // WorkBox 호환성을 위해 id 필드 추가
                 const transformedWorks = fetchedWorks.map((work: any, index: number) => ({
                     ...work,
                     id: work.works_id, // works_id를 id로 매핑
                 }));
-                
-                if (transformedWorks.length > 0) {
-                    console.log('First work example:', transformedWorks[0]);
-                    console.log('First work keys:', Object.keys(transformedWorks[0]));
-                    console.log('First work thumbnail_url:', transformedWorks[0].thumbnail_url);
-                    console.log('First work file_url:', transformedWorks[0].file_url);
-                }
                 
                 setWorks(transformedWorks);
                 setError(null);
@@ -99,20 +84,6 @@ export default function WorkPage() {
     }, [searchParams]);
 
     const handleWorkClick = (workIndex: number) => {
-        console.log('=== WORK CLICK DEBUG ===');
-        console.log('Selected work index:', workIndex);
-        console.log('Selected work data:', works[workIndex]);
-        console.log('Selected work type:', typeof works[workIndex]);
-        console.log('Selected work keys:', works[workIndex] ? Object.keys(works[workIndex]) : 'No work data');
-        
-        if (works[workIndex]) {
-            console.log('Selected work file_url:', works[workIndex].file_url);
-            console.log('Selected work thumbnail_url:', works[workIndex].thumbnail_url);
-            console.log('Selected work type:', works[workIndex].type);
-            console.log('Selected work main_artist:', works[workIndex].main_artist);
-            console.log('Selected work credits:', works[workIndex].credits);
-        }
-        
         setSelectedWorkIndex(workIndex);
     };
 
