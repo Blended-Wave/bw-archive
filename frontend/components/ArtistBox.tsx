@@ -4,7 +4,7 @@ import Link from 'next/link';
 interface Artist {
     user_id: number;
     nickname: string;
-    avatar_image_url: string;
+    avatar_url: string; // Changed from avatar_image_url
     roles: number[];
     twitter_url: string;
     instar_url: string;
@@ -37,9 +37,9 @@ export default function ArtistBox({ artist }: ArtistBoxProps) {
           </svg>
           <p>VIEW DETAIL</p>
         </Link>
-        {!artist.avatar_image_url || artist.avatar_image_url === 'default avatar' ? 
+        {!artist.avatar_url || artist.avatar_url === 'default avatar' ? 
           <div className={styles.default_avatar_image}></div> :
-          <img className={styles.avatar_image} src={artist.avatar_image_url} alt={artist.nickname} />}
+          <img className={styles.avatar_image} src={artist.avatar_url} alt={artist.nickname} />}
       </div>
       <div className={styles.artistName}>{artist.nickname}</div>
     </div>

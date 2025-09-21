@@ -1,26 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '@/lib/axios';
 import styles from '@/styles/ArtistIntroduction.module.css';
 import Link from 'next/link';
 import ArtistSwiper from '@/components/ArtistSwiper';
+import WorkDetailModal from '@/components/WorkDetailModal';
 import { useParams } from 'next/navigation';
 
-interface InstWork {
-    image_url: string;
-    // 백엔드 DTO에는 없지만, 실제 응답에 포함될 수 있는 잠재적 필드를 위해 인덱스 시그니처 추가
-    [key: string]: any;
-}
-
-interface ArtistInfo {
-    nickname: string;
-    role_names: string[];
-    instagram: string;
-    twitter: string;
-}
-
-// ArtistSwiper에 맞는 데이터 구조
 interface SwiperArtistData {
     img: string;
     name: string;
@@ -28,56 +15,67 @@ interface SwiperArtistData {
     instagramUrl: string;
     twitterUrl: string;
     link: string;
+    works_id: number; // 작품 ID 추가
 }
 
-// 더미 데이터 정의
-const dummyWorks: SwiperArtistData[] = [
-    { img: '/tmp_img/tmpImg.png', name: 'DISCUZZ', roles: ['Illustrator', 'Animator'], instagramUrl: 'https://instagram.com', twitterUrl: 'https://twitter.com', link: '#' },
-    { img: '/tmp_img/tmpImg2.png', name: 'Artist 2', roles: ['Illustrator', 'Animator'], instagramUrl: 'https://instagram.com', twitterUrl: '', link: '#' },
-    { img: '/tmp_img/tmpImg3.png', name: 'Artist 3', roles: ['Illustrator'], instagramUrl: '', twitterUrl: 'https://twitter.com', link: '#' },
-    { img: '/tmp_img/tmpImg4.png', name: 'Artist 4', roles: ['Animator'], instagramUrl: 'https://instagram.com', twitterUrl: 'https://twitter.com', link: '#' },
-    { img: '/tmp_img/tmpImg5.png', name: 'Artist 5', roles: ['Composer'], instagramUrl: '', twitterUrl: '', link: '#' },
-];
-
+interface SwiperArtistInfo {
+    name: string;
+    roles: string[];
+    instagramUrl: string;
+    twitterUrl: string;
+}
 
 export default function ArtistIntroduction() {
     const params = useParams();
     const userId = params.userId as string;
 
     const [works, setWorks] = useState<SwiperArtistData[]>([]);
+    const [artistInfo, setArtistInfo] = useState<SwiperArtistInfo | null>(null);
     const [loading, setLoading] = useState(true);
+    const [selectedWorkId, setSelectedWorkId] = useState<number | null>(null);
+    const [selectedWorkIndex, setSelectedWorkIndex] = useState<number | null>(null);
 
     useEffect(() => {
         if (!userId) {
             setLoading(false);
-            setWorks(dummyWorks);
+            setWorks([]);
             return;
-        };
+        }
 
         const fetchArtistWorks = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`http://localhost:4000/api/works/art_inst_works/${userId}`);
-                const { imgList, artistInfo }: { imgList: InstWork[], artistInfo: ArtistInfo } = response.data;
+                // 공개 API: /works/artist/:userId
+                const response = await api.get(`/works/artist/${userId}`);
+                const { imgList, artistInfo: info } = response.data.result || {};
 
-                if (imgList && imgList.length > 0) {
-                    const swiperData = imgList.map((work: InstWork) => ({
-                        img: work.image_url,
-                        name: artistInfo.nickname,
-                        roles: artistInfo.role_names, 
-                        instagramUrl: artistInfo.instagram,
-                        twitterUrl: artistInfo.twitter,
-                        link: `/artist` 
-                    }));
-                    setWorks(swiperData);
-                } else {
-                    // 데이터가 없을 경우 더미 데이터 사용
-                    setWorks(dummyWorks);
-                }
+                const swiperData: SwiperArtistData[] = Array.isArray(imgList)
+                    ? imgList.map((work: any) => ({
+                          img: work.file_url || work.thumbnail_url || '/admin_icon/alt_img.svg',
+                          name: info?.name || '',
+                          roles: info?.roles || [],
+                          instagramUrl: info?.instarUrl || '',
+                          twitterUrl: info?.twitterUrl || '',
+                          link: `/artist`,
+                          works_id: work.works_id, // 작품 ID 추가
+                      }))
+                    : [];
+
+                setWorks(swiperData);
+                setArtistInfo(
+                    info
+                        ? {
+                              name: info.name,
+                              roles: info.roles,
+                              instagramUrl: info.instarUrl,
+                              twitterUrl: info.twitterUrl,
+                          }
+                        : null,
+                );
             } catch (err) {
                 console.error('아티스트의 작업물을 불러오는 데 실패했습니다.', err);
-                // 에러 발생 시에도 더미 데이터 렌더링
-                setWorks(dummyWorks);
+                setWorks([]);
+                setArtistInfo(null);
             } finally {
                 setLoading(false);
             }
@@ -86,26 +84,74 @@ export default function ArtistIntroduction() {
         fetchArtistWorks();
     }, [userId]);
 
-    return (
-        <main style={{ minHeight: 'calc(100vh - 60px)' }}> {/* 60px는 헤더 높이 */}
-        <div className={styles.container}>
-            <div className={styles.title}>
-                    {/* 제목을 고정된 값으로 변경 */}
-                    <p>ARTIST INTRODUCTION</p>
-            </div>
-            
-                {loading && <p>Loading...</p>}
-                
-                {!loading && works.length > 0 && (
-                    <ArtistSwiper artists={works} />
-                )}
+    const handleWorkClick = (works_id: number, index: number) => {
+        setSelectedWorkId(works_id);
+        setSelectedWorkIndex(index);
+    };
 
-            <div className={styles.back}>
-                <Link href="/artist">
-                    BACK TO LIST
-                </Link>
+    const handleCloseModal = () => {
+        setSelectedWorkId(null);
+        setSelectedWorkIndex(null);
+    };
+
+    const handlePrevWork = () => {
+        if (selectedWorkIndex !== null && selectedWorkIndex > 0) {
+            const newIndex = selectedWorkIndex - 1;
+            setSelectedWorkIndex(newIndex);
+            setSelectedWorkId(works[newIndex].works_id);
+        }
+    };
+
+    const handleNextWork = () => {
+        if (selectedWorkIndex !== null && selectedWorkIndex < works.length - 1) {
+            const newIndex = selectedWorkIndex + 1;
+            setSelectedWorkIndex(newIndex);
+            setSelectedWorkId(works[newIndex].works_id);
+        }
+    };
+
+    return (
+        <main
+            style={{
+                minHeight: 'calc(100vh - 60px)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}
+        >
+            <div className={styles.container}>
+                <div className={styles.title}>
+                    <p>ARTIST INTRODUCTION</p>
+                </div>
+
+                <div className={styles.swiper_container}>
+                    {loading && <p>Loading...</p>}
+
+                    {!loading && works.length > 0 && artistInfo && (
+                        <ArtistSwiper 
+                            artists={works} 
+                            artistInfo={artistInfo} 
+                            onWorkClick={handleWorkClick} 
+                        />
+                    )}
+                </div>
+
+                <div className={styles.back}>
+                    <Link href="/artist">BACK TO LIST</Link>
+                </div>
             </div>
-        </div>
+
+            {/* WorkDetailModal */}
+            {selectedWorkId !== null && selectedWorkIndex !== null && (
+                <WorkDetailModal
+                    workId={selectedWorkId}
+                    onClose={handleCloseModal}
+                    onPrev={handlePrevWork}
+                    onNext={handleNextWork}
+                    isPrevDisabled={selectedWorkIndex === 0}
+                    isNextDisabled={selectedWorkIndex === works.length - 1}
+                />
+            )}
         </main>
     );
 }

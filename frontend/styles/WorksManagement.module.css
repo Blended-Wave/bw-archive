@@ -33,14 +33,29 @@
 }
 
 .delete_button {
-    width: 77px;
-    height: 38px;
+    width: 77px !important;
     border: 0;
     background-color: #DF7272 !important;
     color: white;
     border-radius: 12px;
 }
 
+.edit_button {
+    width: 77px !important;
+    border: 0;
+    background-color: #A7C957 !important; 
+    color: white;
+    border-radius: 12px;
+}
+.restore_button {
+    width: 77px !important;
+    border: 0;
+    color: white;
+    border-radius: 12px;
+}
+.hard_delete_button{
+    background-color: #DF7272 !important;
+}
 .delete_button:hover {
     opacity: 0.7;
     cursor: pointer;
@@ -48,4 +63,30 @@
 
 .inactive_row {
     opacity: 0.5;
+}
+
+.action_buttons {
+    display: flex;
+    justify-content: center;
+    gap: 8px; /* Add space between buttons */
+}
+
+.edit_button,
+.delete_button,
+.restore_button {
+    /* ... existing button styles ... */
+}
+
+.hard_delete_button {
+    background-color: #D94848; /* Strong red for warning */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.hard_delete_button:hover {
+    background-color: #b03a3a;
 }

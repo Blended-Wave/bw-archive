@@ -16,8 +16,8 @@ export default function Footer() {
                     <img src="main_logo.svg" alt="logo" />
                 </div>
                 <div className={styles.footer_center}>
-                    <p>아티스트 문의 / For artist inquiries (blendedwave@gmail.com)</p>
-                    <p>사이트 개발자 문의 / For developer inquiries (12191735@inha.edu)</p>
+                    <p>아티스트 문의 / For artist inquiries (thisiscuzz@naver.com)</p>
+                    <p>사이트 개발자 문의 / For developer inquiries (sunwoo005@gmail.com)</p>
                 </div>
                 <div className={styles.footer_right}>
                     <p>Copyright ©2025 Blended Wave. All rights reserved.</p>

@@ -129,3 +129,7 @@ a {
   height: 100%;
   pointer-events: none;
 }
+
+/* 전역 스크롤바 제거 - 특정 요소만 커스텀 */
+
+/* globals.css에서 description_text 스타일 완전 제거 - CSS Module에서만 처리 */

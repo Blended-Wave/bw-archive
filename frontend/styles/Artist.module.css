@@ -5,6 +5,7 @@
     margin: 0 25%;
     align-items: center;
     margin-bottom: 150px;
+    padding-top: 80px; /* Add top padding to prevent navbar overlap (60px navbar + 20px spacing) */
 }
 
 .artist_container {

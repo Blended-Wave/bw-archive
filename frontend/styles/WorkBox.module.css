@@ -15,12 +15,27 @@
     box-sizing: inherit;
     width: 100%;
     height: 100%;
+    object-fit: cover; /* 이미지 비율 유지하면서 컨테이너에 맞춤 */
+}
+
+/* 썸네일과 파일이 모두 없을 때의 회색 박스 */
+.placeholderBox {
+    width: 100%;
+    height: 100%;
+    background-color: #666666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .work_container:hover{
     cursor: pointer;
 }
 
-.work_container:hover>img {
+.work_container:hover > img {
+    filter: brightness(0.7);
+}
+
+.work_container:hover > .placeholderBox {
     filter: brightness(0.7);
 }
 
@@ -41,8 +56,8 @@
 
 .detail svg {
     position: absolute;
-    width: 20%;
-    height: 20%;
+    width: 60%; /* 20% → 60% (3배) */
+    height: 60%; /* 20% → 60% (3배) */
     display: block;
     top: 50%;
     left: 50%;

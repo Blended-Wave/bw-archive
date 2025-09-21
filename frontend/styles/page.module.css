@@ -1,5 +1,5 @@
-/* styles/page.module.css */
-.screen_container {
+/* 동영상 파일 백그라운드용 스타일 */
+.video_container {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,28 +10,17 @@
   background: #000;
 }
 
-.screen_container iframe {
+.background_video {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(1.05); /* Hide player's letterboxing */
-  border: none;
-  pointer-events: none;
-}
-
-/* aspect-ratio media queries for a perfect 'cover' effect */
-@media (min-aspect-ratio: 16/9) {
-  .screen_container iframe {
-    width: 100vw;
-    height: calc(100vw * 9 / 16);
-  }
-}
-
-@media (max-aspect-ratio: 16/9) {
-  .screen_container iframe {
-    height: 100vh;
-    width: calc(100vh * 16 / 9);
-  }
+  transform: translate(-50%, -50%);
+  min-width: 100vw;
+  min-height: 100vh;
+  width: auto;
+  height: auto;
+  object-fit: cover; /* 비율 유지하면서 컨테이너 채우기 */
+  pointer-events: none; /* 클릭 방지 */
 }
 
 .screen_padding_bottom {

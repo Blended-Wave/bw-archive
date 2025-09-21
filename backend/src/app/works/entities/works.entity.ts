@@ -1,59 +1,67 @@
-import { Entity, BeforeUpdate, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  OneToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { SeriesEntity } from './series.entity';
 import { WorksFileEntity } from './worksFile.entity';
-
+import { UserWorksEntity } from 'src/app/users/entities/user.works.entity';
 
 @Entity('works')
 export class WorksEntity {
-    @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @ManyToOne(() => SeriesEntity)
-    @JoinColumn({ name: 'series_id' })
-    series: SeriesEntity;
-    
-    @Column({ type: 'text', nullable: true })
-    thumbnail_url: string |  null;
+  @Column({ type: 'varchar', length: 255, nullable: false })
+  title: string;
 
-    @OneToOne(() => WorksFileEntity)
-    @JoinColumn({ name: 'works_file_id' })
-    works_file: WorksFileEntity;
+  @Column({ type: 'text', nullable: true })
+  description: string;
 
-    @Column({ type: 'varchar', length: 30, nullable: false })
-    title: string;
-    
-    @Column({ type: 'varchar', length: 15, nullable: false })
-    type: string;
+  @Column({ name: 'thumb_url', type: 'varchar', length: 255, nullable: true })
+  thumb_url: string;
 
-    @Column({ type: 'int', unsigned: true, nullable: false })
-    views: number;
+  @Column({ type: 'tinyint', width: 1, default: 0 })
+  private_option: number;
 
-    @Column({ type: 'text', nullable: true })
-    description: string;
+  @Column({ type: 'tinyint', width: 1, default: 0 })
+  pinned_option: number;
+  
+  @Column({ type: 'varchar', length: 15, nullable: false, default: 'active' })
+  status: string;
+  
+  @Column({ type: 'int', unsigned: true, default: 0 })
+  views: number;
 
-    @Column({ type: 'int', nullable: false })
-    pinned_option: number;
+  @Column({ name: 'inactive_date', type: 'datetime', nullable: true })
+  inactive_date: Date;
+  
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  created_at: Date;
 
-    @Column({ type: 'int', nullable: false })
-    private_option: number;
-    
-    @Column({ type: 'varchar', length: 15, nullable: false, default: 'active' })
-    status: string;
-    
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
+  updated_at: Date;
 
-    @Column({ type: 'timestamp', nullable: true })
-    inactive_date: Date;
+  @ManyToOne(() => SeriesEntity, (series) => series.works, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'series_id' })
+  series: SeriesEntity;
 
-    @Column({ type: 'date', nullable: false })
-    created_at: Date;
+  @OneToOne(() => WorksFileEntity, (worksFile) => worksFile.works, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'works_file_id' })
+  works_file: WorksFileEntity | null;
 
-    @Column({ type: 'date', nullable: false })
-    updated_at: Date;
-
-    @BeforeUpdate()
-    setInactiveDate() {
-        if (this.status === 'inactive' && !this.inactive_date) {
-            this.inactive_date = new Date();
-        }
-    }
+  @OneToMany(() => UserWorksEntity, (userWorks) => userWorks.works)
+  user_works: UserWorksEntity[];
 }

@@ -3,42 +3,61 @@
 import styles from '@/styles/WorkModal.module.css';
 import { useState, useEffect } from 'react';
 import ArtistSearchModal from './ArtistSearchModal';
+import api from '@/lib/axios';
 
 interface WorkData {
-    artTitle: string;
-    seriesName: string;
+    title: string;
+    series: string;
+    description: string;
+    main_artist: string;
     credits: string;
-    thumbnail: string;
-    type: string;
+    type: 'image' | 'video';
     private_option: boolean;
     pinned_option: boolean;
-    main_artist: string;
-    datetime: string; // 이 부분은 서버에서 자동 생성될 수 있으므로, 클라이언트에서는 보내지 않을 수 있습니다.
-    status: string; // status 속성 추가
+    status: 'active' | 'inactive';
+    datetime: string;
+    thumbnail: any;
+    [key: string]: any;
 }
 
 interface WorkModalProps {
+    isOpen: boolean;
     onClose: () => void;
-    onSave: (workData: any, files: { thumbnail?: File, workFile?: File }) => void;
+    onSave: (
+        workData: WorkData,
+        files: { thumbnail?: File; workFile?: File },
+    ) => Promise<void>; // Changed return type to Promise<void>
+    workId?: number | null;
 }
 
-export default function WorkModal({ onClose, onSave }: WorkModalProps) {
-    const [workData, setWorkData] = useState({
-        artTitle: '',
-        seriesName: '',
+interface FileInfo {
+    name: string;
+    type: string;
+    size: number;
+    dimensions: string;
+}
+
+const WorkModal = ({ isOpen, onClose, onSave, workId }: WorkModalProps) => {
+    const isEditMode = workId !== null;
+    const [workData, setWorkData] = useState<WorkData>({
+        title: '',
+        series: '',
         description: '',
+        main_artist: '',
         credits: '',
         type: 'video',
         private_option: false,
         pinned_option: false,
-        main_artist: '',
         status: 'active',
-        datetime: new Date().toISOString(), // Add current datetime
+        datetime: '',
+        thumbnail: null,
     });
     const [thumbnailFile, setThumbnailFile] = useState<File | undefined>();
     const [workFile, setWorkFile] = useState<File | undefined>();
     const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+    const [thumbnailInfo, setThumbnailInfo] = useState<FileInfo | null>(null);
     const [workFilePreview, setWorkFilePreview] = useState<string | null>(null);
+    const [workFileInfo, setWorkFileInfo] = useState<FileInfo | null>(null);
     const [isArtistModalOpen, setIsArtistModalOpen] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -55,16 +74,16 @@ export default function WorkModal({ onClose, onSave }: WorkModalProps) {
         }
     };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, files } = e.target;
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, fileType: 'thumbnail' | 'workFile') => {
+        const { files } = event.target;
         if (files && files[0]) {
             const file = files[0];
-            if (name === 'thumbnail') {
+            if (fileType === 'thumbnail') {
                 setThumbnailFile(file);
                 const reader = new FileReader();
                 reader.onloadend = () => setThumbnailPreview(reader.result as string);
                 reader.readAsDataURL(file);
-            } else if (name === 'workFile') {
+            } else if (fileType === 'workFile') {
                 setWorkFile(file);
                 if (file.type.startsWith('image/')) {
                     const reader = new FileReader();
@@ -81,18 +100,85 @@ export default function WorkModal({ onClose, onSave }: WorkModalProps) {
         if (fileType === 'thumbnail') {
             setThumbnailFile(undefined);
             setThumbnailPreview(null);
+            setThumbnailInfo(null);
         } else {
             setWorkFile(undefined);
             setWorkFilePreview(null);
+            setWorkFileInfo(null);
         }
     };
 
+    const getFileInfoFromUrl = (url: string, type: string): Promise<FileInfo> => {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+                resolve({
+                    name: url.split('/').pop() || 'file',
+                    type: type,
+                    size: 0, // Size cannot be determined from URL alone
+                    dimensions: `${img.width}x${img.height}`,
+                });
+            };
+            img.onerror = () => { // Handle cases where the URL is not an image (e.g., video)
+                resolve({ name: url.split('/').pop() || 'file', type, size: 0, dimensions: 'N/A' });
+            };
+            img.src = url;
+        });
+    };
+
     useEffect(() => {
-        return () => {
-            if (thumbnailPreview) URL.revokeObjectURL(thumbnailPreview);
-            if (workFilePreview) URL.revokeObjectURL(workFilePreview);
-        };
-    }, [thumbnailPreview, workFilePreview]);
+        if (isOpen && isEditMode && workId) {
+            const fetchWorkForEdit = async () => {
+                try {
+                    const response = await api.get(`/admin/works_modify/${workId}`);
+                    if (response.data && response.data.result) {
+                        const fetchedData = response.data.result;
+
+                        // Transform artist/credits objects into strings for input fields
+                        const transformedData = {
+                            ...fetchedData,
+                            main_artist: fetchedData.main_artist?.nickname || '',
+                            credits: Array.isArray(fetchedData.credits)
+                                ? fetchedData.credits.map((c: any) => c.nickname).join(', ')
+                                : '',
+                            thumbnail: fetchedData.thumbnail_url || null,
+                        };
+
+                        setWorkData(transformedData);
+
+                        if (fetchedData.thumbnail_url) {
+                            setThumbnailPreview(fetchedData.thumbnail_url);
+                        }
+                        if (fetchedData.file_url) {
+                            setWorkFilePreview(fetchedData.file_url);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error fetching work for edit:', error);
+                }
+            };
+            fetchWorkForEdit();
+        } else {
+            // Reset form for 'add' mode
+            setWorkData({
+                title: '',
+                series: '',
+                description: '',
+                main_artist: '',
+                credits: '',
+                type: 'video',
+                private_option: false,
+                pinned_option: false,
+                status: 'active',
+                datetime: '',
+                thumbnail: null,
+            });
+            setThumbnailPreview(null);
+            setWorkFilePreview(null);
+            setThumbnailInfo(null);
+            setWorkFileInfo(null);
+        }
+    }, [isOpen, isEditMode, workId]);
 
     const handleArtistSelect = (selectedArtists: { main: string, credits: string[] }) => {
         setWorkData(prev => ({
@@ -103,11 +189,12 @@ export default function WorkModal({ onClose, onSave }: WorkModalProps) {
     };
     
     const handleSave = () => {
-        if (!workData.artTitle || !workData.main_artist) {
-            alert('제목과 메인 아티스트는 필수 항목입니다.');
+        if (!workData.main_artist?.trim()) {
+            alert('메인 아티스트를 선택/입력해 주세요.');
             return;
-        }
-        onSave(workData, { thumbnail: thumbnailFile, workFile: workFile });
+          }
+        const files = { thumbnail: thumbnailFile, workFile: workFile };
+        onSave(workData, files);
     };
 
     const handlePreview = () => {
@@ -120,28 +207,23 @@ export default function WorkModal({ onClose, onSave }: WorkModalProps) {
         window.open('/work/preview', '_blank');
     };
 
+    if (!isOpen) return null;
+
     return (
         <div className={styles.modal_overlay} onClick={onClose}>
             <div className={styles.modal_container} onClick={(e) => e.stopPropagation()}>
-                <h2 className={styles.modal_title}>작업물 업로드</h2>
+                <h2 className={styles.modal_title}>
+                    {isEditMode ? '작업물 수정' : '작업물 추가'}
+                </h2>
                 <div className={styles.content_wrapper}>
                     <div className={styles.left_column}>
                         <div className={styles.input_group_horizontal}>
                             <label>제목</label>
-                            <input name="artTitle" value={workData.artTitle} onChange={handleChange} placeholder="작업물 제목입니다." />
+                            <input name="title" value={workData.title} onChange={handleChange} placeholder="작업물 제목입니다." />
                         </div>
                         <div className={styles.input_group_horizontal}>
                             <label>시리즈</label>
-                            <input name="seriesName" value={workData.seriesName} onChange={handleChange} placeholder="시리즈 이름입니다." />
-                        </div>
-                        <div className={styles.input_group_horizontal}>
-                            <label>날짜</label>
-                            <input 
-                                type="datetime-local" 
-                                name="datetime" 
-                                value={workData.datetime ? workData.datetime.slice(0, 16) : ''} 
-                                onChange={handleChange} 
-                            />
+                            <input name="series" value={workData.series} onChange={handleChange} placeholder="시리즈 이름입니다." />
                         </div>
                         <div className={styles.input_group_horizontal_top}>
                             <label>설명</label>
@@ -152,7 +234,7 @@ export default function WorkModal({ onClose, onSave }: WorkModalProps) {
                             <div className={styles.artist_selector}>
                                 <button onClick={() => setIsArtistModalOpen(true)}>검색</button>
                                 {workData.main_artist && <span className={`${styles.artist_tag} ${styles.main_artist_tag}`}>{workData.main_artist}</span>}
-                                {workData.credits.split(',').filter(c => c.trim()).map(artist => (
+                                {typeof workData.credits === 'string' && workData.credits.split(',').filter(c => c.trim()).map(artist => (
                                     <span key={artist} className={styles.artist_tag}>{artist}</span>
                                 ))}
                             </div>
@@ -162,7 +244,7 @@ export default function WorkModal({ onClose, onSave }: WorkModalProps) {
                             <div className={styles.file_upload_main_area}>
                                 <div className={styles.file_upload_left}>
                                     <div className={styles.file_buttons}>
-                                        <input type="file" name="workFile" onChange={handleFileChange} id="workFileInput" style={{ display: 'none' }} />
+                                        <input type="file" name="workFile" onChange={(e) => handleFileChange(e, 'workFile')} id="workFileInput" style={{ display: 'none' }} />
                                         <button onClick={() => document.getElementById('workFileInput')?.click()}>
                                             <img src="/admin_icon/upload-icon.svg" alt="upload" /> Upload
                                         </button>
@@ -179,7 +261,17 @@ export default function WorkModal({ onClose, onSave }: WorkModalProps) {
                                     )}
                                 </div>
                                 <div className={styles.file_upload_right_preview}>
-                                    {workFilePreview && <img src={workFilePreview} alt="Work file preview"/>}
+                                    {workFilePreview && (
+                                        <>
+                                            <img src={workFilePreview} alt="Work file preview"/>
+                                            {workFileInfo && (
+                                                <div className={styles.file_info}>
+                                                    <p>{workFileInfo.name}</p>
+                                                    <p>{workFileInfo.dimensions}</p>
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
                                 </div>
                             </div>
                 </div>
@@ -192,10 +284,20 @@ export default function WorkModal({ onClose, onSave }: WorkModalProps) {
                         <div className={styles.thumbnail_group}>
                             <p className={styles.thumbnail_title}>썸네일(미리보기)</p>
                             <div className={styles.thumbnail_box}>
-                                {thumbnailPreview && <img src={thumbnailPreview} alt="Thumbnail preview" />}
+                                {thumbnailPreview ? (
+                                    <>
+                                        <img src={thumbnailPreview} alt="썸네일 미리보기" className={styles.preview_image} />
+                                        {thumbnailInfo && (
+                                            <div className={styles.file_info}>
+                                                <p>{thumbnailInfo.name}</p>
+                                                <p>{thumbnailInfo.dimensions}</p>
+                                            </div>
+                                        )}
+                                    </>
+                                ) : <p>썸네일 없음</p>}
                     </div>
                             <div className={styles.thumbnail_buttons}>
-                                <input type="file" name="thumbnail" onChange={handleFileChange} accept="image/*" id="thumbnailInput" style={{ display: 'none' }}/>
+                                <input type="file" name="thumbnail" onChange={(e) => handleFileChange(e, 'thumbnail')} accept="image/*" id="thumbnailInput" style={{ display: 'none' }}/>
                                 <button onClick={() => document.getElementById('thumbnailInput')?.click()}>
                                     <img src="/admin_icon/upload-icon.svg" alt="upload" /> Upload
                                 </button>
@@ -210,14 +312,14 @@ export default function WorkModal({ onClose, onSave }: WorkModalProps) {
                     </div>
                 </div>
                 <div className={styles.bottom_button_group}>
-                    <button className={styles.close_button} onClick={onClose}>
-                        <img src="/admin_icon/close_icon.svg" alt="close" /> Close
+                    <button type="button" className={`${styles.btn} ${styles.btn_gray}`} onClick={onClose}>
+                        <img src="/admin_icon/close_icon.svg" alt=""/> Close
                     </button>
-                    <button className={styles.preview_button} onClick={handlePreview}>
-                        <img src="/admin_icon/preview_icon.svg" alt="preview" /> Preview
+                    <button type="button" className={`${styles.btn} ${styles.btn_gray}`} onClick={handlePreview}>
+                        <img src="/admin_icon/preview_icon.svg" alt=""/> Preview
                     </button>
-                    <button onClick={handleSave} className={styles.publish_button}>
-                        <img src="/admin_icon/publish_icon.svg" alt="publish" /> Publish
+                    <button type="button" className={`${styles.btn} ${styles.btn_blue}`} onClick={handleSave}>
+                        <img src="/admin_icon/publish_icon.svg" alt=""/> {isEditMode ? 'Update' : 'Publish'}
                     </button>
                 </div>
             </div>
@@ -225,3 +327,5 @@ export default function WorkModal({ onClose, onSave }: WorkModalProps) {
             </div>
     );
 }
+
+export default WorkModal;

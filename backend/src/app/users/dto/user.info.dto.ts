@@ -8,16 +8,25 @@ export class CreateUserSeedDto {
   }
 
 // user 추가 시 Req Dto
-export class UserReqDto {
+export class CreateUserReqDto {
   readonly login_id: string;
   readonly password: string;
-  readonly user_id: number; // 이건.. 왜있지(아직 쓰이는곳 없어보임)
-  readonly avatar_image_url: string;
   readonly nickname: string;
   readonly roles: number[];
-  readonly twitter_url: string;
-  readonly instar_url: string;
+  readonly avatar_image_url?: string;
+  readonly twitter_url?: string;
+  readonly instar_url?: string;
 }
+
+// user 수정 시 Req Dto
+export class UpdateUserReqDto {
+    readonly nickname: string;
+    readonly roles: number[];
+    readonly avatar_image_url?: string;
+    readonly twitter_url?: string;
+    readonly instar_url?: string;
+}
+
 export class userStatusDto {
   readonly status: string;
 }

@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In, Not } from 'typeorm';
 import {
-  UserReqDto,
   CreateUserSeedDto,
   InstUserResponseDto,
+  CreateUserReqDto,
+  UpdateUserReqDto,
 } from './dto/user.info.dto';
 import { UserResponseDto } from './dto/user.dto';
 import {
@@ -20,6 +21,20 @@ import * as bcrypt from 'bcrypt';
 import { ArtistDto } from '../works/dto/works.dto';
 import { FileUploadService } from '../file-upload/file-upload.service';
 
+export interface UserInfo {
+  name: string;
+  roles: string[];
+  instarUrl?: string;
+  twitterUrl?: string;
+  works: {
+    works_id: number;
+    file_url: string;
+    thumbnail_url: string;
+    type: string;
+    private_option: boolean;
+  }[];
+}
+
 @Injectable()
 export class UserService {
   constructor(
@@ -31,7 +46,7 @@ export class UserService {
     private roleRepository: Repository<RoleEntity>,
     @InjectRepository(UserWorksEntity)
     private userWorksRepository: Repository<UserWorksEntity>,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
   ) {}
   // Global User Service
   async getRoleIdByUserId(userId: number): Promise<number[]> {
@@ -82,7 +97,7 @@ export class UserService {
   async getAvatarUrlByUserId(userId: number): Promise<string> {
     console.log(`  -> getAvatarUrlByUserId called for user: ${userId}`);
     const user = await this.userRepository.findOne({ where: { id: userId } });
-    // 사용자가 없거나 avatar_url이 null 또는 undefined인 경우 기본 아바타 반환
+
     if (!user || !user.avatar_url) {
       console.log(
         `  -> No user or avatar_url found for user: ${userId}. Returning 'default avatar'.`,
@@ -94,27 +109,29 @@ export class UserService {
   }
   // Clinet User(Artist) Service
 
-  async getAllUsersAtClient(): Promise<UserResponseDto[]> {
-    try {
-      const users = await this.userRepository.find();
-      const clientUserDtos: UserResponseDto[] = [];
+  async getAllUsersAtClient(): Promise<object> {
+    const allUsers = await this.userRepository.find({
+      where: { status: 'active' },
+    });
 
-      for (const user of users) {
-        const clientUserDto = new UserResponseDto();
-        const { id, nickname, status } = user;
-
-        clientUserDto.user_id = id;
-        clientUserDto.nickname = nickname;
-        clientUserDto.roles = await this.getRoleIdByUserId(id); // 비동기 작업이므로 await 사용
-        clientUserDto.avatar_image_url = await this.getAvatarUrlByUserId(id);
-        clientUserDto.status = status;
-        clientUserDtos.push(clientUserDto);
-      }
-
-      return clientUserDtos;
-    } catch (err) {
-      throw new BaseError(status.USER_NOT_FOUND);
-    }
+    const usersInfo = await Promise.all(
+      allUsers.map(async (user) => {
+        const { id, nickname, status: userStatus, avatar_url } = user;
+        const roles = await this.getRoleIdByUserId(id);
+        const works_count = await this.userWorksRepository.count({
+          where: { user: { id: id } },
+        });
+        return {
+          user_id: id,
+          nickname,
+          roles,
+          status: userStatus,
+          works_count: works_count,
+          avatar_url, // Add avatar_url to the response
+        };
+      }),
+    );
+    return response(status.SUCCESS, usersInfo);
   }
   async getUserById(userId: number): Promise<UserResponseDto> {
     try {
@@ -133,6 +150,79 @@ export class UserService {
       throw new BaseError(status.USER_NOT_FOUND);
     }
   }
+
+  async getUserInfo(userId: number): Promise<UserInfo> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['user_roles.role', 'user_works.works.works_file'],
+    });
+
+    if (!user) {
+      throw new BaseError(status.USER_NOT_FOUND);
+    }
+
+    const activeWorks = user.user_works
+      .map((uw) => uw.works)
+      .filter(
+        (work) =>
+          work &&
+          work.status === 'active' &&
+          work.private_option === 0 &&
+          !!work.works_file, // 파일 존재
+      )
+      .map((work) => ({
+        works_id: work.id,
+        file_url: work.works_file.file_url, // 본문 파일 URL
+        thumbnail_url: work.thumb_url, // 썸네일(폴백용)
+        type: work.works_file.type,
+        private_option: work.private_option === 1,
+      }));
+
+    return {
+      name: user.nickname,
+      roles: user.user_roles.map((ur) => ur.role.name),
+      instarUrl: user.instar_url,
+      twitterUrl: user.twitter_url,
+      works: activeWorks,
+    };
+  }
+
+  async getUserByIdAtAdmin(userId: number): Promise<UserResponseDto> {
+    try {
+      const user = await this.userRepository.findOneBy({ id: userId }); // status와 관계없이 유저 조회
+      if (!user) {
+        throw new BaseError(status.USER_NOT_FOUND);
+      }
+
+      const adminUserDto = new UserResponseDto();
+      const {
+        id,
+        nickname,
+        twitter_url,
+        instar_url,
+        status: userStatus,
+      } = user;
+
+      adminUserDto.user_id = id;
+      adminUserDto.avatar_image_url = await this.getAvatarUrlByUserId(id);
+      adminUserDto.nickname = nickname;
+      adminUserDto.roles = await this.getRoleIdByUserId(id);
+      adminUserDto.twitter_url = twitter_url;
+      adminUserDto.instar_url = instar_url;
+      adminUserDto.works_count = await this.userWorksRepository.count({
+        where: { user: { id: id } },
+      });
+      adminUserDto.status = userStatus;
+
+      return adminUserDto;
+    } catch (err) {
+      if (err instanceof BaseError) {
+        throw err;
+      }
+      throw new BaseError(status.USER_NOT_FOUND);
+    }
+  }
+
   // works와 연관된 user 기능
   async getInstArtistSer(userId: number): Promise<InstUserResponseDto> {
     try {
@@ -149,54 +239,28 @@ export class UserService {
       throw new BaseError(status.USER_NOT_FOUND);
     }
   }
-  async getMainArtistInfo(workId: number): Promise<ArtistDto | null> {
-    // `user_works` 테이블에서 workId에 해당하는 record를 찾고, 관련된 user 정보를 가져온다
+  async getMainArtistInfo(works_id: number): Promise<ArtistDto> {
     const userWork = await this.userWorksRepository.findOne({
-      where: { works: { id: workId }, is_main: 1 }, // works 테이블의 id를 통해 조회
+      where: { works: { id: works_id }, is_main: 1 },
+      relations: ['user'],
+    });
+    if (userWork) {
+      const nickname = userWork.user.nickname;
+      const artistDto = new ArtistDto(nickname);
+      return artistDto;
+    }
+    return null;
+  }
+
+  async getCreditsInfo(works_id: number): Promise<ArtistDto[]> {
+    const userWorks = await this.userWorksRepository.find({
+      where: { works: { id: works_id }, is_main: 0 },
       relations: ['user'],
     });
 
-    if (!userWork) {
-      return null; // 정보가 없으면 에러 대신 null 반환
-    }
-
-    // user 정보 추출
-    const { user } = userWork;
-
-    // avatar_url 가져오기: 이제 user의 avatar_url을 직접 사용
-    const avatarUrl = user.avatar_url; // user.avatar_url로 바로 접근
-
-    // nickname과 avatar_url을 포함한 ArtistDto 반환
-    const artistDto = new ArtistDto();
-    artistDto.nickname = user.nickname;
-    artistDto.avatar_url = avatarUrl;
-
-    return artistDto;
-  }
-
-  async getCreditsInfo(workId: number): Promise<ArtistDto[]> {
-    // `user_works` 테이블에서 workId에 해당하는 record를 찾고, is_main이 false인 user들을 가져온다
-    const userWorks = await this.userWorksRepository.find({
-      where: {
-        works: { id: workId }, // works 테이블의 id를 통해 조회
-        is_main: 0, // is_main이 false인 조건을 추가
-      },
-      relations: ['user'], // user 관계만 로드
-    });
-
-    if (!userWorks || userWorks.length === 0) {
-      return []; // 정보가 없으면 에러 대신 빈 배열 반환
-    }
-
-    // Dto 배열을 생성
-    const artistDtos: ArtistDto[] = userWorks.map((userWork) => {
-      const { user } = userWork; // user 정보 추출
-      const avatarUrl = user.avatar_url; // avatar_url 직접 접근
-
-      const artistDto = new ArtistDto();
-      artistDto.nickname = user.nickname;
-      artistDto.avatar_url = avatarUrl;
-
+    const artistDtos = userWorks.map((userWork) => {
+      const nickname = userWork.user.nickname;
+      const artistDto = new ArtistDto(nickname);
       return artistDto;
     });
 
@@ -217,7 +281,13 @@ export class UserService {
             `Processing user ID: ${user.id}, Nickname: ${user.nickname}`,
           );
           const adminUserDto = new UserResponseDto();
-          const { id, nickname, twitter_url, instar_url, status } = user;
+          const {
+            id,
+            nickname,
+            twitter_url,
+            instar_url,
+            status: userStatus,
+          } = user;
 
           adminUserDto.user_id = id;
 
@@ -237,7 +307,7 @@ export class UserService {
           });
           adminUserDto.works_count = worksCount;
 
-          adminUserDto.status = status;
+          adminUserDto.status = userStatus;
 
           console.log(` -> Successfully created DTO for user ${id}`);
           adminUserDtos.push(adminUserDto);
@@ -284,15 +354,12 @@ export class UserService {
     }
   }
 
-  async postCreateUser(userReqDto: UserReqDto): Promise<Object> {
+  async postCreateUser(userReqDto: CreateUserReqDto): Promise<object> {
     // 비밀번호 해시 처리
-    let hashedPasswordUserInfo = { ...userReqDto };
+    const hashedPasswordUserInfo = { ...userReqDto };
     if (userReqDto.password) {
       const hashedPassword = await bcrypt.hash(userReqDto.password, 10);
-      hashedPasswordUserInfo = {
-        ...userReqDto,
-        password: hashedPassword, // 새로운 객체에 암호화된 비밀번호 할당
-      };
+      hashedPasswordUserInfo.password = hashedPassword; // 복사된 객체의 비밀번호만 교체
     }
 
     // login_id 중복 체크
@@ -315,10 +382,11 @@ export class UserService {
     const newUser = this.userRepository.create(hashedPasswordUserInfo);
     const savedUser = await this.userRepository.save(newUser);
 
-    // 사용자 역할 연결
+    // 사용자 역할 연결 (roles가 없는 경우를 대비하여 기본값으로 빈 배열 사용)
+    const rolesToConnect = userReqDto.roles || [];
     let createdRoleConnections = await this.connectUserRole(
       savedUser.id,
-      userReqDto.roles,
+      rolesToConnect,
     );
     createdRoleConnections = createdRoleConnections || []; // 만약 역할 연결이 없으면 빈 배열 할당
 
@@ -327,28 +395,20 @@ export class UserService {
       (userRole) => userRole.role.id,
     );
 
-    return {
+    return response(status.CREATE_SUCCESS, {
       created_user_info: savedUser,
       created_user_roles: savedUserRoles,
-    };
+    });
   }
 
   async updateUserInfo(
     userId: number,
-    userReqDto: UserReqDto,
-  ): Promise<Object> {
-    const user = await this.getUserById(userId); // 정보 수정할 유저
+    userReqDto: UpdateUserReqDto,
+  ): Promise<object> {
+    const user = await this.userRepository.findOneBy({ id: userId }); // 정보 수정할 유저 직접 조회
     if (!user) {
       console.log('서비스에서 발생한 에러입니다.');
       throw new BaseError(status.USER_NOT_FOUND);
-    }
-
-    // login_id 중복 체크
-    const existingUserByLoginId = await this.userRepository.findOne({
-      where: { login_id: userReqDto.login_id, id: Not(userId) }, // 로그인 아이디 중복 체크 (자기 자신 제외)
-    });
-    if (existingUserByLoginId) {
-      throw new BaseError(status.LOGIN_ID_ALREADY_EXIST);
     }
 
     // nickname 중복 체크
@@ -387,10 +447,10 @@ export class UserService {
     // 새로운 연결 생성
     const savedUserRoles = await this.connectUserRole(userId, userReqDto.roles);
 
-    return {
+    return response(status.SUCCESS, {
       updated_user_info: updatedUser,
       created_user_roles: savedUserRoles,
-    };
+    });
   }
 
   async inactiveUser(userId: number): Promise<object> {
@@ -418,13 +478,34 @@ export class UserService {
     return response(status.SUCCESS, {});
   }
 
+  async hardDeleteUser(userId: number): Promise<object> {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (!user) {
+      throw new BaseError(status.USER_NOT_FOUND);
+    }
+    // S3에 아바타 이미지가 있다면 삭제
+    if (user.avatar_url) {
+      await this.fileUploadService.deleteFileFromS3(user.avatar_url);
+    }
+
+    // 사용자와 관련된 자식 레코드들 삭제
+    await this.userWorksRepository.delete({ user: { id: userId } });
+    await this.userRoleRepository.delete({ user: { id: userId } });
+
+    // 사용자 삭제
+    await this.userRepository.delete({ id: userId });
+
+    return response(status.SUCCESS, {});
+  }
+
   //seed
-  async createUserSeed(createUserSeedDto: CreateUserSeedDto): Promise<Object> {
+  async createUserSeed(createUserSeedDto: CreateUserSeedDto): Promise<object> {
     //seeder 사용하는 경우
     const newUser = await this.userRepository.create(createUserSeedDto);
     return await this.userRepository.save(newUser);
   }
 
+  /*
   async getAllUsers(): Promise<any> {
     const allUsersWithDuplicates = await this.userRepository.find();
     // 사용자 ID를 기준으로 중복 데이터를 제거합니다.
@@ -437,4 +518,5 @@ export class UserService {
       })
     );
   }
+  */
 }

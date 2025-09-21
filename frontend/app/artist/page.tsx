@@ -11,10 +11,10 @@ import { useState, useEffect } from 'react';
 interface Artist {
     user_id: number;
     nickname: string;
-    avatar_image_url: string;
+    avatar_url: string; 
     roles: number[];
     twitter_url: string;
-    instar_url: string; // instagram_url 오타 수정
+    instar_url: string; 
 }
 
 export default function Artist() {
@@ -27,7 +27,7 @@ export default function Artist() {
             try {
                 setLoading(true);
                 const response = await axios.get('http://localhost:4000/api/artist/all_artists');
-                setArtists(response.data);
+                setArtists(response.data.result);
                 setError(null);
             } catch (error) {
                 setError('데이터를 불러오는 데 실패했습니다.');

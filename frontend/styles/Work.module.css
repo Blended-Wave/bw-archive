@@ -3,12 +3,15 @@
     flex-direction: column;
     align-items: center; /* 자식 요소를 수평 중앙 정렬 */
     margin-bottom: 150px;
+    padding-top: 80px; /* Add top padding to prevent navbar overlap (60px navbar + 20px spacing) */
 }
 
 .work_container {
-    width: 72%; /* artist 페이지와 동일하게 너비 지정 */
+    max-width: 1380px; /* 작품 그리드와 동일한 최대 너비 */
+    margin: 0 auto; /* 컨테이너 자체를 화면 중앙에 배치 */
     display: flex;
     flex-direction: column;
+    align-items: flex-start; /* 내부 요소들을 왼쪽 정렬 */
     color: white;
 }
 
@@ -17,6 +20,7 @@
     font-size: 2.5rem;
     font-weight: 600;
     margin: 30px 0;
+    text-align: left; /* 컨테이너 내부에서 왼쪽 정렬 */
 }
 
 .work_container p {
@@ -36,9 +40,10 @@
 
 .works {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 330px); /* 썸네일 크기 330px로 수정 */
-    gap: 20px; /* 아이템 사이의 고정 간격 */
-    width: 100%;
+    grid-template-columns: repeat(4, 330px); /* 정확히 4개 컬럼, 각 330px */
+    gap: 20px; /* 아이템 사이의 고정 간격 20px */
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    width: 100%; /* 부모 컨테이너 너비에 맞춤 */
 }
 
 .sort {
@@ -48,6 +53,7 @@
     gap: 10px;
     margin-bottom: 20px;
     color: #ACACAC;
+    justify-content: flex-start; /* 컨테이너 내부에서 왼쪽 정렬 */
 }
 
 .sort p {
@@ -64,15 +70,122 @@
 
 .pagination {
     display: flex;
-    margin: 110px 0 172px;
+    align-items: center;
     justify-content: center;
+    gap: 15px;
+    margin: 60px 0;
     width: 100%;
 }
 
-.pagination p {
-    color: #acacac;
-    font-size: 20px;
+.pagination_arrow {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination_arrow:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.pagination_arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.pagination_arrow img {
+    width: 20px;
+    height: 20px;
+    /* 필터 제거 - 원본 색상 사용 */
+}
+
+.pagination_number {
+    background: none;
+    border: none;
+    color: #acacac; /* 기본: 회색 */
+    font-size: 18px;
     font-weight: 400;
-    letter-spacing: -0.4px;
-    margin-right: 35px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.pagination_number:hover {
+    color: #ffffff;
+}
+
+.pagination_active {
+    color: #ffffff !important; /* 선택됨: 흰색 글씨 */
+    font-weight: 700 !important; /* 굵게 */
+    text-decoration: underline !important; /* 밑줄 */
+    background: none !important; /* 배경 제거 */
+}
+
+.pagination_active:hover {
+    color: #ffffff !important;
+}
+
+/* 반응형 디자인: 화면 크기에 따라 컬럼 수 조정 */
+@media (max-width: 1439px) { /* 4개가 안 들어갈 때 */
+    .works {
+        grid-template-columns: repeat(3, 330px);
+        max-width: 1050px; /* 3개 * 330px + 2개 간격 * 20px = 1050px */
+    }
+}
+
+@media (max-width: 1109px) { /* 3개가 안 들어갈 때 */
+    .works {
+        grid-template-columns: repeat(2, 330px);
+        max-width: 680px; /* 2개 * 330px + 1개 간격 * 20px = 680px */
+    }
+}
+
+@media (max-width: 720px) { /* 모바일에서 2개씩 배치 */
+    .works {
+        grid-template-columns: repeat(2, 1fr); /* 2개 컬럼, 동일한 크기로 분할 */
+        gap: 15px; /* 간격을 조금 줄임 */
+        max-width: 100%; /* 전체 너비 사용 */
+    }
+}
+
+/* 컨테이너도 반응형으로 조정 */
+@media (max-width: 1439px) {
+    .work_container {
+        max-width: 1050px; /* 3개 컬럼과 동일 */
+    }
+}
+
+@media (max-width: 1109px) {
+    .work_container {
+        max-width: 680px; /* 2개 컬럼과 동일 */
+    }
+}
+
+@media (max-width: 720px) {
+    .work_container {
+        max-width: calc(100% - 40px); /* 양쪽에 20px씩 여백 */
+        margin: 0 auto;
+        padding: 0 20px; /* 내부 패딩 추가 */
+        box-sizing: border-box;
+    }
+}
+
+/* 매우 작은 화면에서는 1개씩 배치 */
+@media (max-width: 400px) {
+    .works {
+        grid-template-columns: 1fr; /* 1개 컬럼 */
+        gap: 20px; /* 간격 복원 */
+    }
 }

@@ -1,40 +1,86 @@
 /* Swiper 전체 래퍼 */
 .swiperWrapper {
-  overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* This is crucial for positioning the custom nav buttons */
+    overflow: visible; /* 좌우 슬라이드가 래퍼 밖으로 나와도 보이도록 */
 }
 
 /* Swiper 컨테이너 */
 .swiperContainer {
-  width: 2768px;
+  width: 100%;
+  max-width: 2800px; /* 900px * 3 + gaps */
+  margin: 0 auto;
   height: 585px;
-  overflow: hidden;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  overflow: visible; /* 좌우 슬라이드가 보이도록 */
+  position: relative;
+}
+
+/* 2개 슬라이드용 컨테이너 */
+.twoSlidesContainer {
+  width: 100%;
+  max-width: 2000px; /* 900px * 2 + gap */
+  margin: 0 auto;
+  height: 585px;
+  overflow: visible;
+  position: relative;
+}
+
+/* Swiper 내부 요소들도 overflow 제거 */
+.swiperContainer :global(.swiper-wrapper) {
+  overflow: visible !important;
+}
+
+.swiperContainer :global(.swiper) {
+  overflow: visible !important;
+}
+
+/* 2개 슬라이드 컨테이너의 내부 요소들 */
+.twoSlidesContainer :global(.swiper-wrapper) {
+  overflow: visible !important;
+}
+
+.twoSlidesContainer :global(.swiper) {
+  overflow: visible !important;
 }
 
 /* 개별 슬라이드 */
 .swiperSlide {
-  transition: all 0.3s ease-in-out;
   width: 900px !important;
   height: 585px !important;
+  flex-shrink: 0;
+  transition: transform 0.6s ease, filter 0.3s ease;
 }
 
-/* 슬라이드 내부 이미지 */
+/* 카드/이미지 */
+.artistCard { 
+  position: relative; 
+  width: 100%; 
+  height: 100%; 
+}
+
+.artistImage { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  transition: filter 0.3s ease;
+}
+
+/* 기본 슬라이드는 어두운 상태 */
 .swiperSlide img {
-  width: 900px;
-  height: 585px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  transition: all 0.3s ease-in-out;
-  /* filter: brightness(0.5); */
+  filter: brightness(0.4) contrast(0.8);
+  transition: filter 0.6s ease;
 }
 
-/* 활성화된 슬라이드 강조 */
-div.swiper-slide.swiper-slide-active img {
-  filter: brightness(1) !important;
-}
 
-/* ✅ 메타정보 스타일 추가 */
+
+/* ✅ 메타정보 스타일 */
 .artistInfo {
   position: absolute;
   bottom: 20px;
@@ -42,20 +88,31 @@ div.swiper-slide.swiper-slide-active img {
   text-align: left;
   color: white;
   border-radius: 5px;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  opacity: 1; /* 페이드 제거 */
+  transition: opacity 0.3s ease;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  z-index: 2;
 }
+
+/* 가운데 슬라이드의 텍스트만 표시 */
+.centerSlide .artistInfo {
+  opacity: 1;
+}
+
+/* 좌우 슬라이드에는 텍스트 없음 (HTML에서 제거됨) */
 
 .artistInfo h3 {
   font-size: 3.2rem;
   font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .artistInfo p {
   font-size: 1rem;
   font-weight: 700;
-  margin-top: 2px; /* 이름과 역할군 간격 축소 */
+  margin: 2px 0 16px 0; /* 이름과 역할군 간격 축소 */
+  letter-spacing: 0.5px;
 }
 
 .artistInfo a {
@@ -70,7 +127,7 @@ div.swiper-slide.swiper-slide-active img {
 
 .socialIcons {
     display: flex;
-    gap: 10px; /* 아이콘 사이 간격 */
+    gap: 12px; /* 아이콘 사이 간격 */
     margin: 16px 0 8px 0; /* 역할군과 아이콘 간격 증가 */
 }
 
@@ -79,9 +136,138 @@ div.swiper-slide.swiper-slide-active img {
     width: 28px;
     height: 28px;
     display: inline-block;
+    transition: transform 0.2s ease;
 }
 
-/* ✅ 현재 활성화된 슬라이드에서만 정보 표시 */
-.swiper-slide-active .artistInfo {
-  opacity: 1;
+.iconLink:hover {
+    transform: scale(1.1);
 }
+
+/* 기본 슬라이드는 어두운 상태 */
+.swiperSlide img {
+  filter: brightness(0.6) contrast(0.9);
+  transition: filter 0.3s ease;
+}
+
+/* 활성 슬라이드 (가운데)는 밝게 */
+.swiperContainer :global(.swiper-slide-active) img {
+  filter: brightness(1) contrast(1) !important;
+}
+
+/* 2개 슬라이드 컨테이너의 활성 슬라이드 */
+.twoSlidesContainer :global(.swiper-slide-active) img {
+  filter: brightness(1) contrast(1) !important;
+}
+
+/* 비활성 슬라이드의 텍스트는 숨김 */
+.swiperSlide .artistInfo {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* 활성 슬라이드의 텍스트만 표시 */
+.swiperContainer :global(.swiper-slide-active) .artistInfo {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* 2개 슬라이드 컨테이너의 활성 슬라이드 텍스트 */
+.twoSlidesContainer :global(.swiper-slide-active) .artistInfo {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* 페이지네이션 */
+.pagination {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.paginationBullet {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.paginationBullet.active {
+    background: white;
+    transform: scale(1.2);
+}
+
+/* 네비게이션 영역 컨테이너 */
+.navigationAreas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100; /* 더 높은 z-index */
+}
+
+/* 좌측 클릭 영역 */
+.navLeft {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30.5%;
+    height: 100%;
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 101;
+}
+
+/* 우측 클릭 영역 */
+.navRight {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 35%;
+    height: 100%;
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 101;
+}
+
+/* 단일 이미지 컨테이너 */
+.singleImageContainer {
+  width: 900px;
+  height: 585px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.singleImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(1) contrast(1) !important; /* 단일 이미지는 항상 밝게 */
+}
+
+/* 단일 이미지의 아티스트 정보는 항상 표시 */
+.singleImageContainer .artistInfo {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* 디버깅용 - 필요시 주석 해제 */
+/*
+.navLeft:hover {
+    background: rgba(255, 0, 0, 0.1);
+}
+
+.navRight:hover {
+    background: rgba(0, 255, 0, 0.1);
+}
+*/

@@ -2,10 +2,32 @@
 
 import styles from '../styles/AdminSidebar.module.css';
 import Link from 'next/link';
+import useUserStore from '@/store/userStore';
+import { useRouter } from 'next/navigation';
+import api from '@/lib/axios';
 
-export default function AdminSidebar({ selectedMenu, setSelectedMenu }) {
-    const getStyle = (menuName) => {
+interface AdminSidebarProps {
+    selectedMenu: string;
+    setSelectedMenu: (menu: string) => void;
+}
+
+export default function AdminSidebar({ selectedMenu, setSelectedMenu }: AdminSidebarProps) {
+    const { logout } = useUserStore();
+    const router = useRouter();
+    
+    const getStyle = (menuName: string) => {
         return selectedMenu === menuName ? {} : { opacity: 0.5 };
+    };
+
+    const handleLogout = async () => {
+        try {
+            await api.post('/auth/logout');
+        } catch (error) {
+            console.error('로그아웃 API 실패:', error);
+        } finally {
+            logout();
+            router.push('/');
+        }
     };
 
     return (
@@ -35,6 +57,9 @@ export default function AdminSidebar({ selectedMenu, setSelectedMenu }) {
       <Link href="/" className={styles.homeButton}>
         메인 페이지로 돌아가기
       </Link>
+      <button onClick={handleLogout} className={styles.logoutButton}>
+        로그아웃
+      </button>
         </div>
   );
 }

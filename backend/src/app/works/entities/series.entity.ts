@@ -1,19 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { WorksEntity } from './works.entity';
 
 @Entity('series')
 export class SeriesEntity {
-    @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ type: 'varchar', length: 30, nullable: false })
-    name: string;
+  @Column({ type: 'varchar', length: 255, nullable: false })
+  name: string;
 
-    @Column({ type: 'text', nullable: false })
-    description: string;
+  @Column({ type: 'text', nullable: true })
+  description: string;
 
-    @Column({ type: 'datetime', precision: 6, nullable: false })
-    created_at: Date;
-
-    @Column({ type: 'datetime', precision: 6, nullable: false })
-    updated_at: Date;
+  @OneToMany(() => WorksEntity, (work) => work.series)
+  works: WorksEntity[];
 }

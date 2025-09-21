@@ -1,39 +1,31 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { AdminWorksController, WorksController } from './works.controller';
+import { WorksController, AdminWorksController } from './works.controller';
 import { WorkService } from './works.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import {
-  RoleEntity,
-  UserEntity,
-  UserRoleEntity,
-  UserWorksEntity,
-} from '../users/entities';
-import { SeriesEntity, WorksEntity, WorksFileEntity } from './entities';
+import { WorksEntity, WorksFileEntity, SeriesEntity } from './entities';
 import { UserModule } from '../users/users.module';
-import { AuthMiddleware } from 'src/common/middlewares/AuthMiddleware';
 import { FileUploadModule } from '../file-upload/file-upload.module';
+import { UserEntity, UserWorksEntity } from '../users/entities';
+import { AuthMiddleware } from 'src/common/middlewares/AuthMiddleware';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      UserEntity,
       WorksEntity,
       WorksFileEntity,
       SeriesEntity,
+      UserEntity,
       UserWorksEntity,
-      UserRoleEntity,
-      RoleEntity,
     ]),
     UserModule,
     FileUploadModule,
   ],
   controllers: [WorksController, AdminWorksController],
   providers: [WorkService],
+  exports: [WorkService],
 })
 export class WorksModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .forRoutes(AdminWorksController);
+    consumer.apply(AuthMiddleware).forRoutes(AdminWorksController);
   }
 }

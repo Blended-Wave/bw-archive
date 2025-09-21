@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import { config } from 'dotenv';
+import { randomUUID } from 'crypto';
+import * as path from 'path';
 
 
 @Injectable()
@@ -21,12 +23,19 @@ export class FileUploadService {
     }
 
     private async uploadFileToS3(file: Express.Multer.File, folder: string): Promise<any> {
+        // 한글 파일명 문제 해결을 위해 UUID + 확장자로 파일명 생성
+        const fileExtension = path.extname(file.originalname);
+        const fileName = `${randomUUID()}${fileExtension}`;
+        
         const params = {
             Bucket: process.env.S3_BUCKET_NAME, // 업로드할 버킷 이름
-            Key: `${folder}/${file.originalname}`,  // S3 내에서 파일의 경로 및 이름
+            Key: `${folder}/${fileName}`,  // S3 내에서 파일의 경로 및 이름 (UUID + 확장자)
             Body: file.buffer, // 파일의 내용
             ContentType: file.mimetype, // 파일의 MIME 타입 ex) image/jpeg,  video/mp4
             ACL: 'public-read',  // 파일의 접근 제어 목록 - 누구나 읽을 수 있도록
+            Metadata: {
+                'original-filename': encodeURIComponent(file.originalname) // 원본 파일명 메타데이터로 저장
+            }
         };
     
         // 파일 업로드
@@ -35,7 +44,7 @@ export class FileUploadService {
         // S3에서 업로드된 파일의 크기를 얻기 위해 headObject를 호출
         const fileInfo = await this.s3.headObject({
             Bucket: process.env.S3_BUCKET_NAME,
-            Key: `${folder}/${file.originalname}`,
+            Key: `${folder}/${fileName}`,
         }).promise();
     
         // 파일 타입 확인
