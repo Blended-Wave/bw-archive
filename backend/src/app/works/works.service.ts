@@ -158,11 +158,6 @@ export class WorkService {
       },
     });
 
-    // Add this for debugging
-        console.log(
-      '[API-DEBUG] Raw works from DB:',
-      JSON.stringify(works, null, 2),
-        );
 
     const workTableList: WorksDetailResponseDto[] = works.map((work) => {
       const mainArtistWork = work.user_works.find((uw) => uw.is_main === 1);
@@ -266,11 +261,6 @@ export class WorkService {
     await queryRunner.startTransaction();
 
     try {
-      console.log('[API-DEBUG] postWorksSer.dto:', JSON.stringify(worksReqDto));
-      console.log('[API-DEBUG] postWorksSer.files:', {
-        hasThumbnail: !!files?.thumbnail?.length,
-        hasWorkFile: !!files?.workFile?.length,
-      });
 
       let seriesEntity = await this.seriesRepository.findOne({
         where: { name: worksReqDto.series },
@@ -294,7 +284,6 @@ export class WorkService {
         const uploaded = await this.fileUploadService.uploadFiles({
           thumbnail_url: files.thumbnail,
         });
-        console.log('[API-DEBUG] uploaded.thumbnail:', uploaded?.thumbnail);
         newWork.thumb_url = uploaded?.thumbnail?.url;
       }
 
@@ -304,7 +293,6 @@ export class WorkService {
         const uploaded = await this.fileUploadService.uploadFiles({
           file_url: files.workFile,
         });
-        console.log('[API-DEBUG] uploaded.file:', uploaded?.file);
         const workFileEntity = new WorksFileEntity();
         workFileEntity.file_url = uploaded?.file?.url;
         workFileEntity.type = uploaded?.file?.type ?? worksReqDto.type;
@@ -317,11 +305,9 @@ export class WorkService {
         }
       }
 
-      console.log('[API-DEBUG] find main artist:', worksReqDto.main_artist);
       const mainArtist = await this.userRepository.findOneBy({
         nickname: worksReqDto.main_artist,
       });
-      console.log('[API-DEBUG] main artist found?', !!mainArtist);
       if (!mainArtist) throw new NotFoundException('Main artist not found');
 
       const mainArtistWork = new UserWorksEntity();
@@ -331,7 +317,6 @@ export class WorkService {
       await queryRunner.manager.save(UserWorksEntity, mainArtistWork);
 
       const creditNicknames = this.toStringArray(worksReqDto.credits);
-      console.log('[API-DEBUG] credits parsed:', creditNicknames);
       if (creditNicknames.length > 0) {
         const creditUsers = await this.userRepository.find({
           where: { nickname: In(creditNicknames) },
@@ -346,7 +331,6 @@ export class WorkService {
       }
 
       await queryRunner.commitTransaction();
-      console.log('[API-DEBUG] postWorksSer success');
       return response(status.CREATE_SUCCESS, {});
     } catch (error) {
       console.error('[API-ERROR] postWorksSer failed:', error);
@@ -463,18 +447,14 @@ export class WorkService {
           await queryRunner.manager.save(WorksFileEntity, work.works_file);
         }
         
-        console.log('No new workFile uploaded, preserving existing file relationship');
-        console.log('Current work.works_file:', work.works_file?.id, work.works_file?.file_url);
+        // 기존 파일 관계 유지
       }
 
       // 4) user_works (main_artist, credits) 업데이트
-      console.log('[API-DEBUG] Updating user_works for workId:', workId);
-      
       // 기존 user_works 모두 삭제
       await queryRunner.manager.delete(UserWorksEntity, { works: { id: workId } });
       
       // main_artist 추가
-      console.log('[API-DEBUG] Adding main artist:', updateWorksReqDto.main_artist);
       const mainArtist = await this.userRepository.findOne({
         where: { nickname: updateWorksReqDto.main_artist }
       });
@@ -490,7 +470,6 @@ export class WorkService {
       
       // credits 추가
       const creditNicknames = this.toStringArray(updateWorksReqDto.credits);
-      console.log('[API-DEBUG] Adding credits:', creditNicknames);
       if (creditNicknames.length > 0) {
         const creditUsers = await this.userRepository.find({
           where: { nickname: In(creditNicknames) },
@@ -505,7 +484,6 @@ export class WorkService {
         }
       }
       
-      console.log('[API-DEBUG] user_works update completed');
 
       await queryRunner.commitTransaction();
 

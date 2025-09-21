@@ -15,7 +15,6 @@ axiosInstance.interceptors.response.use(
     (error) => {
         // 인증 관련 오류 처리
         if (error.response?.status === 401 || error.response?.status === 403) {
-            console.log('인증 오류 발생, 로그인 페이지로 리다이렉트');
             
             // 현재 경로가 이미 로그인 페이지가 아닌 경우에만 리다이렉트
             if (typeof window !== 'undefined' && !window.location.pathname.includes('/admin')) {

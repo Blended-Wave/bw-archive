@@ -19,10 +19,7 @@ import { WorksEntity } from './app/works/entities';
 import { FileUploadModule } from './app/file-upload/file-upload.module';
 
 const ENV_PATH = `src/config/.env.${process.env.NODE_ENV}`
-dotenv.config({path: ENV_PATH}) 
-console.log('REDIS_HOST:', process.env.REDIS_HOST);
-console.log('REDIS_PORT:', process.env.REDIS_PORT);
-console.log('SESSION_SECRET:', process.env.SESSION_SECRET);
+dotenv.config({path: ENV_PATH});
 
 @Module({
   imports: [WorksModule, 
