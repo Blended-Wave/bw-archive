@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const axiosInstance = axios.create({
     baseURL: process.env.NODE_ENV === 'production' 
-        ? 'https://your-api-domain.com/api' // 실제 백엔드 API 도메인으로 변경
+        ? 'https://thisiscuzz.com/api'
         : 'http://localhost:4000/api',
     withCredentials: true,
 });
