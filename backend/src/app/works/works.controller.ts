@@ -1,84 +1,135 @@
-import { UserService } from './../users/users.service';
-import { Body, Controller, Get, Param, Patch, Post, Query } from "@nestjs/common";
-import { WorkService } from "./works.service";
-import { PagedWorksResponseDto, WorksDetailResponseDto, WorksReqDto, WorksResponseDto } from "./dto/works.dto";
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Param,
+  Body,
+  Query,
+  UseInterceptors,
+  UploadedFiles,
+} from '@nestjs/common';
+import { WorkService } from './works.service';
+import { WorksReqDto, UpdateWorksReqDto } from './dto/works.dto';
+import { response } from 'src/config/response';
+import { status } from 'src/config/response.status';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 @Controller('works')
 export class WorksController {
-    constructor(
-        private readonly workService: WorkService,
-        private readonly userService: UserService
-    ) {}
+  constructor(private readonly workService: WorkService) {}
 
-    // 클라이언트에서 불러오는 works는 pub, pin, active 를 체크해야 함
-    @Get('pub_works')
-    async getPublicWorksCtr(@Query() query: any): Promise<WorksResponseDto[]> {
-        const pinnedWorks = await this.workService.getPublicPinnedPubWorksSer(); // 고정 작품들
-        let sortedWorks;
+  @Get('/pinned')
+  async getPublicPinnedPubWorksCtr() {
+    return response(
+      status.SUCCESS,
+      await this.workService.getPublicPinnedPubWorksSer(),
+    );
+  }
 
-        // 필터 조건에 따라 조회수순 또는 시간순으로 정렬
-        if (query.sort === 'view') {
-            sortedWorks = await this.workService.getViewSortedPubWorksSer();
-        } else {
-            sortedWorks = await this.workService.getRecentSortedPubWorksSer();
-        }
+  @Get('/sorted_by_view')
+  async getViewSortedPubWorksCtr() {
+    return response(
+      status.SUCCESS,
+      await this.workService.getViewSortedPubWorksSer(),
+    );
+  }
 
-        return [...pinnedWorks, ...sortedWorks];
-    }
+  @Get('/recent')
+  async getRecentSortedPubWorksCtr() {
+    return response(
+      status.SUCCESS,
+      await this.workService.getRecentSortedPubWorksSer(),
+    );
+  }
 
-    @Get('art_inst_works/:user_id')
-    async getInstWorksCtr(@Param('user_id') userId: number): Promise<Object> {
-        const imgList = await this.workService.getInstWorksSer(userId); // InstWorksDto[]
-        const artistInfo = await this.userService.getInstArtistSer(userId); // Object
-        return { imgList, artistInfo };
-    }
+  @Get('/detail/:workId')
+  async getWorksDetailCtr(@Param('workId') workId: number) {
+    return response(
+      status.SUCCESS,
+      await this.workService.getWorksDetailSer(workId),
+    );
+  }
 
-    @Get('works_detail/:works_id')
-    async getWorksDetail(@Param('works_id') worksId: number): Promise<WorksDetailResponseDto> {
-        return await this.workService.getWorksDetailSer(worksId);
-    }
+  @Get('/artist/:userId')
+  async getInstWorksCtr(@Param('userId') userId: number) {
+    const { imgList, artistInfo } = await this.workService.getInstWorksSer(userId);
+    return response(status.SUCCESS, { imgList, artistInfo });
+  }
 }
 
-@Controller('admin') // 로그인 여부 체크가 필요한 관리자 기능들
+@Controller('admin')
 export class AdminWorksController {
-    constructor(private readonly workService: WorkService) {}
+  constructor(private readonly workService: WorkService) {}
 
-    // 페이지네이션을 고려하여 모든 작품을 반환
-    @Get('all_works')
-    async getAllWorksCtr(
-        @Query('page') page: number = 1, // 기본 페이지 값은 1
-        @Query('pageSize') pageSize: number = 15, // 기본 페이지 사이즈는 15
-    ): Promise<PagedWorksResponseDto> { // PagedWorksResponseDto 반환
-        return await this.workService.getAllWorksSer(page, pageSize); // 페이지네이션 적용
-    }
+  @Get('all_works')
+  async getAllWorksCtr(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 15,
+  ) {
+    return response(
+      status.SUCCESS,
+      await this.workService.getAllWorks(page, limit),
+    );
+  }
 
-    // 작품 상세 정보를 불러오는 메서드
-    @Get('load_work_info/:works_id')
-    async getWorksInfoCtr(@Param('works_id') worksId: number): Promise<WorksReqDto> {
-        return await this.workService.getWorksForEdit(worksId);
-    }
+  @Post('works_add')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'thumbnail', maxCount: 1 },
+      { name: 'workFile', maxCount: 1 },
+    ]),
+  )
+  async createWork(
+    @Body() worksReqDto: WorksReqDto,
+    @UploadedFiles()
+    files: {
+      thumbnail?: Express.Multer.File[];
+      workFile?: Express.Multer.File[];
+    },
+  ) {
+    return response(
+      status.CREATE_SUCCESS,
+      await this.workService.postWorksSer(worksReqDto, files),
+    );
+  }
 
-    // 작품 추가
-    @Post('add_works')
-    async postWorksCtr(@Body() worksReqDto: WorksReqDto): Promise<boolean> {
-        return await this.workService.postWorksSer(worksReqDto);
-    }
+  @Get('works_modify/:worksId')
+  async getWorkForEdit(@Param('worksId') worksId: number) {
+    const workData = await this.workService.getWorksForEdit(worksId);
+    return response(status.SUCCESS, workData);
+  }
 
-    // 작품 수정
-    @Patch('modify_works/:works_id')
-    async patchWorksCtr(@Param('works_id') worksId: number, @Body() worksReqDto: WorksReqDto): Promise<boolean> {
-        return await this.workService.patchWorksSer(worksId, worksReqDto);
-    }
+  @Patch('works_modify/:worksId')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'thumbnail', maxCount: 1 },
+      { name: 'workFile', maxCount: 1 },
+    ]),
+  )
+  async modifyWork(
+    @Param('worksId') worksId: number,
+    @Body() updateWorksReqDto: UpdateWorksReqDto,
+    @UploadedFiles()
+    files: {
+      thumbnail?: Express.Multer.File[];
+      workFile?: Express.Multer.File[];
+    },
+  ) {
+    return response(
+      status.SUCCESS,
+      await this.workService.modifyWork(worksId, updateWorksReqDto, files),
+    );
+  }
 
-    // 작품 삭제 (비활성화 처리)
-    @Patch('delete_works/:works_id')
-    async deleteWorksCtr(@Param('works_id') worksId: number): Promise<boolean> {
-        return await this.workService.inactiveWorksSer(worksId);
-    }
+  @Patch('works_status/:works_id')
+  async patchWorksStatus(@Param('works_id') works_id: number) {
+    return await this.workService.patchWorksStatus(works_id);
+  }
 
-    // 삭제 취소 (활성화 처리)
-    @Patch('cancle_delete_works/:works_id')
-    async cancleDeleteWorksCtr(@Param('works_id') worksId: number): Promise<boolean> {
-        return await this.workService.activeWorksSer(worksId);
-    }
+  @Delete('hard_delete_work/:works_id')
+  async hardDeleteWork(@Param('works_id') works_id: number) {
+    return await this.workService.hardDeleteWork(works_id);
+  }
 }

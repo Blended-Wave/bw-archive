@@ -1,15 +1,26 @@
+'use client'
+import styles from '@/styles/page.module.css';
+
 export default function Home() {
     return (
         <>
-            <div className="screen_container">
-                <iframe 
-                className="screen"
-                src="https://www.youtube.com/embed/2vIeNWYCs3Q?start=0&mute=1&autoplay=1&rel=0&controls=0&showinfo=0&fs=0&vq=hd1080&rel=0&loop=1&playlist=2vIeNWYCs3Q" 
-                title="banner 1" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            {/* 동영상 파일을 직접 백그라운드로 사용 */}
+            <div className={styles.video_container}>
+                <video
+                    className={styles.background_video}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
                 >
-                </iframe>
+                    <source src="/background-video.mp4" type="video/mp4" />
+                    {/* 브라우저 호환성을 위한 추가 포맷 */}
+                    <source src="/background-video.webm" type="video/webm" />
+                    Your browser does not support the video tag.
+                </video>
             </div>
+            <main className={styles.main_container}></main>
         </>
     );
 }

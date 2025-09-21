@@ -4,7 +4,6 @@
     align-items: center;
     position: relative;
     width: 100%;
-    height: 31%;
     max-width: 300px;
     margin-bottom: 20px;
     font-weight: bold;
@@ -29,19 +28,31 @@
     filter: brightness(1); /* 마우스를 올리면 원래 밝기로 돌아옴 */
 }
 
-.artist_box img {
+.avatar_image {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
+.default_avatar_image {
+    width: 100%;
+    height: 100%;
+    background-color: #555;
+}
+
 /* 직업 아이콘 위치 */
 .arts {
     position: absolute;
-    width: 15%;
-    height: 15%;
     left: 10px;
     top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.arts img {
+    width: 30px;
+    height: 30px;
 }
 
 /* Detail 박스 (기본적으로 숨겨짐) */

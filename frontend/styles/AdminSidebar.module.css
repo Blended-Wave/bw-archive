@@ -1,13 +1,15 @@
 /* 🌟 사이드바 전체 */
 .sidebar {
+    width: 270px;
+    background-color: #0d0d2b;
+    color: #fff;
     display: flex;
     flex-direction: column;
-    width: 270px; /* 고정 너비 */
-    height: 100vh; /* 전체 화면 높이 */
-    background-color: #0D092C; /* 🌟 피그마 배경색 */
-    color: #FFFFFF; /* 🌟 기본 텍스트 색상 */
-    padding: 0;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    left: 0;
 }
 
 /* 🌟 상단 헤더 패널 */
@@ -40,9 +42,52 @@
 .menu ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
-.menu li {
+.homeButton {
+    position: absolute; /* 하단 고정을 위해 변경 */
+    bottom: 80px; /* 로그아웃 버튼 위에 위치 */
+    left: 50%; /* 가운데 정렬을 위해 */
+    transform: translateX(-50%); /* 가운데 정렬 */
+    width: 80%;
+    padding: 15px 0;
+    background-color: #3e4a74;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.homeButton:hover {
+    background-color: #5a689a;
+}
+
+.logoutButton {
+    position: absolute;
+    bottom: 20px; /* 하단에서의 위치 */
+    left: 50%; /* 가운데 정렬을 위해 */
+    transform: translateX(-50%); /* 가운데 정렬 */
+    width: 80%;
+    padding: 15px 0;
+    background-color: #e74c3c; /* 빨간색 배경 */
+    color: #fff;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logoutButton:hover {
+    background-color: #c0392b; /* 더 어두운 빨간색 */
+}
+
+.menu ul li {
     display: flex;
     align-items: center;
     padding: 12px 15px;

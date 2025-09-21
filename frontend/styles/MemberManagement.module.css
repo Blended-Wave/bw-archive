@@ -1,15 +1,128 @@
-.container{
-    padding:5%;
-    width: 85%;
-    margin-left: auto;
+.managementContainer {
+    padding: 20px;
 }
-.container p {
+
+.modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+  
+.modal_content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal_content h2 {
+    margin-top: 0;
+}
+
+.modal_content form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.modal_content label {
+    font-weight: 600;
+}
+
+.guidance_text {
+    color: #888;
+    font-size: 0.8rem;
+    font-weight: normal;
+    margin-left: 8px;
+}
+
+.modal_content input[type="text"],
+.modal_content input[type="password"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.avatar_section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.avatar_preview {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.checkbox_group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.checkbox_group label {
+    font-weight: normal;
+}
+
+.modal_actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 1.5rem;
+}
+
+.modal_actions button {
+    background: white !important;
+    border: 1px solid black !important;
+    color: black !important;
+    border-radius: 0 !important;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 12px 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.modal_actions button:hover {
+    background-color: #f8f9fa !important;
+}
+
+.modal_actions button img {
+    width: 20px;
+    height: 20px;
+}
+
+.title {
+    margin-bottom: 2rem;
+    font-size: 24px;
+    color: #111;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.managementContainer p {
     font-size: 0.9rem;
     font-weight: 400;
     margin-top: 20px;
     color: #3b3b3b;
 }
-.container button {
+.managementContainer button {
     background-color: #5AADF9;
     color: white;
     border: 0;
@@ -18,20 +131,34 @@
     height: 32px;
     border-radius: 8px;
 }
-.container button:hover{
+.managementContainer button:hover{
     opacity: 0.7;
     cursor: pointer;
 }
 
 .add_button{
-    background-color: #5AADF9;
     width: 120px;
     height: 36px;
+    border-radius: 8px;
+    background-color: #5AADF9;
+    color: white;
+    border: 0;
+    margin: 20px 0;
 }
 
+.add_button:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.action_buttons {
+    display: flex;
+    gap: 8px; /* 버튼 사이의 간격 */
+    justify-content: center; /* 가운데 정렬 추가 */
+}
 
 .delete_button{
-    width: 77px;
+    width: 70px !important;  /* 너비 축소 */
     height: 38px;
     border: 0;
     background-color: #DF7272 !important;
@@ -43,9 +170,52 @@
     cursor: pointer;
 }
 
+.edit_button {
+    width: 70px !important;  /* 너비 축소 */
+    height: 38px;
+    border: 0;
+    background-color: #A7C957 !important; 
+    color: white;
+    border-radius: 12px;
+}
+.edit_button:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.hard_delete_button {
+    width: 90px !important;
+    height: 38px;
+    border: 0;
+    background-color: #D94848 !important; /* 강한 경고성 붉은색 */
+    color: white;
+    border-radius: 12px;
+}
+.hard_delete_button:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.restore_button {
+    width: 70px !important; /* 너비 축소 */
+    height: 38px;
+    border: 0;
+    background-color: #5AADF9 !important; /* '추가' 버튼과 동일한 색상 */
+    color: white;
+    border-radius: 12px;
+}
+.restore_button:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
 .role_container {
     display: flex;
-    flex-direction: column;  /* 아이콘을 세로로 정렬 */
-    gap: 5px;  /* 아이콘 간격 조정 */
-    align-items: center; /* 가운데 정렬 */
-  }
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+}
+
+.inactive_row {
+    opacity: 0.5;
+}

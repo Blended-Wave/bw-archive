@@ -1,116 +1,193 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation, Pagination } from 'swiper';
+import { Navigation, Pagination } from 'swiper/modules';
+import SwiperCore from 'swiper';
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import styles from '@/styles/ArtistSwiper.module.css';
-import Link from 'next/link';
+import Image from 'next/image';
 
 SwiperCore.use([Navigation, Pagination]);
 
-export default function ArtistSwiper({ artists }) {
-  const [swiper, setSwiper] = useState<Swiper | null>(null);
+interface ArtistData {
+  img: string;
+  name: string;
+  roles: string[];
+  instagramUrl: string;
+  twitterUrl: string;
+  link: string;
+  works_id: number;
+}
 
-  useEffect(() => {
-    setTimeout(() => {
-      const prevBtn = document.querySelector('.swiper-button-prev') as HTMLDivElement;
-      const nextBtn = document.querySelector('.swiper-button-next') as HTMLDivElement;
+interface ArtistInfo { // Define the type for the page's main artist
+    name: string;
+    roles: string[];
+    instagramUrl: string;
+    twitterUrl: string;
+}
 
-      if (prevBtn && nextBtn) {
-        prevBtn.style.position = "absolute";
-        prevBtn.style.top = "50%";
-        prevBtn.style.transform = "translateY(-50%)";
-        prevBtn.style.left = "0";
-        prevBtn.style.width = "900px";
-        prevBtn.style.height = "585px";
-        prevBtn.style.margin = "0";
-        prevBtn.style.opacity = "0";
+interface ArtistSwiperProps {
+  artists: ArtistData[];
+  artistInfo: ArtistInfo;
+  onWorkClick?: (works_id: number, index: number) => void;
+}
 
-        nextBtn.style.position = "absolute";
-        nextBtn.style.top = "50%";
-        nextBtn.style.transform = "translateY(-50%)";
-        nextBtn.style.right = "0";
-        nextBtn.style.width = "900px";
-        nextBtn.style.height = "585px";
-        nextBtn.style.margin = "0";
-        nextBtn.style.opacity = "0";
+export default function ArtistSwiper({ artists, artistInfo, onWorkClick }: ArtistSwiperProps) {
+  const [swiper, setSwiper] = useState<SwiperCore | null>(null);
+  const [isSliding, setIsSliding] = useState(false);
+  
+  const slidesCount = artists.length;
+  const shouldLoop = slidesCount >= 3;
+  const isSingleImage = slidesCount === 1;
+  const isTwoImages = slidesCount === 2;
 
-        // ✅ 버튼 클릭 이벤트 추가 (슬라이드 이동)
-        prevBtn.addEventListener("click", () => {
-          if (swiper) swiper.slidePrev();
-        });
-
-        nextBtn.addEventListener("click", () => {
-          if (swiper) swiper.slideNext();
-        });
-      }
-    }, 100);
-
-    return () => {
-      // ✅ 이벤트 리스너 정리
-      const prevBtn = document.querySelector('.swiper-button-prev') as HTMLDivElement;
-      const nextBtn = document.querySelector('.swiper-button-next') as HTMLDivElement;
-      if (prevBtn) prevBtn.removeEventListener("click", () => swiper?.slidePrev());
-      if (nextBtn) nextBtn.removeEventListener("click", () => swiper?.slideNext());
-    };
-  }, [swiper]);
-
-  const handleTransitionEnd = () => {
-    // ✅ 모든 슬라이드의 이미지 필터 초기화
-    document.querySelectorAll('.swiper-slide img').forEach((img) => {
-      img.style.filter = "brightness(0.5)";
-    });
-
-    // ✅ 현재 활성화된 슬라이드의 이미지 밝게
-    document.querySelectorAll('.swiper-slide-active img').forEach((img) => {
-      img.style.filter = "brightness(1)";
-    });
-
-    // ✅ 모든 `.artistInfo` 투명하게 설정
-    document.querySelectorAll(`.${styles.artistInfo}`).forEach((info) => {
-      info.style.opacity = "0";  // 모든 정보 숨김
-    });
-
-    // ✅ 현재 활성화된 슬라이드의 `.artistInfo`만 보이도록 설정
-    document.querySelectorAll('.swiper-slide-active').forEach((slide) => {
-      const info = slide.querySelector(`.${styles.artistInfo}`) as HTMLDivElement;
-      if (info) {
-        info.style.opacity = "1";  // 활성화된 슬라이드 정보 보이기
-      }
-    });
+  // 루프 모드를 위해 충분한 슬라이드 생성 (재정렬 빈도 최소화)
+  const getExtendedArtists = () => {
+    if (!shouldLoop) return artists;
+    
+    // 원본의 3배로 확장하여 재정렬 빈도 최소화
+    const multiplier = 3;
+    let extended: typeof artists = [];
+    for (let i = 0; i < multiplier; i++) {
+      extended = [...extended, ...artists];
+    }
+    return extended;
   };
 
-  return (
+  const extendedArtists = getExtendedArtists();
+
+  const handlePrevSlide = () => {
+    if (isSliding || !swiper) return;
+    setIsSliding(true);
+    swiper.slidePrev();
+    setTimeout(() => setIsSliding(false), 800);
+  };
+
+  const handleNextSlide = () => {
+    if (isSliding || !swiper) return;
+    setIsSliding(true);
+    swiper.slideNext();
+    setTimeout(() => setIsSliding(false), 800);
+  };
+
+    // 이미지가 하나만 있을 때는 Swiper 대신 단순 이미지 표시
+    if (isSingleImage) {
+      return (
+        <div className={styles.swiperWrapper}>
+          <div className={styles.singleImageContainer}>
+            <div 
+              className={styles.artistCard}
+              onClick={() => onWorkClick?.(artists[0].works_id, 0)}
+              style={{ cursor: 'pointer' }}
+            >
+              <img 
+                src={artists[0].img} 
+                alt={artists[0].name} 
+                className={styles.singleImage} 
+              />
+              <div className={styles.artistInfo}>
+                <h3>{artists[0].name}</h3>
+                {artists[0].roles && (
+                  <p>{artists[0].roles.join(' & ').toUpperCase()}</p>
+                )}
+                <div className={styles.socialIcons}>
+                  {artists[0].instagramUrl && (
+                    <a href={artists[0].instagramUrl} target="_blank" rel="noopener noreferrer" className={styles.iconLink}>
+                      <Image src="/instagram.svg" alt="Instagram" layout="fill" />
+                    </a>
+                  )}
+                  {artists[0].twitterUrl && (
+                    <a href={artists[0].twitterUrl} target="_blank" rel="noopener noreferrer" className={styles.iconLink}>
+                      <Image src="/twitter.svg" alt="Twitter" layout="fill" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
     <div className={styles.swiperWrapper}>
       <Swiper
-        spaceBetween={35}
-        slidesPerView={3}
+        modules={[Navigation, Pagination]}
+        spaceBetween={isTwoImages ? 100 : 35} // Increase spacing for 2 slides
+        slidesPerView={isTwoImages ? 2 : 3} // Show 2 slides when there are only 2 images
         centeredSlides={true}
-        loop={true}
-        navigation={true}
+        loop={shouldLoop}
+        loopAdditionalSlides={shouldLoop ? slidesCount : 0}
+        initialSlide={0}
+        speed={800}
+        grabCursor={true}
+        allowTouchMove={true}
+        watchSlidesProgress={true}
+        slidesPerGroup={1}
+        normalizeSlideIndex={true}
+        pagination={{ 
+          clickable: true,
+          bulletClass: styles.paginationBullet,
+          bulletActiveClass: styles.active,
+          el: `.${styles.pagination}`
+        }}
         onSwiper={setSwiper}
-        onTransitionEnd={handleTransitionEnd} // ✅ 기존 구조 유지
-        className={styles.swiperContainer}
+        className={isTwoImages ? styles.twoSlidesContainer : styles.swiperContainer}
       >
-        {artists.map((artist, index) => (
-          <SwiperSlide key={index} className={styles.swiperSlide}>
-            <div className={styles.artistCard}>
-              <img src={artist.img} alt={artist.name} className={styles.artistImage} />
-              {/* ✅ 활성화된 슬라이드에서만 보이도록 JavaScript로 스타일 제어 */}
+        {extendedArtists.map((artist, index) => {
+          // 원본 배열에서의 실제 인덱스 계산
+          const originalIndex = index % artists.length;
+          
+          return (
+            <SwiperSlide key={index} className={styles.swiperSlide}>
+              <div 
+                className={styles.artistCard}
+                onClick={() => onWorkClick?.(artist.works_id, originalIndex)}
+                style={{ cursor: 'pointer' }}
+              >
+                <img 
+                  src={artist.img} 
+                  alt={artist.name} 
+                  className={styles.artistImage} 
+                />
+              {/* 가운데 슬라이드에만 텍스트 표시 */}
               <div className={styles.artistInfo}>
                 <h3>{artist.name}</h3>
-                <p>{artist.role}</p>
-                <Link href={artist.link}>More Info</Link> 
-                {/* 받아오는 값은 응답 DTO랑 pages.tsx단에서 배열 만들 때 구조화 시켜서 문자열로 통일 */}
-                {/* 링크아이콘은 개수만큼 조건문으로 렌더링(아이콘으로)  */}
+                {artist.roles && (
+                  <p>{artist.roles.join(' & ').toUpperCase()}</p>
+                )}
+                <div className={styles.socialIcons}>
+                  {artist.instagramUrl && (
+                    <a href={artist.instagramUrl} target="_blank" rel="noopener noreferrer" className={styles.iconLink}>
+                      <Image src="/instagram.svg" alt="Instagram" layout="fill" />
+                    </a>
+                  )}
+                  {artist.twitterUrl && (
+                    <a href={artist.twitterUrl} target="_blank" rel="noopener noreferrer" className={styles.iconLink}>
+                      <Image src="/twitter.svg" alt="Twitter" layout="fill" />
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           </SwiperSlide>
-        ))}
+          );
+        })}
       </Swiper>
+
+      {/* 페이지네이션 - 이미지가 2개 이상일 때만 표시 */}
+      {slidesCount > 1 && <div className={styles.pagination}></div>}
+      
+      {/* 좌우 클릭 네비게이션 영역 - 이미지가 2개 이상일 때만 표시 */}
+      {slidesCount > 1 && (
+        <div className={styles.navigationAreas}>
+          <div className={styles.navLeft} onClick={handlePrevSlide}></div>
+          <div className={styles.navRight} onClick={handleNextSlide}></div>
+        </div>
+      )}
     </div>
   );
 }

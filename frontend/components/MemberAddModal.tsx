@@ -1,135 +1,144 @@
 'use client'
 
-import React, { useState } from 'react';
-import axios from 'axios';
-import styles from '@/styles/MemberAddModal.module.css';
+import { useState } from 'react';
+import styles from '@/styles/MemberManagement.module.css';
 
+interface MemberData {
+  login_id: string;
+  password?: string;
+  nickname: string;
+  avatar_image_url?: string;
+  role_ids: number[];
+  twitter_url?: string;
+  instar_url?: string;
+}
 
-const MemberAddModal = ({ isOpen, onClose }) => {
-    const [newMember, setNewMember] = useState({
-        login_id: "",
-        password: "",
-        avatar_image_url: "",
-        nickname: "",
-        roles: [],
-        twitter_url: "",
-        instar_url: ""
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (memberData: MemberData, avatarFile?: File) => void;
+}
+
+export default function MemberAddModal({ isOpen, onClose, onSave }: ModalProps) {
+  const [memberData, setMemberData] = useState<MemberData>({
+    login_id: '',
+    password: '',
+    nickname: '',
+    role_ids: [],
+    twitter_url: '',
+    instar_url: '',
+  });
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | undefined>(undefined);
+
+  if (!isOpen) return null;
+
+  // 모달이 닫힐 때 상태를 초기화하는 로직은 MemberManagement에서 처리
+  // 또는 onClose에 상태 초기화 함수를 추가 전달할 수 있음
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setMemberData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCheckboxChange = (roleId: number) => {
+    setMemberData(prev => {
+      const newRoleIds = prev.role_ids.includes(roleId)
+        ? prev.role_ids.filter(id => id !== roleId)
+        : [...prev.role_ids, roleId];
+      return { ...prev, role_ids: newRoleIds };
     });
+  };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setNewMember({ ...newMember, [name]: value });
-    };
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setAvatarFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
-    const handleCheckboxChange = (event) => {
-        const { id, checked } = event.target; // id와 checked를 추출
-        const numericId = parseInt(id, 10); // id를 숫자로 변환
-        setNewMember((prev) => {
-            const updatedRoles = checked
-                ? [...prev.roles, numericId]
-                : prev.roles.filter((role) => role !== numericId);
-            return { ...prev, roles: updatedRoles };
-        });
-    };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
+    const isValidTwitter = (url: string) => // SNS 링크가 유효한지 확인
+      /^(https?:\/\/)?(www\.)?(twitter\.com|x\.com)\/[A-Za-z0-9_]+(\/)?$/.test(url.trim());
+    const isValidInstagram = (url: string) =>
+      /^(https?:\/\/)?(www\.)?instagram\.com\/[A-Za-z0-9_.]+(\/)?$/.test(url.trim());
+    
+    const tw = (memberData.twitter_url || '').trim() // 유효하지 않는 경우 에러 메시지 출력
+    if (tw && !isValidTwitter(tw)) { alert('유효한 Twitter/X 프로필 URL을 입력해 주세요.'); return; }
+    
+    const ig = (memberData.instar_url || '').trim();
+    if (ig && !isValidInstagram(ig)) { alert('유효한 Instagram 프로필 URL을 입력해 주세요.'); return; }
+    
+    if (!memberData.login_id || !memberData.password || !memberData.nickname) { // 필수 필드 채워져 있는지 확인
+        alert('로그인 ID, 비밀번호, 닉네임은 필수 항목입니다.');
+        return;
+    }
+    
+    onSave(memberData, avatarFile);
+  };
 
-    const handleSubmit = async () => {
-        try {
-            await axios.post('http://localhost:4000/api/admin/user_add', {
-                login_id: newMember.login_id,
-                password: newMember.password,
-                avatar_image_url: newMember.avatar_image_url,
-                nickname: newMember.nickname,
-                roles: newMember.roles,
-                twitter_url: newMember.twitter_url,
-                instar_url: newMember.instar_url,
-            });
-        } catch (error) {
-            console.error('Error adding new member:', error);
-        }
-        
-        console.log({
-            login_id: newMember.login_id,
-            password: newMember.password,
-            avatar_image_url: newMember.avatar_image_url,
-            nickname: newMember.nickname,
-            role: newMember.roles,
-            twitter_url: newMember.twitter_url,
-            instar_url: newMember.instar_url
-        });
-        setNewMember({
-            login_id: "",
-            password: "",
-            avatar_image_url: "",
-            nickname: "",
-            roles: [],
-            twitter_url: "",
-            instar_url: ""
-        });
+  return (
+    <div className={styles.modal_overlay}>
+      <div className={styles.modal_content}>
+        <h2>새 멤버 추가</h2>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.avatar_section}>
+            <img src={avatarPreview || "/admin_icon/alt_img.svg"} alt="Avatar Preview" className={styles.avatar_preview} />
+            <input type="file" accept="image/*" onChange={handleAvatarChange} />
+          </div>
+          
+          <div className={styles.input_group}>
+            <label htmlFor="login_id">
+              로그인 ID
+              <span className={styles.guidance_text}>*중복 불가</span>
+            </label>
+            <input type="text" id="login_id" name="login_id" value={memberData.login_id} onChange={handleChange} required />
+          </div>
 
-        onClose();
-    };
+          <label>비밀번호</label>
+          <input type="password" name="password" value={memberData.password} onChange={handleChange} required />
 
-    if (!isOpen) return null;
+          <div className={styles.input_group}>
+            <label htmlFor="nickname">
+              닉네임
+              <span className={styles.guidance_text}>*중복 불가</span>
+            </label>
+            <input type="text" id="nickname" name="nickname" value={memberData.nickname} onChange={handleChange} required />
+          </div>
+          
+          <label>역할</label>
+          <div className={styles.checkbox_group}>
+            <label><input type="checkbox" checked={memberData.role_ids.includes(1)} onChange={() => handleCheckboxChange(1)} /> 일러스트레이터</label>
+            <label><input type="checkbox" checked={memberData.role_ids.includes(2)} onChange={() => handleCheckboxChange(2)} /> 작곡가</label>
+            <label><input type="checkbox" checked={memberData.role_ids.includes(3)} onChange={() => handleCheckboxChange(3)} /> 애니메이터</label>
+            <label><input type="checkbox" checked={memberData.role_ids.includes(4)} onChange={() => handleCheckboxChange(4)} /> 작가</label>
+          </div>
 
+          <label>Twitter URL</label>
+          <input type="text" name="twitter_url" value={memberData.twitter_url} onChange={handleChange} />
 
+          <label>Instagram URL</label>
+          <input type="text" name="instar_url" value={memberData.instar_url} onChange={handleChange} />
 
-    return (
-        <div className={styles.modal}>
-            <div className={styles.modalContent}>
-                <h2 className={styles.title}>새 멤버 추가</h2>
-                <input
-                    name="login_id"
-                    placeholder="login_id"
-                    value={newMember.login_id}
-                    onChange={handleChange}
-                />
-                <input
-                    name="password"
-                    placeholder="password"
-                    value={newMember.password}
-                    onChange={handleChange}
-                />
-                <input
-                    name="avatar_image_url"
-                    placeholder="Avatar URL"
-                    value={newMember.avatar_image_url}
-                    onChange={handleChange}
-                />
-                <input
-                    name="nickname"
-                    placeholder="Nickname"
-                    value={newMember.nickname}
-                    onChange={handleChange}
-                />
-                <div className={styles.checkbox_group}>
-                    <label><input id="1" type="checkbox" name="profession" value="illustrator" onChange={handleCheckboxChange} /> 일러스트레이터</label>
-                    <label><input id="2" type="checkbox" name="profession" value="animator" onChange={handleCheckboxChange} /> 애니메이터</label>
-                    <label><input id="3" type="checkbox" name="profession" value="composer" onChange={handleCheckboxChange} /> 작곡가</label>
-                    <label><input id="4" type="checkbox" name="profession" value="writer" onChange={handleCheckboxChange} /> 작가</label>
-                </div>
-                <input
-                    name="twitter_url"
-                    placeholder="Twitter URL"
-                    value={newMember.twitter_url}
-                    onChange={handleChange}
-                />
-                <input
-                    name="instar_url"
-                    placeholder="Instagram URL"
-                    value={newMember.instar_url}
-                    onChange={handleChange}
-                />
-                <div className={styles.buttons}>
-                    <button onClick={() => onClose()} className={styles.close_btn}>Close</button>
-                    <button className={styles.save_btn}>
-                        <img src="/admin_icon/save_icon.svg" alt="Save Icon" className={styles.save_icon} />
-                        Save
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-export default MemberAddModal;
+          <div className={styles.modal_actions}>
+            <button type="button" onClick={onClose}>
+              <img src="/admin_icon/close_icon.svg" alt="Close" />
+              Close
+            </button>
+            <button type="submit">
+              <img src="/admin_icon/save_icon.svg" alt="Save" />
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

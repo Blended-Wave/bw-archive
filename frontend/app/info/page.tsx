@@ -8,10 +8,13 @@ export default function Info() {
                 <img src="main_logo.svg" alt="logo" className={styles.logo_img} />
                 <img src="background.svg" className={styles.background_img} />
                 <p className={styles.p1}>
-                    The authentic label that presents a new paradigm based on its originalityan brings beloved music upon diverse style and taste.
+                    A wave of creativity from diverse artists.<br></br>
+                    Blended Wave brings individual works together into one flow.
                 </p>
                 <p className={styles.p2}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                Animators, illustrators, composers, and writers share their own works here.<br></br>
+                This is a space for both personal creations and collaborative projects. <br></br>
+                Blended Wave connects originality into a greater artistic journey.
                 </p>
                 <p className={styles.p3}>CONTACT</p>
                 <div className={styles.contact_container}>
@@ -21,7 +24,7 @@ export default function Info() {
                     <a href="https://www.instagram.com/" >
                         <img src="instagram.svg" />
                     </a>
-                    <a href="mailto:메일주소" rel="noopener">
+                    <a href="mailto:thisiscuzz@naver.com" rel="noopener">
                         <img src="mail.svg" />
                     </a>
                 </div>

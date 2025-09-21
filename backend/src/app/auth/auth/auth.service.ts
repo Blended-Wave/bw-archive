@@ -15,11 +15,19 @@ export class AuthService {
         console.log(`Finding user with loginId: ${loginId}`);
         const user = await this.userRepository.findOne({where: {login_id: loginId}});
         console.log('User found:', user);
-        if (user && (await bcrypt.compare(password, user.password))) {
+
+        // 사용자가 존재하고, 비밀번호가 일치하며, 비활성화되지 않았는지 확인
+        if (user && (await bcrypt.compare(password, user.password)) && user.inactive_date === null) {
             const {password, ...result} = user; //user 객체에서 password를 뽑아내고 나머지는 result에 할당
             return result;
         }
-        console.error(`Password mismatch for user: ${loginId}`);
+
+        if (user && user.inactive_date !== null) {
+            console.error(`Attempted login from inactive user: ${loginId}`);
+        } else if (user) {
+            console.error(`Password mismatch for user: ${loginId}`);
+        }
+
         return null;
     }
     // 로그인 ID로 사용자 찾기

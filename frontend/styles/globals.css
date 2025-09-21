@@ -70,12 +70,24 @@
 }
 
 html,
-r body {
-  max-width: 100vw;
+body {
+  width: 100%;
   overflow-x: hidden;
 }
 
+#__next {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
 body {
+  /* 
+    모든 너비 제한과 여백의 근원일 수 있는 body 스타일을 초기화하여
+    페이지가 화면 전체 너비를 사용하도록 보장합니다.
+  */
+  margin: 0;
+  padding: 0;
   background-color: #252429;
   font-family: "Noto Sans KR", sans-serif;
   font-style: normal;
@@ -108,13 +120,6 @@ a {
   background: #acacac;
 }
 
-.screen_container {
-  position: relative;
-  padding-bottom: 61%;
-  /*56.25%*/
-  height: 0;
-}
-
 .screen {
   position: absolute;
   top: 0;
@@ -124,3 +129,7 @@ a {
   height: 100%;
   pointer-events: none;
 }
+
+/* 전역 스크롤바 제거 - 특정 요소만 커스텀 */
+
+/* globals.css에서 description_text 스타일 완전 제거 - CSS Module에서만 처리 */

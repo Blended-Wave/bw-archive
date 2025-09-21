@@ -1,0 +1,35 @@
+/* YouTube 백그라운드 컴포넌트용 스타일 */
+.screen_container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+  background: #000;
+}
+
+.screen_container iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.05); /* Hide player's letterboxing */
+  border: none;
+  pointer-events: none;
+}
+
+/* aspect-ratio media queries for a perfect 'cover' effect */
+@media (min-aspect-ratio: 16/9) {
+  .screen_container iframe {
+    width: 100vw;
+    height: calc(100vw * 9 / 16);
+  }
+}
+
+@media (max-aspect-ratio: 16/9) {
+  .screen_container iframe {
+    height: 100vh;
+    width: calc(100vh * 16 / 9);
+  }
+}
