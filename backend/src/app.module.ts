@@ -67,7 +67,7 @@ export class AppModule {
         resave: false,
         saveUninitialized: false,
         cookie: {
-          secure: process.env.NODE_ENV === 'production', // 프로덕션에서는 HTTPS 필수
+          secure: false, // HTTP 환경에서 사용하기 위해 false로 설정 (HTTPS 도입 후 true로 변경)
           httpOnly: true, // 클라이언트 Javascript에서 쿠키 접근 불가
           maxAge: 24 * 60 * 60 * 1000, // 쿠키 유효기간 (밀리초 단위 - 24시간 기준)
           sameSite: 'lax' 
