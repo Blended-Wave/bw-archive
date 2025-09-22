@@ -220,7 +220,7 @@ export default function WorksManagement() {
           + 작업물 추가
         </button>
       </div>
-      <WorksTable columns={columns} data={data} getRowProps={(row: Row<Work>) => ({ className: row.original.status === 'inactive' ? styles.inactive_row : '' })} />
+      <WorksTable columns={columns as any} data={data} getRowProps={(row: Row<Work>) => ({ className: row.original.status === 'inactive' ? styles.inactive_row : '' })} />
       <WorkModal 
         isOpen={isModalOpen} 
         onClose={() => { setModalOpen(false); setEditingWorkId(null); }} 
