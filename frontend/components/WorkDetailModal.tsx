@@ -100,7 +100,8 @@ export default function WorkDetailModal({
                 setLoading(true);
                 setImageLoadError(false);
                 
-                const response = await fetch(`http://localhost:4000/api/works/detail/${workId}`, {
+                const baseURL = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:4000/api';
+                const response = await fetch(`${baseURL}/works/detail/${workId}`, {
                     credentials: 'include'
                 });
                 

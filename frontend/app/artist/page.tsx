@@ -26,7 +26,8 @@ export default function Artist() {
         const fetchArtists = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get('http://localhost:4000/api/artist/all_artists');
+                const baseURL = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:4000/api';
+                const response = await axios.get(`${baseURL}/artist/all_artists`);
                 setArtists(response.data.result);
                 setError(null);
             } catch (error) {
