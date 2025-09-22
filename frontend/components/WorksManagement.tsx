@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from 'react';
 import styles from '@/styles/WorksManagement.module.css';
 import WorksTable from '@/components/WorksTable';
 import WorkModal from '@/components/WorkModal';
-import { CellProps, Row } from 'react-table';
+import { CellProps, Row, Column } from 'react-table';
 import api from '@/lib/axios';
 
 // This interface should match the one in WorkModal.tsx
@@ -145,8 +145,7 @@ export default function WorksManagement() {
      }
    };
 
-  const columns = useMemo( 
-    () => [ 
+  const columns = useMemo((): Column<Work>[] => [ 
         { Header: 'ID', accessor: 'works_id' },
         {
             Header: '썸네일',
@@ -192,6 +191,7 @@ export default function WorksManagement() {
         },
         {
             Header: '작업',
+            accessor: 'works_id' as any, // Add accessor for actions column
             Cell: ({ cell }: CellProps<Work>) => (
                 <div className={styles.action_buttons}>
                     {cell.row.original.status === 'inactive' ? (
@@ -209,7 +209,7 @@ export default function WorksManagement() {
             )
         }
     ], 
-    [data] 
+    [deleteWork, handleHardDelete, restoreWork] 
   );
   
   return (
