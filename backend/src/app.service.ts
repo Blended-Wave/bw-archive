@@ -18,8 +18,8 @@ export class AppService {
     private dataSource: DataSource, // DataSource 주입 추가
   ) {}
 
-  // 데이터베이스 연결 상태 체크 (환경별 다른 주기)
-  @Cron(process.env.NODE_ENV === 'production' ? '0 */5 * * * *' : '0 */10 * * * *') // 운영: 5분마다, 개발: 10분마다
+  // 데이터베이스 연결 상태 체크 (환경별 다른 주기) - 임시 비활성화
+  // @Cron(process.env.NODE_ENV === 'production' ? '0 */5 * * * *' : '0 */10 * * * *') // 운영: 5분마다, 개발: 10분마다
   async checkDatabaseConnection(): Promise<void> {
     try {
       // 간단한 쿼리로 연결 상태 확인
