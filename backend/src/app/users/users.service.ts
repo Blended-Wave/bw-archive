@@ -459,9 +459,14 @@ export class UserService {
       throw new BaseError(status.USER_NOT_FOUND);
     }
 
-    // S3에서 아바타 이미지 삭제
-    if (user.avatar_url) {
-      await this.fileUploadService.deleteFileFromS3(user.avatar_url);
+    // S3에서 아바타 이미지 삭제 (실제 S3 URL인 경우만)
+    if (user.avatar_url && user.avatar_url.startsWith('https://')) {
+      try {
+        await this.fileUploadService.deleteFileFromS3(user.avatar_url);
+      } catch (error) {
+        console.error('아바타 삭제 실패, 계속 진행:', error.message);
+        // S3 삭제 실패해도 사용자 비활성화는 계속 진행
+      }
     }
 
     user.status = 'inactive';
@@ -483,9 +488,14 @@ export class UserService {
     if (!user) {
       throw new BaseError(status.USER_NOT_FOUND);
     }
-    // S3에 아바타 이미지가 있다면 삭제
-    if (user.avatar_url) {
-      await this.fileUploadService.deleteFileFromS3(user.avatar_url);
+    // S3에 아바타 이미지가 있다면 삭제 (실제 S3 URL인 경우만)
+    if (user.avatar_url && user.avatar_url.startsWith('https://')) {
+      try {
+        await this.fileUploadService.deleteFileFromS3(user.avatar_url);
+      } catch (error) {
+        console.error('아바타 삭제 실패, 계속 진행:', error.message);
+        // S3 삭제 실패해도 사용자 삭제는 계속 진행
+      }
     }
 
     // 사용자와 관련된 자식 레코드들 삭제
