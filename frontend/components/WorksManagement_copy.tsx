@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from 'react';
 import styles from '@/styles/WorksManagement.module.css';
 import WorksTable from '@/components/WorksTable';
 import WorkModal from '@/components/WorkModal';
-import { CellProps, Row } from 'react-table';
+import { CellProps, Row, Column } from 'react-table';
 import api from '@/lib/axios';
 
 interface Work {
@@ -130,8 +130,8 @@ export default function WorksManagement() {
           </div>
         ),
       },
-    ],
-    []
+    ] as Column<Work>[],
+    [deleteWork, handleHardDelete, restoreWork]
   );
 
   const handleModalSave = async (workData: any, files: { thumbnail?: File, workFile?: File }) => {
