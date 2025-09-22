@@ -6,7 +6,7 @@ async function bootstrap() {
   
   app.enableCors({
     origin: process.env.NODE_ENV === 'production' 
-      ? ['https://your-domain.com'] // 실제 프론트엔드 도메인으로 변경
+      ? ['http://3.36.166.34', 'http://localhost:3000'] // EC2 IP 허용
       : 'http://localhost:3000',
     credentials: true, // 쿠키를 포함한 요청 허용
   })
