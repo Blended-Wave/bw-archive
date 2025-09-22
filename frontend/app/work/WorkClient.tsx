@@ -41,16 +41,17 @@ export default function WorkClient() {
                 const sortOrder = searchParams.get('sort') || 'recent';
                 // sort 파라미터에 따라 올바른 엔드포인트 선택
                 let endpoint = '';
+                const baseURL = process.env.NEXT_PUBLIC_API_URL || '/api';
                 switch (sortOrder) {
                     case 'views':
-                        endpoint = 'http://localhost:4000/api/works/sorted_by_view';
+                        endpoint = `${baseURL}/works/sorted_by_view`;
                         break;
                     case 'pinned':
-                        endpoint = 'http://localhost:4000/api/works/pinned';
+                        endpoint = `${baseURL}/works/pinned`;
                         break;
                     case 'recent':
                     default:
-                        endpoint = 'http://localhost:4000/api/works/recent';
+                        endpoint = `${baseURL}/works/recent`;
                         break;
                 }
                 
