@@ -1,9 +1,15 @@
 import React from "react";
-import { useTable } from "react-table";
+import { useTable, Column } from "react-table";
 
 import styles from "@/styles/WorksTable.module.css";
 
-export default function WorksTable({ columns, data, getRowProps }) {
+interface WorksTableProps {
+  columns: Column<any>[];
+  data: any[];
+  getRowProps: (row: any) => any;
+}
+
+export default function WorksTable({ columns, data, getRowProps }: WorksTableProps) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data });
 
   return (
