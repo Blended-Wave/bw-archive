@@ -209,7 +209,7 @@ export default function WorksManagement() {
             )
         }
     ], 
-    [deleteWork, handleHardDelete, restoreWork] 
+    [] 
   );
   
   return (

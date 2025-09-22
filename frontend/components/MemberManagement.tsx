@@ -148,7 +148,7 @@ export default function MemberManagement() {
         ),
       },
     ],
-    [deleteMember, handleHardDelete, restoreMember]
+    []
   );
 
   const handleEditClick = async (userId: number) => {
