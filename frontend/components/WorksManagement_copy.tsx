@@ -131,7 +131,7 @@ export default function WorksManagement() {
         ),
       },
     ] as Column<Work>[],
-    [deleteWork, handleHardDelete, restoreWork]
+    []
   );
 
   const handleModalSave = async (workData: any, files: { thumbnail?: File, workFile?: File }) => {
