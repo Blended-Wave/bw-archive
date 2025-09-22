@@ -6,7 +6,7 @@ async function bootstrap() {
   
   app.enableCors({
     origin: process.env.NODE_ENV === 'production' 
-      ? ['http://3.36.166.34', 'http://localhost:3000'] // EC2 IP 허용
+      ? ['http://3.36.166.34', 'http://localhost:3000', 'http://thisiscuzz.com'] // EC2 IP 허용
       : 'http://localhost:3000',
     credentials: true, // 쿠키를 포함한 요청 허용
   })
