@@ -191,7 +191,7 @@ export default function WorksManagement() {
         },
         {
             Header: '작업',
-            accessor: 'works_id' as any, // Add accessor for actions column
+            id: 'actions', // 고유한 ID 사용 (accessor 대신)
             Cell: ({ cell }: CellProps<Work>) => (
                 <div className={styles.action_buttons}>
                     {cell.row.original.status === 'inactive' ? (
