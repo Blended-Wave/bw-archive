@@ -48,7 +48,7 @@ export default function WorksManagement() {
     try {
       const response = await api.get('/admin/all_works');
       console.log('API Response:', JSON.stringify(response.data, null, 2)); // Log the full API response
-      // The actual array is inside response.data.result.works due to pagination object
+      // API 응답 구조: response.data.result = { works: [...], totalCount: n }
       setData(response.data.result.works); 
     } catch (err) {
       console.error('Failed to fetch works:', err); // Log the error object
