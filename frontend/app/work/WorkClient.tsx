@@ -41,7 +41,7 @@ export default function WorkClient() {
                 const sortOrder = searchParams.get('sort') || 'recent';
                 // sort 파라미터에 따라 올바른 엔드포인트 선택
                 let endpoint = '';
-                const baseURL = process.env.NEXT_PUBLIC_API_URL || '/api';
+                const baseURL = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:4000/api';
                 switch (sortOrder) {
                     case 'views':
                         endpoint = `${baseURL}/works/sorted_by_view`;
@@ -75,6 +75,8 @@ export default function WorkClient() {
                 console.error('Error fetching works:', err);
                 if (err && typeof err === 'object' && 'response' in err) {
                     console.error('Error response:', (err as any).response);
+                    console.error('Error status:', (err as any).response?.status);
+                    console.error('Error data:', (err as any).response?.data);
                 }
             } finally {
                 setLoading(false);
