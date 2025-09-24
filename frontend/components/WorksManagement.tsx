@@ -47,7 +47,7 @@ export default function WorksManagement() {
     setLoading(true);
     try {
       const response = await api.get('/admin/all_works');
-      console.log('API Response:', JSON.stringify(response.data, null, 2)); // Log the full API response
+      // console.log('API Response:', JSON.stringify(response.data, null, 2)); // 프로덕션에서 비활성화
       // API 응답 구조: response.data.result = { works: [...], totalCount: n }
       setData(response.data.result.works); 
     } catch (err) {
