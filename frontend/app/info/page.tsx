@@ -18,10 +18,10 @@ export default function Info() {
                 </p>
                 <p className={styles.p3}>CONTACT</p>
                 <div className={styles.contact_container}>
-                    <a href="https://x.com">
+                    <a href="https://x.com/thisiscuzz">
                         <img src="twitter.svg" />
                     </a>
-                    <a href="https://www.instagram.com/" >
+                    <a href="https://www.instagram.com/thisiscuzz" >
                         <img src="instagram.svg" />
                     </a>
                     <a href="mailto:thisiscuzz@naver.com" rel="noopener">
