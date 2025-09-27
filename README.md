@@ -225,4 +225,3 @@ AWS_REGION=ap-northeast-2
 
  
 **이메일**: sunwoo005@gmail.com  
-
