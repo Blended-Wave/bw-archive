@@ -6,7 +6,6 @@
 
 <p align="center">
   <strong>아티스트를 위한 종합 포트폴리오 관리 플랫폼</strong><br>
-  <em>작품 업로드부터 관리자 패널까지, 완전한 웹 서비스</em>
 </p>
 
 <p align="center">
