@@ -34,6 +34,11 @@ export default function WorkClient() {
     const itemCountPerPage = 12; // 3줄 × 4개 = 12개
     const [selectedWorkIndex, setSelectedWorkIndex] = useState<number | null>(null);
 
+    // 페이지 제목 설정
+    useEffect(() => {
+        document.title = 'Blended Wave - Artworks';
+    }, []);
+
     useEffect(() => {
         const fetchWorks = async () => {
             try {

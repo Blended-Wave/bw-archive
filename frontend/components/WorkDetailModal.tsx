@@ -110,7 +110,6 @@ export default function WorkDetailModal({
                 }
                 
                 const data = await response.json();
-                console.log('Fetched work details:', data.result);
                 setWorkDetails(data.result);
             } catch (error) {
                 console.error('Error fetching work details:', error);
@@ -137,8 +136,8 @@ export default function WorkDetailModal({
         if (!workDetails) return;
         
         const contentWrapper = document.querySelector(`.${styles.content_wrapper}`);
-        const img = contentWrapper?.querySelector('img') as HTMLImageElement;
-        const video = contentWrapper?.querySelector('video') as HTMLVideoElement;
+        const img = contentWrapper?.querySelector(`.${styles.image_section} img`) as HTMLImageElement;
+        const video = contentWrapper?.querySelector(`.${styles.image_section} video`) as HTMLVideoElement;
         const media = img || video;
         const descriptionSection = contentWrapper?.querySelector(`.${styles.description_section}`);
         const imageSection = contentWrapper?.querySelector(`.${styles.image_section}`);
@@ -148,7 +147,16 @@ export default function WorkDetailModal({
             const naturalWidth = img ? img.naturalWidth : video?.videoWidth || 0;
             const naturalHeight = img ? img.naturalHeight : video?.videoHeight || 0;
             
-            if (naturalWidth && naturalHeight) {
+            // 디버깅용 로그 (필요시 주석 해제)
+            
+            // 동영상의 경우 크기 정보가 없으면 기본값 사용
+            const fallbackWidth = 1920;
+            const fallbackHeight = 1080;
+            const finalWidth = naturalWidth || fallbackWidth;
+            const finalHeight = naturalHeight || fallbackHeight;
+            
+            
+            if (finalWidth && finalHeight) {
                 // 화면 크기 기반 최대 크기 계산
                 const descriptionWidth = 400; // description section 고정 너비
                 const gap = 40; // gap 크기
@@ -160,19 +168,13 @@ export default function WorkDetailModal({
                 const maxPossibleWidth = viewportWidth - descriptionWidth - gap - 100; // 100px 여유 공간
                 const maxPossibleHeight = viewportHeight * 0.8;
                 
-                console.log('=== DETAILED CALCULATION DEBUG ===');
-                console.log('viewportWidth:', viewportWidth);
-                console.log('descriptionWidth:', descriptionWidth);
-                console.log('gap:', gap);
-                console.log('Calculated maxPossibleWidth:', maxPossibleWidth);
-                console.log('================================');
                 
                 // 비율 유지하면서 크기 계산
-                const aspectRatio = naturalWidth / naturalHeight;
+                const aspectRatio = finalWidth / finalHeight;
                 
                 // 원본 크기를 우선으로 하되, 화면을 벗어나지 않도록 조정
-                let displayWidth = naturalWidth;
-                let displayHeight = naturalHeight;
+                let displayWidth = finalWidth;
+                let displayHeight = finalHeight;
                 
                 // 원본이 너무 클 때만 비율 유지하며 축소
                 // 1. 가로가 최대 가능 너비보다 크면 축소
@@ -195,24 +197,17 @@ export default function WorkDetailModal({
                 
                 // 최소 높이 보장 (description 섹션과 동일)
                 const minHeight = 650; // Increased from 600 to match CSS
-                const finalHeight = Math.max(displayHeight, minHeight);
+                const finalModalHeight = Math.max(displayHeight, minHeight);
                 
-                console.log('=== MODAL DIMENSIONS CALCULATION ===');
-                console.log('Natural size:', { width: naturalWidth, height: naturalHeight });
-                console.log('Viewport size:', { width: viewportWidth, height: viewportHeight });
-                console.log('Max possible size:', { width: maxPossibleWidth, height: maxPossibleHeight });
-                console.log('Display size:', { width: displayWidth, height: displayHeight });
-                console.log('Final height:', finalHeight);
-                console.log('Aspect ratio:', aspectRatio);
-                console.log('=====================================');
+                // 디버깅용 로그 (필요시 주석 해제)
                 
                 // 이미지/비디오 크기 설정
                 (media as HTMLElement).style.width = `${displayWidth}px`;
                 (media as HTMLElement).style.height = `${displayHeight}px`;
                 
                 // 섹션들 높이 설정
-                (descriptionSection as HTMLElement).style.height = `${finalHeight}px`;
-                (imageSection as HTMLElement).style.height = `${finalHeight}px`;
+                (descriptionSection as HTMLElement).style.height = `${finalModalHeight}px`;
+                (imageSection as HTMLElement).style.height = `${finalModalHeight}px`;
                 
                 // 모달 컨테이너 크기 설정
                 const totalWidth = displayWidth + descriptionWidth + gap;
@@ -222,6 +217,17 @@ export default function WorkDetailModal({
                 modalContainer.style.width = `${finalModalWidth}px`;
                 modalContainer.style.maxWidth = '95vw'; // CSS와 일관성 유지
                 
+                // 화살표 위치 조정
+                const leftArrow = modalContainer.querySelector(`.${styles.left_arrow}`) as HTMLElement;
+                const rightArrow = modalContainer.querySelector(`.${styles.right_arrow}`) as HTMLElement;
+                
+                if (leftArrow && rightArrow) {
+                    // 모달 너비에 따라 화살표 위치 동적 조정
+                    const arrowOffset = Math.min(80, finalModalWidth * 0.05); // 모달 너비의 5% 또는 최대 80px
+                    leftArrow.style.left = `-${arrowOffset}px`;
+                    rightArrow.style.right = `-${arrowOffset}px`;
+                }
+                
                 // 만약 계산된 너비가 최대 너비를 초과하면 이미지 크기를 조정
                 if (totalWidth > maxModalWidth) {
                     const availableImageWidth = maxModalWidth - descriptionWidth - gap;
@@ -229,12 +235,7 @@ export default function WorkDetailModal({
                         const adjustedImageWidth = Math.min(displayWidth, availableImageWidth);
                         const adjustedImageHeight = adjustedImageWidth / aspectRatio;
                         
-                        console.log('=== MODAL WIDTH ADJUSTMENT ===');
-                        console.log('Total calculated width:', totalWidth);
-                        console.log('Max modal width (95vw):', maxModalWidth);
-                        console.log('Adjusted image width:', adjustedImageWidth);
-                        console.log('Adjusted image height:', adjustedImageHeight);
-                        console.log('===============================');
+                        // 디버깅용 로그 (필요시 주석 해제)
                         
                         // 조정된 이미지 크기 적용
                         (media as HTMLElement).style.width = `${adjustedImageWidth}px`;
@@ -244,6 +245,13 @@ export default function WorkDetailModal({
                         const adjustedFinalHeight = Math.max(adjustedImageHeight, minHeight);
                         (descriptionSection as HTMLElement).style.height = `${adjustedFinalHeight}px`;
                         (imageSection as HTMLElement).style.height = `${adjustedFinalHeight}px`;
+                        
+                        // 조정된 모달 크기에 맞춰 화살표 위치도 다시 조정
+                        if (leftArrow && rightArrow) {
+                            const adjustedArrowOffset = Math.min(80, maxModalWidth * 0.05);
+                            leftArrow.style.left = `-${adjustedArrowOffset}px`;
+                            rightArrow.style.right = `-${adjustedArrowOffset}px`;
+                        }
                     }
                 }
             }
@@ -357,27 +365,27 @@ export default function WorkDetailModal({
                         ) : workDetails.type === 'video' ? (
                             <video 
                                 src={workDetails.file_url} 
-                                controls 
                                 autoPlay 
                                 loop 
                                 muted
+                                playsInline
                                 onError={(e) => {
-                                    console.log('Video failed to load:', workDetails.file_url);
-                                    console.log('Video error event:', e);
                                     setImageLoadError(true);
                                 }}
-                                onLoadStart={(e) => {
-                                    console.log('Video loading started:', workDetails.file_url);
-                                }}
                                 onLoadedMetadata={(e) => {
-                                    console.log('Video metadata loaded:', workDetails.file_url);
-                                    const video = e.currentTarget;
-                                    console.log('Video dimensions:', { width: video.videoWidth, height: video.videoHeight });
-                                    
                                     // Wait a bit for the video to be fully rendered, then calculate dimensions
                                     setTimeout(() => {
                                         calculateModalDimensions();
                                     }, 100);
+                                }}
+                                onCanPlay={(e) => {
+                                    const video = e.currentTarget;
+                                    // Fallback calculation if metadata didn't trigger properly
+                                    if (video.videoWidth && video.videoHeight) {
+                                        setTimeout(() => {
+                                            calculateModalDimensions();
+                                        }, 50);
+                                    }
                                 }}
                             />
                         ) : (
@@ -385,28 +393,11 @@ export default function WorkDetailModal({
                                 src={workDetails.file_url} 
                                 alt={workDetails.title}
                                 onError={(e) => {
-                                    console.log('=== IMAGE LOAD ERROR ===');
-                                    console.log('Image failed to load:', workDetails.file_url);
-                                    console.log('Image error event:', e);
-                                    console.log('Image element:', e.currentTarget);
-                                    console.log('Image src:', e.currentTarget.src);
-                                    console.log('Image naturalWidth:', e.currentTarget.naturalWidth);
-                                    console.log('Image naturalHeight:', e.currentTarget.naturalHeight);
-                                    
                                     setImageLoadError(true);
                                 }}
                                 onLoad={(e) => {
-                                    console.log('=== IMAGE LOAD SUCCESS ===');
-                                    console.log('Image loaded successfully:', workDetails.file_url);
-                                    console.log('Image element:', e.currentTarget);
-                                    console.log('Image naturalWidth:', e.currentTarget.naturalWidth);
-                                    console.log('Image naturalHeight:', e.currentTarget.naturalHeight);
-                                    console.log('Image src:', e.currentTarget.src);
-                                    console.log('About to calculate modal dimensions...');
-                                    
                                     // Wait a bit for the image to be fully rendered, then calculate dimensions
                                     setTimeout(() => {
-                                        console.log('Calling calculateModalDimensions...');
                                         calculateModalDimensions();
                                     }, 100);
                                     
@@ -424,9 +415,6 @@ export default function WorkDetailModal({
                                         (modalContainer as HTMLElement).style.alignItems = 'flex-start';
                                     }
                                 }}
-                                onLoadStart={(e) => {
-                                    console.log('Image loading started:', workDetails.file_url);
-                                }}
                             />
                         )}
                     </div>
@@ -441,7 +429,6 @@ export default function WorkDetailModal({
                                     alt={workDetails.main_artist?.nickname || '삭제된 아티스트'} 
                                     className={styles.creator_avatar}
                                     onError={(e) => {
-                                        console.log('Avatar failed to load:', workDetails.main_artist?.avatar_url);
                                         e.currentTarget.src = '/admin_icon/alt_img.svg';
                                     }}
                                 />

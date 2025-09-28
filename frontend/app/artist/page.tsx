@@ -22,6 +22,11 @@ export default function Artist() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    // 페이지 제목 설정
+    useEffect(() => {
+        document.title = 'Blended Wave - Artists';
+    }, []);
+
     useEffect(() => {
         const fetchArtists = async () => {
             try {

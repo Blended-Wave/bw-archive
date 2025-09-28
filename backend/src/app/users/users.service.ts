@@ -178,9 +178,17 @@ export class UserService {
         private_option: work.private_option === 1,
       }));
 
+    // 역할 이름을 영어로 변환하는 매핑 (DB 테이블 기준)
+    const roleNameMapping: { [key: string]: string } = {
+      '일러스트레이터': 'ILLUSTRATOR',
+      '애니메이터': 'ANIMATOR',
+      '작곡': 'COMPOSER', 
+      '작가': 'WRITER'
+    };
+
     return {
       name: user.nickname,
-      roles: user.user_roles.map((ur) => ur.role.name),
+      roles: user.user_roles.map((ur) => roleNameMapping[ur.role.name] || ur.role.name),
       instarUrl: user.instar_url,
       twitterUrl: user.twitter_url,
       works: activeWorks,

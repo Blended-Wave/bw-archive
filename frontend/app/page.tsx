@@ -1,7 +1,12 @@
 'use client'
+import { useEffect } from 'react';
 import styles from '@/styles/page.module.css';
 
 export default function Home() {
+    // 페이지 제목 설정
+    useEffect(() => {
+        document.title = 'Blended Wave';
+    }, []);
     return (
         <>
             {/* 동영상 파일을 직접 백그라운드로 사용 */}

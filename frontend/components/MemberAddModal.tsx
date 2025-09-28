@@ -116,8 +116,8 @@ export default function MemberAddModal({ isOpen, onClose, onSave }: ModalProps) 
           <label>역할</label>
           <div className={styles.checkbox_group}>
             <label><input type="checkbox" checked={memberData.role_ids.includes(1)} onChange={() => handleCheckboxChange(1)} /> 일러스트레이터</label>
-            <label><input type="checkbox" checked={memberData.role_ids.includes(2)} onChange={() => handleCheckboxChange(2)} /> 작곡가</label>
-            <label><input type="checkbox" checked={memberData.role_ids.includes(3)} onChange={() => handleCheckboxChange(3)} /> 애니메이터</label>
+            <label><input type="checkbox" checked={memberData.role_ids.includes(2)} onChange={() => handleCheckboxChange(2)} /> 애니메이터</label>
+            <label><input type="checkbox" checked={memberData.role_ids.includes(3)} onChange={() => handleCheckboxChange(3)} /> 작곡</label>
             <label><input type="checkbox" checked={memberData.role_ids.includes(4)} onChange={() => handleCheckboxChange(4)} /> 작가</label>
           </div>
 

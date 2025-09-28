@@ -33,6 +33,10 @@ export default function RootLayout({
     if (pathname.startsWith('/admin')) {
         return (
             <html>
+                <head>
+                    <title>Blended Wave - Admin</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1" />
+                </head>
                 <body className="admin_body">
                     {children}
                 </body>
@@ -43,6 +47,10 @@ export default function RootLayout({
     if (pathname.startsWith('/artist/instroduction')) {
         return (
             <html>
+                <head>
+                    <title>Blended Wave - Artist</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1" />
+                </head>
                 <body>
                     <Navbar />
                     {children}
@@ -53,6 +61,11 @@ export default function RootLayout({
 
     return (
         <html>
+            <head>
+                <title>Blended Wave</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta name="description" content="Digital Art Portfolio & Gallery" />
+            </head>
             <body>
                 <Navbar />
                 {children}
