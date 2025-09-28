@@ -29,7 +29,9 @@ fi
 # ecosystem.config.js 파일 존재 확인
 if [ ! -f "ecosystem.config.js" ]; then
     echo "⚠️  ecosystem.config.js 파일이 없습니다!"
-    echo "   PM2 설정 파일을 생성해야 합니다."
+    echo "   프로젝트 루트에 PM2 설정 파일이 필요합니다."
+else
+    echo "✅ ecosystem.config.js 파일 확인됨"
 fi
 
 echo ""
