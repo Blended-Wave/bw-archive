@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'bw-archive-backend',
-      script: './backend/dist/main.js',
+      script: 'dist/main.js',
       cwd: './backend',
       instances: 1,
       exec_mode: 'fork',
