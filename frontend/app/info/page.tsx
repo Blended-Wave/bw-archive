@@ -1,6 +1,13 @@
+'use client';
+
+import { useEffect } from 'react';
 import styles from '@/styles/Info.module.css';
 
 export default function Info() {
+    // 페이지 제목 설정
+    useEffect(() => {
+        document.title = 'Blended Wave - Info';
+    }, []);
     return (
         <main>
             <div className={styles.info_container}>

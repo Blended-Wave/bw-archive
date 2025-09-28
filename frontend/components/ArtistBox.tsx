@@ -20,8 +20,8 @@ export default function ArtistBox({ artist }: ArtistBoxProps) {
       <div className={styles.artist_box}>
         <div className={styles.arts}>
           {artist.roles.includes(1) && <img src="/artist_icon/illustrator_icon.svg" alt="Illustrator" />}
-          {artist.roles.includes(2) && <img src="/artist_icon/composer_icon.svg" alt="Composer" />}
-          {artist.roles.includes(3) && <img src="/artist_icon/ani_icon.svg" alt="Animator" />}
+          {artist.roles.includes(2) && <img src="/artist_icon/ani_icon.svg" alt="Animator" />}
+          {artist.roles.includes(3) && <img src="/artist_icon/composer_icon.svg" alt="Composer" />}
           {artist.roles.includes(4) && <img src="/artist_icon/writer_icon.svg" alt="Writer" />}
         </div>
         <Link className={styles.detail} href={`/artist/introduction/${artist.user_id}`}>

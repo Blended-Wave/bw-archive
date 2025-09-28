@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import SwiperCore from 'swiper';
@@ -20,6 +20,7 @@ interface ArtistData {
   twitterUrl: string;
   link: string;
   works_id: number;
+  type?: string; // 'image' | 'video'
 }
 
 interface ArtistInfo { // Define the type for the page's main artist
@@ -38,6 +39,8 @@ interface ArtistSwiperProps {
 export default function ArtistSwiper({ artists, artistInfo, onWorkClick }: ArtistSwiperProps) {
   const [swiper, setSwiper] = useState<SwiperCore | null>(null);
   const [isSliding, setIsSliding] = useState(false);
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const [userInteracted, setUserInteracted] = useState(false);
   
   const slidesCount = artists.length;
   const shouldLoop = slidesCount >= 3;
@@ -58,6 +61,62 @@ export default function ArtistSwiper({ artists, artistInfo, onWorkClick }: Artis
   };
 
   const extendedArtists = getExtendedArtists();
+
+  // 초기 로드 시 중앙 동영상 재생
+  useEffect(() => {
+    if (!isSliding) {
+      const timer = setTimeout(() => {
+        playActiveVideo(activeSlideIndex);
+      }, 100); // 딜레이 최소화
+      
+      return () => clearTimeout(timer);
+    }
+  }, [activeSlideIndex, isSliding]);
+
+  // 동영상 제어 함수들
+  const pauseAllVideos = () => {
+    const videos = document.querySelectorAll('.artist-swiper video');
+    videos.forEach((video) => {
+      (video as HTMLVideoElement).pause();
+    });
+  };
+
+  const playActiveVideo = (slideIndex: number) => {
+    // 모든 비디오를 먼저 일시정지
+    const allVideos = document.querySelectorAll('.artist-swiper video');
+    allVideos.forEach(video => (video as HTMLVideoElement).pause());
+    
+    // 활성 슬라이드의 비디오만 재생 (즉시 실행)
+    const activeSlide = document.querySelector('.artist-swiper .swiper-slide-active');
+    if (activeSlide) {
+      const activeVideo = activeSlide.querySelector('video') as HTMLVideoElement;
+      if (activeVideo) {
+        // readyState 확인 없이 즉시 재생 시도
+        activeVideo.play().catch(() => {
+          // 재생 실패 시 한 번 더 시도
+          setTimeout(() => {
+            activeVideo.play().catch(() => {});
+          }, 50);
+        });
+      }
+    }
+  };
+
+  const handleSlideChange = (swiper: SwiperCore) => {
+    const realIndex = swiper.realIndex;
+    setActiveSlideIndex(realIndex);
+    setUserInteracted(true); // 슬라이드 변경 시 사용자 상호작용으로 간주
+    playActiveVideo(realIndex);
+  };
+
+  // 첫 클릭 시 사용자 상호작용 활성화
+  const handleUserInteraction = () => {
+    if (!userInteracted) {
+      setUserInteracted(true);
+      // 현재 활성 슬라이드의 동영상을 재생 시도
+      playActiveVideo(activeSlideIndex);
+    }
+  };
 
   const handlePrevSlide = () => {
     if (isSliding || !swiper) return;
@@ -83,11 +142,22 @@ export default function ArtistSwiper({ artists, artistInfo, onWorkClick }: Artis
               onClick={() => onWorkClick?.(artists[0].works_id, 0)}
               style={{ cursor: 'pointer' }}
             >
-              <img 
-                src={artists[0].img} 
-                alt={artists[0].name} 
-                className={styles.singleImage} 
-              />
+              {artists[0].type === 'video' ? (
+                <video 
+                  src={artists[0].img} 
+                  loop 
+                  muted
+                  playsInline
+                  className={styles.singleImage}
+                  autoPlay
+                />
+              ) : (
+                <img 
+                  src={artists[0].img} 
+                  alt={artists[0].name} 
+                  className={styles.singleImage} 
+                />
+              )}
               <div className={styles.artistInfo}>
                 <h3>{artists[0].name}</h3>
                 {artists[0].roles && (
@@ -113,7 +183,7 @@ export default function ArtistSwiper({ artists, artistInfo, onWorkClick }: Artis
     }
 
     return (
-    <div className={styles.swiperWrapper}>
+    <div className={styles.swiperWrapper} onClick={handleUserInteraction}>
       <Swiper
         modules={[Navigation, Pagination]}
         spaceBetween={isTwoImages ? 100 : 35} // Increase spacing for 2 slides
@@ -134,8 +204,17 @@ export default function ArtistSwiper({ artists, artistInfo, onWorkClick }: Artis
           bulletActiveClass: styles.active,
           el: `.${styles.pagination}`
         }}
-        onSwiper={setSwiper}
-        className={isTwoImages ? styles.twoSlidesContainer : styles.swiperContainer}
+        onSwiper={(swiperInstance) => {
+          setSwiper(swiperInstance);
+          setActiveSlideIndex(swiperInstance.realIndex);
+          
+          // Swiper 초기화 후 바로 중앙 동영상 재생 시도
+          setTimeout(() => {
+            playActiveVideo(swiperInstance.realIndex);
+          }, 50);
+        }}
+        onSlideChange={handleSlideChange}
+        className={`${isTwoImages ? styles.twoSlidesContainer : styles.swiperContainer} artist-swiper`}
       >
         {extendedArtists.map((artist, index) => {
           // 원본 배열에서의 실제 인덱스 계산
@@ -148,11 +227,22 @@ export default function ArtistSwiper({ artists, artistInfo, onWorkClick }: Artis
                 onClick={() => onWorkClick?.(artist.works_id, originalIndex)}
                 style={{ cursor: 'pointer' }}
               >
-                <img 
-                  src={artist.img} 
-                  alt={artist.name} 
-                  className={styles.artistImage} 
-                />
+                {artist.type === 'video' ? (
+                  <video 
+                    src={artist.img} 
+                    loop 
+                    muted
+                    playsInline
+                    preload="auto"
+                    className={styles.artistImage}
+                  />
+                ) : (
+                  <img 
+                    src={artist.img} 
+                    alt={artist.name} 
+                    className={styles.artistImage} 
+                  />
+                )}
               {/* 가운데 슬라이드에만 텍스트 표시 */}
               <div className={styles.artistInfo}>
                 <h3>{artist.name}</h3>

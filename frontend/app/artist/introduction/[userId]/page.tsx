@@ -16,6 +16,7 @@ interface SwiperArtistData {
     twitterUrl: string;
     link: string;
     works_id: number; // 작품 ID 추가
+    type?: string; // 작품 타입 추가
 }
 
 interface SwiperArtistInfo {
@@ -58,6 +59,7 @@ export default function ArtistIntroduction() {
                           twitterUrl: info?.twitterUrl || '',
                           link: `/artist`,
                           works_id: work.works_id, // 작품 ID 추가
+                          type: work.type || 'image', // 작품 타입 추가
                       }))
                     : [];
 
